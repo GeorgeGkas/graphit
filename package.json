@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "scripts": {
+    "install": "cd frontend && yarn && cd ../backend && yarn && cd ..",
+    "build": "cd frontend && yarn build && cd ../backend && yarn build && cd ..",
+    "start": "cd backend && yarn start",
+    "cm": "git-cz",
+    "test": "cd frontend && yarn test && cd ..",
+    "lint": "cd backend && yarn lint && cd .."
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "2.1.0",
+    "husky": "^2.7.0",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && yarn lint && yarn test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css,scss,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
