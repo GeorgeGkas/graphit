@@ -279,6 +279,7 @@ const Presentation = ({
                               popupState2.close()
                               signOut()
                             }}
+                            onFailure={console.log}
                             render={renderProps => (
                               <MenuItem
                                 onClick={() => {
@@ -305,6 +306,7 @@ const Presentation = ({
               onSuccess={googleResponse => {
                 signIn(googleResponse.accessToken)
               }}
+              onFailure={console.log}
               isSignedIn
             />
           )}
