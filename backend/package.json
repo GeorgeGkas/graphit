@@ -18,7 +18,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "build": "rm tsconfig.tsbuildinfo && tsc --project tsconfig.json",
+    "build": "rimraf tsconfig.tsbuildinfo && tsc --project tsconfig.json",
     "dev:debug": "ts-node --files ./src/index.ts",
     "dev": "nodemon",
     "start": "cross-env NODE_ENV=production node build/index.js",
@@ -47,7 +47,7 @@
     "@types/passport": "^1.0.1",
     "@types/winston": "^2.4.4",
     "nodemon": "^1.19.2",
-    "rm": "^0.1.8",
+    "rimraf": "^3.0.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
