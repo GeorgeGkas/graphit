@@ -187,14 +187,8 @@ const Presentation = ({
                           }
                         }}
                       >
-                        <ListItem>
+                        <ListItem component="div">
                           <ListItemText primary="New" />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemText
-                            secondary="Ctrl+N"
-                            className={classes.menuItemKey}
-                          />
                         </ListItem>
                       </MenuItem>
 
@@ -203,14 +197,8 @@ const Presentation = ({
                         disabled={editorActionType === 'isPlaying'}
                         onClick={open}
                       >
-                        <ListItem>
+                        <ListItem component="div">
                           <ListItemText primary="Open" />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemText
-                            secondary="Ctrl+O"
-                            className={classes.menuItemKey}
-                          />
                         </ListItem>
                       </MenuItem>
 
@@ -222,14 +210,8 @@ const Presentation = ({
                             selectedProjectId ? updateInCloud() : saveInCloud()
                           }
                         >
-                          <ListItem>
+                          <ListItem component="div">
                             <ListItemText primary="Save" />
-                          </ListItem>
-                          <ListItem>
-                            <ListItemText
-                              secondary="Ctrl+S"
-                              className={classes.menuItemKey}
-                            />
                           </ListItem>
                         </MenuItem>
                       ) : null}
@@ -239,7 +221,7 @@ const Presentation = ({
                         disabled={editorActionType === 'isPlaying'}
                         onClick={saveHistory}
                       >
-                        <ListItem>
+                        <ListItem component="div">
                           <ListItemText primary="Download" />
                         </ListItem>
                       </MenuItem>
