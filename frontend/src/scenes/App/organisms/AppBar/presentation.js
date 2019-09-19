@@ -239,6 +239,7 @@ const Presentation = ({
               color="inherit"
               className={classes.button}
               aria-label="add an alarm"
+              onClick={() => alert('Not implemented.')}
             >
               <ShareIcon />
             </IconButton>
