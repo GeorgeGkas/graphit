@@ -5,9 +5,11 @@ import Button from '@material-ui/core/Button'
 import EditIcon from '@material-ui/icons/EditSharp'
 import NodeEditor from './organisms/NodeEditor'
 import EdgeEditor from './organisms/EdgeEditor'
+import DeleteIcon from '@material-ui/icons/DeleteSharp'
+import IconButton from '@material-ui/core/IconButton'
 
 const useStyles = makeStyles(theme => ({
-  button: {
+  editButton: {
     margin: theme.spacing(1),
     borderRadius: 0,
   },
@@ -15,9 +17,18 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     fontSize: 20,
   },
+  deleteButton: {
+    borderRadius: 0,
+  },
 }))
 
-const Presentation = ({ selectedNode, scale, selectedArrow, arrows }) => {
+const Presentation = ({
+  selectedNode,
+  scale,
+  selectedArrow,
+  arrows,
+  deleteShapes,
+}) => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
@@ -40,12 +51,21 @@ const Presentation = ({ selectedNode, scale, selectedArrow, arrows }) => {
         variant="contained"
         color="secondary"
         size="small"
-        className={classes.button}
+        className={classes.editButton}
         onClick={handleClickOpen}
       >
         <EditIcon className={classes.buttonIcon} />
         Edit
       </Button>
+      <IconButton
+        variant="contained"
+        color="secondary"
+        size="small"
+        className={classes.deleteButton}
+        onClick={deleteShapes}
+      >
+        <DeleteIcon />
+      </IconButton>
 
       {selectedNode ? (
         <NodeEditor open={open} handleClose={handleClose} />
