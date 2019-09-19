@@ -130,7 +130,7 @@ const Presentation = ({
               ) ||
               algorithm_current_step.selected_edges.some(id => id === arrow.id),
           )
-          .map((arrow, _, arrows) => {
+          .map((arrow, index, arrows) => {
             const nodeRadius = 25
             const curvePower = 20
 
@@ -150,6 +150,7 @@ const Presentation = ({
              */
             return arrow.to.id !== arrow.from.id ? (
               <EdgeNotLoop
+                key={index}
                 arrow={arrow}
                 secondExist={secondExist}
                 nodeRadius={nodeRadius}
@@ -165,6 +166,7 @@ const Presentation = ({
               />
             ) : (
               <EdgeLoop
+                key={index}
                 arrow={arrow}
                 selectArrow={selectArrow}
                 unselectArrow={unselectArrow}
@@ -210,8 +212,9 @@ const Presentation = ({
             ) ||
             algorithm_current_step.selected_nodes.some(id => id === node.id),
         )
-        .map(node => (
+        .map((node, index) => (
           <Node
+            key={index}
             thisNode={node}
             editorActionType={editorActionType}
             isMultiSelect={isMultiSelect}
