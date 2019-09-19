@@ -18,10 +18,10 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "build": "rimraf tsconfig.tsbuildinfo && tsc --project tsconfig.json",
-    "dev:debug": "ts-node --files ./src/index.ts",
-    "dev": "nodemon",
-    "start": "cross-env NODE_ENV=production node build/index.js",
+    "build": "cross-env NODE_ENV=production rimraf tsconfig.tsbuildinfo && tsc --project tsconfig.json",
+    "dev:debug": "TS_NODE_FILES=true node -r ../index.js -r ts-node/register ./src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "start": "cross-env NODE_ENV=production node -r ../index.js build/index.js",
     "lint": "tslint -p tsconfig.json"
   },
   "dependencies": {

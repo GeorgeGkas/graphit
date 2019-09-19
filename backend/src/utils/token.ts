@@ -4,13 +4,12 @@
 
 import { AugmentedRequest, NextFunction, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
-import config from '../config'
 
 /**
  * Create and return a JWT using the id of the Google user.
  */
 function create(auth: AugmentedRequest['auth']) {
-  return jwt.sign({ id: auth.id }, config.auth.jwtSecret, {
+  return jwt.sign({ id: auth.id }, process.env.JWT_SECRET as string, {
     expiresIn: 60 * 120,
   })
 }
@@ -35,7 +34,7 @@ export function verify(
   try {
     const decoded = jwt.verify(
       req.signedCookies.session,
-      config.auth.jwtSecret,
+      process.env.JWT_SECRET as string
     ) as AugmentedRequest['auth']
     req.authToken = decoded
     return next()

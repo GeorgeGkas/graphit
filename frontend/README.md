@@ -2,14 +2,9 @@
 
 Front-end for Dijkstra Visualizer.
 
-## Building
+## Architecture
 
-Build the project using `yarn build` or `npm run build`.
-
-## Development
-
-Start the development server with `yarn start`. To integrate with back-end services also run `yarn dev` from `backend` directory.
-
-## License
-
-The source code of this project is licensed under MIT. See [LICENSE.md](LICENSE.md) for details.
+- Frontend Framework: **React v16**
+- UI Framework: **Material UI**
+- Language: **ESNEXT**
+- Authentication: **Google OAuth 2.0** and **JWT**

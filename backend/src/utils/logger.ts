@@ -6,7 +6,6 @@
  */
 
 import * as winston from 'winston'
-import config from '../config'
 
 function formatParams(info: any) {
   const { timestamp, level, message, ...args } = info
@@ -32,20 +31,20 @@ const productionFormat = winston.format.combine(
 
 let logger: winston.Logger
 
-if (config.config_type !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   logger = winston.createLogger({
     format: developmentFormat,
-    level: config.debug_level,
+    level: 'silly',
     transports: [new winston.transports.Console()],
   })
 } else {
   logger = winston.createLogger({
     format: productionFormat,
-    level: config.debug_level,
+    level: 'silly',
     transports: [
       new winston.transports.File({
         filename: 'logs/error.log',
-        level: 'error',
+        level: 'silly',
       }),
       new winston.transports.File({ filename: 'logs/combined.log' }),
     ],

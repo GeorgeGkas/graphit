@@ -80,5 +80,9 @@
     "resolveJsonModule": false
   },
   "include": ["./src/**/*"],
+  "files": [
+    "./src/@types/express/index.d.ts",
+    "./src/@types/passport-google-token/index.d.ts"
+  ],
   "exclude": ["**/*.spec.ts"]
 }

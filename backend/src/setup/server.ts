@@ -7,7 +7,6 @@ import * as cors from 'cors'
 import * as express from 'express'
 import * as morgan from 'morgan'
 import * as path from 'path'
-import config from '../config'
 import routes from '../routes'
 import logger from '../utils/logger'
 
@@ -15,8 +14,8 @@ import logger from '../utils/logger'
  * Start express server.
  */
 export function listen(server: express.Express) {
-  server.listen(config.server.port, () => {
-    logger.debug('API service is running on local port ' + config.server.port)
+  server.listen(process.env.SERVER_PORT, () => {
+    logger.debug('API service is running on local port ' + process.env.SERVER_PORT)
   })
 }
 
@@ -34,7 +33,7 @@ export async function setup(server: express.Express) {
 
   server.use(express.json())
   server.use(express.urlencoded({ extended: false }))
-  server.use(cookieParser(config.auth.cookieSecret))
+  server.use(cookieParser(process.env.COOKIE_SECRET))
 
   server.use(
     morgan('combined', {
@@ -49,7 +48,7 @@ export async function setup(server: express.Express) {
   /**
    * Serve React app on production.
    */
-  if (config.config_type ==='production') {
+  if (process.env.NODE_ENV ==='production') {
     server.use(express.static(path.join(__dirname, '..', '..', '..', 'frontend', 'build')));
 
     server.get('*', (_, res) => { 

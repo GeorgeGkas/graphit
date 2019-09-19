@@ -273,7 +273,7 @@ const Presentation = ({
                       <ClickAwayListener onClickAway={popupState2.close}>
                         <MenuList>
                           <GoogleLogout
-                            clientId="500576713709-u5ok37bgahorqpofvsvm9fd4pbdldssj.apps.googleusercontent.com"
+                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                             buttonText="Logout"
                             onLogoutSuccess={() => {
                               popupState2.close()
@@ -299,7 +299,7 @@ const Presentation = ({
             </React.Fragment>
           ) : (
             <GoogleLogin
-              clientId="500576713709-u5ok37bgahorqpofvsvm9fd4pbdldssj.apps.googleusercontent.com"
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
               buttonText="Sign In"
               cookiePolicy={'single_host_origin'}
               className={classes.signin}

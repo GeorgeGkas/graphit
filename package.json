@@ -33,5 +33,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "dotenv-expand": "^5.1.0"
   }
 }
