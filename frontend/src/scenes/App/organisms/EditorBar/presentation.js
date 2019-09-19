@@ -80,159 +80,187 @@ const Presentation = ({
       <AppBar position="static" className={classes.root}>
         <Toolbar>
           <Tooltip title="Undo">
-            <IconButton
-              className={classes.button}
-              disabled={!pastExist || editorActionType === 'isPlaying'}
-              onClick={undoEditorHistory}
-            >
-              <UndoIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                disabled={!pastExist || editorActionType === 'isPlaying'}
+                onClick={undoEditorHistory}
+              >
+                <UndoIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Redo">
-            <IconButton
-              className={classes.button}
-              disabled={!futureExist || editorActionType === 'isPlaying'}
-              onClick={redoEditorHistory}
-            >
-              <RedoIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                disabled={!futureExist || editorActionType === 'isPlaying'}
+                onClick={redoEditorHistory}
+              >
+                <RedoIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Divider orientation="vertical" />
 
           <Tooltip title="Zoom in">
-            <IconButton
-              className={classes.button}
-              onClick={() => zoom('zoomIn')}
-            >
-              <ZoomInIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                onClick={() => zoom('zoomIn')}
+              >
+                <ZoomInIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Zoom out">
-            <IconButton
-              className={classes.button}
-              onClick={() => zoom('zoomOut')}
-            >
-              <ZoomOutIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                onClick={() => zoom('zoomOut')}
+              >
+                <ZoomOutIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Toggle grid">
-            <IconButton className={classes.button} onClick={toggleGrid}>
-              {grid ? <GridOnIcon /> : <GridOffIcon />}
-            </IconButton>
+            <div>
+              <IconButton className={classes.button} onClick={toggleGrid}>
+                {grid ? <GridOnIcon /> : <GridOffIcon />}
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Divider orientation="vertical" />
 
           <Tooltip title="Select mode">
-            <IconButton
-              className={
-                editorActionType === 'select'
-                  ? classes.buttonActive
-                  : classes.button
-              }
-              disabled={editorActionType === 'isPlaying'}
-              onClick={() => changeEditorActionType('select')}
-            >
-              <BrushIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={
+                  editorActionType === 'select'
+                    ? classes.buttonActive
+                    : classes.button
+                }
+                disabled={editorActionType === 'isPlaying'}
+                onClick={() => changeEditorActionType('select')}
+              >
+                <BrushIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Create nodes">
-            <IconButton
-              className={
-                editorActionType === 'node'
-                  ? classes.buttonActive
-                  : classes.button
-              }
-              disabled={editorActionType === 'isPlaying'}
-              onClick={() => changeEditorActionType('node')}
-            >
-              <DeviceHubIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={
+                  editorActionType === 'node'
+                    ? classes.buttonActive
+                    : classes.button
+                }
+                disabled={editorActionType === 'isPlaying'}
+                onClick={() => changeEditorActionType('node')}
+              >
+                <DeviceHubIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Create edges">
-            <IconButton
-              className={
-                editorActionType === 'edge'
-                  ? classes.buttonActive
-                  : classes.button
-              }
-              disabled={editorActionType === 'isPlaying'}
-              onClick={() => changeEditorActionType('edge')}
-            >
-              <CategoryIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={
+                  editorActionType === 'edge'
+                    ? classes.buttonActive
+                    : classes.button
+                }
+                disabled={editorActionType === 'isPlaying'}
+                onClick={() => changeEditorActionType('edge')}
+              >
+                <CategoryIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Divider orientation="vertical" />
 
           <Tooltip title="Play">
-            <IconButton
-              className={classes.button}
-              onClick={() => {
-                editorActionType === 'isPlaying'
-                  ? stopPlaying()
-                  : startPlaying()
-              }}
-            >
-              {editorActionType === 'isPlaying' ? (
-                <StopIcon />
-              ) : (
-                <PlayArrowIcon />
-              )}
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                onClick={() => {
+                  editorActionType === 'isPlaying'
+                    ? stopPlaying()
+                    : startPlaying()
+                }}
+              >
+                {editorActionType === 'isPlaying' ? (
+                  <StopIcon />
+                ) : (
+                  <PlayArrowIcon />
+                )}
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Go to first step">
-            <IconButton
-              className={classes.button}
-              onClick={() => firstIteration()}
-              disabled={
-                editorActionType !== 'isPlaying' || !previousAlgorithmEntryExist
-              }
-            >
-              <SkipPreviousIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                onClick={() => firstIteration()}
+                disabled={
+                  editorActionType !== 'isPlaying' ||
+                  !previousAlgorithmEntryExist
+                }
+              >
+                <SkipPreviousIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Previous step">
-            <IconButton
-              className={classes.button}
-              onClick={() => previousIteration()}
-              disabled={
-                editorActionType !== 'isPlaying' || !previousAlgorithmEntryExist
-              }
-            >
-              <ChevronLeftIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                onClick={() => previousIteration()}
+                disabled={
+                  editorActionType !== 'isPlaying' ||
+                  !previousAlgorithmEntryExist
+                }
+              >
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Next step">
-            <IconButton
-              onClick={() => nextIteration()}
-              disabled={
-                editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
-              }
-            >
-              <ChevronRightIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                onClick={() => nextIteration()}
+                disabled={
+                  editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
+                }
+              >
+                <ChevronRightIcon />
+              </IconButton>
+            </div>
           </Tooltip>
 
           <Tooltip title="Go to last step">
-            <IconButton
-              className={classes.button}
-              onClick={() => lastIteration()}
-              disabled={
-                editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
-              }
-            >
-              <SkipNextIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                className={classes.button}
+                onClick={() => lastIteration()}
+                disabled={
+                  editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
+                }
+              >
+                <SkipNextIcon />
+              </IconButton>
+            </div>
           </Tooltip>
         </Toolbar>
       </AppBar>
