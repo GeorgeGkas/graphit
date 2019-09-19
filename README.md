@@ -6,7 +6,7 @@ A Dijkstra Visualizer built with React.
 
 ## Development
 
-1. Clone the repo `https://github.com/GeorgeGkas/dijkstra-visualizer.git`.
+1. `git clone --recursive https://github.com/GeorgeGkas/dijkstra-visualizer.git`
 2. Install Node.js dependencies (using `yarn` or `npm i`).
 3. Build the project using `yarn build` or `npm run build`.
 4. Start the project with `yarn start` or `npm start`.
