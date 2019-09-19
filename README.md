@@ -11,7 +11,7 @@ A Dijkstra Visualizer built with React.
 3. Build the project using `yarn build` or `npm run build`.
 4. Start the project with `yarn start` or `npm start`.
 
-This repository contains both the front-end, built with React, and the back-end, built with Express, of the app. Refer to each folder respectively for more details on how to run the app locally.
+This repository contains both the front-end, built with **React**, and the back-end, built with **Express** and **MongoDB**. Refer to each folder respectively for more details on how to run the app locally.
 
 ## License
 
