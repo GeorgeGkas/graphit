@@ -2,6 +2,7 @@ import React from 'react'
 import { Arrow, Text, Group } from 'react-konva'
 import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 import algorithmComponentsTheme from '../../../../../../themes/algorithmComponents.theme'
+import buildEdge from './services/buildEdge'
 
 const Presentation = ({
   arrow,
@@ -17,49 +18,12 @@ const Presentation = ({
   selectedNodeId,
   algorithm_current_step,
 }) => {
-  const dx = arrow.to.x - arrow.from.x
-  const dy = arrow.to.y - arrow.from.y
-  let angle = Math.atan2(-dy, dx)
-
-  const arrowStart = {
-    x:
-      arrow.from.x +
-      -nodeRadius * Math.cos(angle + Math.PI) +
-      (secondExist ? 5 * Math.cos(angle + Math.PI / 2) : 0),
-    y:
-      arrow.from.y +
-      nodeRadius * Math.sin(angle + Math.PI) +
-      (secondExist ? 5 * Math.sin(angle - Math.PI / 2) : 0),
-  }
-
-  const arrowEnd = {
-    x:
-      arrow.to.x +
-      -nodeRadius * Math.cos(angle) +
-      (secondExist ? 5 * Math.cos(angle + Math.PI / 2) : 0),
-    y:
-      arrow.to.y +
-      nodeRadius * Math.sin(angle) +
-      (secondExist ? 5 * Math.sin(angle - Math.PI / 2) : 0),
-  }
-
-  const arrowCurve = {
-    x:
-      (arrowStart.x + arrowEnd.x) / 2 +
-      (secondExist ? curvePower * Math.cos(angle + Math.PI / 2) : 0),
-    y:
-      (arrowStart.y + arrowEnd.y) / 2 +
-      (secondExist ? curvePower * Math.sin(angle - Math.PI / 2) : 0),
-  }
-
-  let points = [
-    arrowStart.x,
-    arrowStart.y,
-    arrowCurve.x,
-    arrowCurve.y,
-    arrowEnd.x,
-    arrowEnd.y,
-  ]
+  let points = buildEdge({
+    arrow,
+    nodeRadius,
+    secondExist,
+    curvePower,
+  })
 
   return (
     <Group
@@ -144,8 +108,8 @@ const Presentation = ({
       <Text
         stroke={editorComponentsTheme.stage.fill.color}
         strokeWidth={7}
-        x={(arrowCurve.x + arrowCurve.x) / 2 - 24}
-        y={(arrowCurve.y + arrowCurve.y) / 2 - 24}
+        x={points[2] - 24}
+        y={points[3] - 24}
         width={2 * 24}
         height={2 * 24}
         align="center"
@@ -155,8 +119,8 @@ const Presentation = ({
         fontFamily="Roboto"
       />
       <Text
-        x={(arrowCurve.x + arrowCurve.x) / 2 - 24}
-        y={(arrowCurve.y + arrowCurve.y) / 2 - 24}
+        x={points[2] - 24}
+        y={points[3] - 24}
         width={2 * 24}
         height={2 * 24}
         align="center"
