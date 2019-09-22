@@ -98,13 +98,13 @@ const Presentation = ({
   toggleDashboard,
 }) => {
   const classes = useStyles()
-  const popupState1 = usePopupState({
+  const fileDropdownMenu = usePopupState({
     variant: 'popper',
-    popupId: 'demoPopper1',
+    popupId: 'fileDropdownMenu',
   })
-  const popupState2 = usePopupState({
+  const profileDropdownMenu = usePopupState({
     variant: 'popover',
-    popupId: 'demoMenu2',
+    popupId: 'profileDropdownMenu',
   })
 
   return (
@@ -153,12 +153,12 @@ const Presentation = ({
           <Button
             color="inherit"
             className={classes.buttonApp}
-            {...bindToggle(popupState1)}
+            {...bindToggle(fileDropdownMenu)}
           >
             File
           </Button>
           <Popper
-            {...bindPopper(popupState1)}
+            {...bindPopper(fileDropdownMenu)}
             transition
             style={{ zIndex: 9999 }}
           >
@@ -169,7 +169,7 @@ const Presentation = ({
                 className={classes.fileMenu}
               >
                 <Paper id="menu-list-grow">
-                  <ClickAwayListener onClickAway={popupState1.close}>
+                  <ClickAwayListener onClickAway={fileDropdownMenu.close}>
                     <MenuList>
                       <MenuItem
                         button
@@ -250,7 +250,7 @@ const Presentation = ({
               <IconButton
                 color="inherit"
                 className={classes.avatarMenuButton}
-                {...bindToggle(popupState2)}
+                {...bindToggle(profileDropdownMenu)}
               >
                 <Avatar
                   alt=""
@@ -259,7 +259,7 @@ const Presentation = ({
                 />
               </IconButton>
               <Popper
-                {...bindPopover(popupState2)}
+                {...bindPopover(profileDropdownMenu)}
                 transition
                 style={{ zIndex: 9999 }}
               >
@@ -270,13 +270,15 @@ const Presentation = ({
                     className={classes.avatarMenu}
                   >
                     <Paper id="menu-list-grow">
-                      <ClickAwayListener onClickAway={popupState2.close}>
+                      <ClickAwayListener
+                        onClickAway={profileDropdownMenu.close}
+                      >
                         <MenuList>
                           <GoogleLogout
                             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                             buttonText="Logout"
                             onLogoutSuccess={() => {
-                              popupState2.close()
+                              profileDropdownMenu.close()
                               signOut()
                             }}
                             onFailure={console.log}
