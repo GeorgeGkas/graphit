@@ -1,51 +1,51 @@
 export default function buildEdge({
-  arrow,
+  edge,
   nodeRadius,
   secondExist,
   curvePower,
 }) {
-  const dx = arrow.to.x - arrow.from.x
-  const dy = arrow.to.y - arrow.from.y
+  const dx = edge.to.x - edge.from.x
+  const dy = edge.to.y - edge.from.y
   let angle = Math.atan2(-dy, dx)
 
-  const arrowStart = {
+  const edgeStart = {
     x:
-      arrow.from.x +
+      edge.from.x +
       -nodeRadius * Math.cos(angle + Math.PI) +
       (secondExist ? 5 * Math.cos(angle + Math.PI / 2) : 0),
     y:
-      arrow.from.y +
+      edge.from.y +
       nodeRadius * Math.sin(angle + Math.PI) +
       (secondExist ? 5 * Math.sin(angle - Math.PI / 2) : 0),
   }
 
-  const arrowEnd = {
+  const edgeEnd = {
     x:
-      arrow.to.x +
+      edge.to.x +
       -nodeRadius * Math.cos(angle) +
       (secondExist ? 5 * Math.cos(angle + Math.PI / 2) : 0),
     y:
-      arrow.to.y +
+      edge.to.y +
       nodeRadius * Math.sin(angle) +
       (secondExist ? 5 * Math.sin(angle - Math.PI / 2) : 0),
   }
 
-  const arrowCenter = {
+  const edgeCenter = {
     x:
-      (arrowStart.x + arrowEnd.x) / 2 +
+      (edgeStart.x + edgeEnd.x) / 2 +
       (secondExist ? curvePower * Math.cos(angle + Math.PI / 2) : 0),
     y:
-      (arrowStart.y + arrowEnd.y) / 2 +
+      (edgeStart.y + edgeEnd.y) / 2 +
       (secondExist ? curvePower * Math.sin(angle - Math.PI / 2) : 0),
   }
 
   let points = [
-    arrowStart.x,
-    arrowStart.y,
-    arrowCenter.x,
-    arrowCenter.y,
-    arrowEnd.x,
-    arrowEnd.y,
+    edgeStart.x,
+    edgeStart.y,
+    edgeCenter.x,
+    edgeCenter.y,
+    edgeEnd.x,
+    edgeEnd.y,
   ]
 
   return points

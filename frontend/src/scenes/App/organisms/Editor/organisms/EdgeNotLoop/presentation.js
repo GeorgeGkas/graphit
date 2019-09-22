@@ -19,7 +19,7 @@ const Presentation = ({
   algorithm_current_step,
 }) => {
   let points = buildEdge({
-    arrow,
+    edge: arrow,
     nodeRadius,
     secondExist,
     curvePower,
