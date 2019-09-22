@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import localDownload from './services/localDownload'
 import cloudUpdate from './services/cloudUpdate'
+import cloudSave from './services/cloudSave'
 
 const Presentation = ({
   editorActionType,
@@ -17,7 +18,6 @@ const Presentation = ({
   open,
   isSignIn,
   selectedProjectId,
-  saveInCloud,
   fileDropdownMenu,
   graph,
 }) => (
@@ -62,7 +62,7 @@ const Presentation = ({
             onClick={() =>
               selectedProjectId
                 ? cloudUpdate(selectedProjectId, graph)
-                : saveInCloud()
+                : cloudSave(graph, selectProject)
             }
           >
             <ListItem component="div">

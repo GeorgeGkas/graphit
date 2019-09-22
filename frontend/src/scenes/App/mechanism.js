@@ -35,7 +35,6 @@ class App extends React.Component {
 
     this.toggleGrid = this.toggleGrid.bind(this)
     this.toggleDashboard = this.toggleDashboard.bind(this)
-    this.saveInCloud = this.saveInCloud.bind(this)
     this.open = this.open.bind(this)
     this.state = {
       grid: false,
@@ -72,50 +71,6 @@ class App extends React.Component {
     }
   }
 
-  saveInCloud() {
-    let projectName = prompt('Project name')
-
-    if (!projectName || !projectName.trim()) {
-      return
-    }
-
-    const bodyBlob = new Blob(
-      [
-        JSON.stringify(
-          {
-            content: JSON.stringify(this.props.present),
-            name: projectName.trim(),
-            algorithm: 'Dijkstra',
-          },
-          null,
-          2,
-        ),
-      ],
-      {
-        type: 'application/json',
-      },
-    )
-
-    const requestOptions = {
-      method: 'POST',
-      body: bodyBlob,
-      mode: 'cors',
-      cache: 'default',
-      credentials: 'same-origin',
-    }
-
-    fetch('/api/v1/projects', requestOptions).then(res => {
-      if (res.ok) {
-        res.json().then(id => {
-          this.props.selectProject(id)
-          toast.success('Project saved successfully')
-        })
-      } else {
-        toast.error('Could not save project')
-      }
-    })
-  }
-
   toggleGrid() {
     this.setState({ grid: !this.state.grid })
   }
@@ -147,7 +102,6 @@ class App extends React.Component {
         updateArrowWeight={this.props.updateArrowWeight}
         dashboard={this.state.dashboard}
         toggleDashboard={this.toggleDashboard}
-        saveInCloud={this.saveInCloud}
       />
     )
   }

@@ -18,7 +18,6 @@ const Presentation = ({
   selectedArrow,
   dashboard,
   toggleDashboard,
-  saveInCloud,
 }) => (
   <React.Fragment>
     {dashboard ? (
@@ -29,11 +28,7 @@ const Presentation = ({
     ) : null}
 
     <div style={{ position: 'relative' }}>
-      <AppBar
-        open={open}
-        saveInCloud={saveInCloud}
-        toggleDashboard={toggleDashboard}
-      />
+      <AppBar open={open} toggleDashboard={toggleDashboard} />
       <EditorBar toggleGrid={toggleGrid} grid={grid} />
     </div>
 
