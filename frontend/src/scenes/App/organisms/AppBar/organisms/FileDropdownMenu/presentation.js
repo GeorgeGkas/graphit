@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import localDownload from './services/localDownload'
 
 const Presentation = ({
   editorActionType,
@@ -17,8 +18,8 @@ const Presentation = ({
   selectedProjectId,
   updateInCloud,
   saveInCloud,
-  saveHistory,
   fileDropdownMenu,
+  graph,
 }) => (
   <Paper id="menu-list-grow" square>
     <ClickAwayListener onClickAway={fileDropdownMenu.close}>
@@ -71,7 +72,7 @@ const Presentation = ({
         <MenuItem
           button
           disabled={editorActionType === 'isPlaying'}
-          onClick={saveHistory}
+          onClick={() => localDownload(graph)}
         >
           <ListItem component="div">
             <ListItemText primary="Download" />

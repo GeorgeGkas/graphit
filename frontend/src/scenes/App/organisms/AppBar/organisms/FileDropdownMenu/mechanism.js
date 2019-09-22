@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
   isSignIn: state.user.isSignIn,
   selectedProjectId: state.user.selectedProjectId,
   profile: state.user.profile,
+  graph: state.editor.present,
 })
 
 const mapDispatchToProps = dispatch =>

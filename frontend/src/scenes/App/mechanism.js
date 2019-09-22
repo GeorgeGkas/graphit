@@ -36,7 +36,6 @@ class App extends React.Component {
     this.toggleGrid = this.toggleGrid.bind(this)
     this.toggleDashboard = this.toggleDashboard.bind(this)
     this.zoom = this.zoom.bind(this)
-    this.save = this.save.bind(this)
     this.saveInCloud = this.saveInCloud.bind(this)
     this.updateInCloud = this.updateInCloud.bind(this)
     this.open = this.open.bind(this)
@@ -73,23 +72,6 @@ class App extends React.Component {
         }
       })
     }
-  }
-
-  save() {
-    const element = document.createElement('a')
-    element.setAttribute(
-      'href',
-      'data:text/json;charset=utf-8,' +
-        encodeURIComponent(JSON.stringify(this.props.present, null, 2)),
-    )
-    element.setAttribute('download', 'editor.json')
-
-    element.style.display = 'none'
-    document.body.appendChild(element)
-
-    element.click()
-
-    document.body.removeChild(element)
   }
 
   updateInCloud() {
@@ -214,7 +196,6 @@ class App extends React.Component {
         grid={this.state.grid}
         toggleGrid={this.toggleGrid}
         zoom={this.zoom}
-        save={this.save}
         open={this.open}
         isMultiSelect={this.props.isMultiSelect}
         selectedNode={this.props.selectedNode}

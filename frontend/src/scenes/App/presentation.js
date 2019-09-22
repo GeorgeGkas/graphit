@@ -12,7 +12,6 @@ const Presentation = ({
   grid,
   toggleGrid,
   zoom,
-  save,
   open,
   isMultiSelect,
   selectedNode,
@@ -33,7 +32,6 @@ const Presentation = ({
 
     <div style={{ position: 'relative' }}>
       <AppBar
-        save={save}
         open={open}
         saveInCloud={saveInCloud}
         updateInCloud={updateInCloud}
