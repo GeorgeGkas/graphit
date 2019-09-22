@@ -1,56 +1,64 @@
 /**
- * Globals
+ * Import globals.
  */
 import React, { useState } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 /**
- * UI Framework
+ * Import UI framework modules.
  */
 import Slide from '@material-ui/core/Slide'
 
 /**
- * Ducks
+ * Import ducks.
  */
 import { operations as editorOperations } from './organisms/Editor/duck'
 
 /**
- * Components
+ * Import components.
  */
-import Editor from './organisms/Editor'
-import Dijkstra from './organisms/Dijkstra'
-import Overlay from '../../atoms/Overlay'
-import Dashboard from './organisms/Dashboard'
 import AppBar from './organisms/AppBar'
+import Dashboard from './organisms/Dashboard'
+import Dijkstra from './organisms/Dijkstra'
+import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
+import Overlay from '../../atoms/Overlay'
 import PropertiesEditor from './organisms/PropertiesEditor'
 
+/**
+ * Connect App component to Redux.
+ */
 const mapStateToProps = state => ({
-  selectedNode: state.editor.present.selectedNode,
-  selectedArrow: state.editor.present.selectedArrow,
   editorActionType: state.editor.present.editorActionType,
   isMultiSelect: state.editor.isMultiSelect,
+  selectedArrow: state.editor.present.selectedArrow,
+  selectedNode: state.editor.present.selectedNode,
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(editorOperations, dispatch)
 
-const Mechanism = ({
-  isMultiSelect,
-  selectedNode,
+/**
+ * App component.
+ */
+const App = ({
   editorActionType,
+  isMultiSelect,
   selectedArrow,
+  selectedNode,
 }) => {
   const [grid, makeGridVisible] = useState(false)
   const [dashboard, makeDashboardVisible] = useState(false)
 
   const toggleGrid = () => makeGridVisible(!grid)
   const toggleDashboard = () => makeDashboardVisible(!dashboard)
+
   const shouldRenderPropertiesEditor =
     editorActionType === 'select' &&
     !isMultiSelect &&
     (selectedArrow.length ^ selectedNode.length) === 1
+
   const showAlgorithmPanel = editorActionType === 'isPlaying'
 
   return (
@@ -62,6 +70,10 @@ const Mechanism = ({
         </React.Fragment>
       ) : null}
 
+      <Slide direction="left" in={showAlgorithmPanel}>
+        <Dijkstra />
+      </Slide>
+
       <div style={{ position: 'relative' }}>
         <AppBar toggleDashboard={toggleDashboard} />
         <EditorBar toggleGrid={toggleGrid} grid={grid} />
@@ -70,15 +82,6 @@ const Mechanism = ({
       <Editor grid={grid} />
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
-
-      <Slide
-        direction="left"
-        in={showAlgorithmPanel}
-        mountOnEnter
-        unmountOnExit
-      >
-        <Dijkstra />
-      </Slide>
     </React.Fragment>
   )
 }
@@ -86,4 +89,4 @@ const Mechanism = ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Mechanism)
+)(App)
