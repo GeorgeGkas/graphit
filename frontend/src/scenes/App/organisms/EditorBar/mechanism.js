@@ -1,3 +1,4 @@
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Presentation from './presentation'
@@ -25,7 +26,79 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   )
 
-export default connect(
+@connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Presentation)
+)
+class Mechanism extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.zoomIn = this.zoomIn.bind(this)
+    this.zoomOut = this.zoomOut.bind(this)
+  }
+
+  zoomOut() {
+    const scaleBy = 1.1
+
+    const mousePointTo = {
+      x:
+        this.props.cursorPosition.x /
+        this.props.currentStageScale /
+        this.props.currentStageScale,
+      y:
+        this.props.cursorPosition.y /
+        this.props.currentStageScale /
+        this.props.currentStageScale,
+    }
+
+    let newScale = this.props.currentStageScale / scaleBy
+
+    this.props.scaleStageBy(newScale)
+
+    const newPos = {
+      x: -(mousePointTo.x / newScale) * newScale,
+      y: -(mousePointTo.y / newScale) * newScale,
+    }
+
+    this.props.updateStagePosition(newPos)
+  }
+
+  zoomIn() {
+    const scaleBy = 1.1
+
+    const mousePointTo = {
+      x:
+        this.props.cursorPosition.x /
+        this.props.currentStageScale /
+        this.props.currentStageScale,
+      y:
+        this.props.cursorPosition.y /
+        this.props.currentStageScale /
+        this.props.currentStageScale,
+    }
+
+    let newScale = this.props.currentStageScale * scaleBy
+
+    this.props.scaleStageBy(newScale)
+
+    const newPos = {
+      x: -(mousePointTo.x / newScale) * newScale,
+      y: -(mousePointTo.y / newScale) * newScale,
+    }
+
+    this.props.updateStagePosition(newPos)
+  }
+
+  render() {
+    return (
+      <Presentation
+        {...this.props}
+        zoomIn={this.zoomIn}
+        zoomOut={this.zoomOut}
+      />
+    )
+  }
+}
+
+export default Mechanism

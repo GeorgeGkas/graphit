@@ -24,8 +24,6 @@ import blue from '@material-ui/core/colors/blue'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Tooltip from '@material-ui/core/Tooltip'
-import zoomIn from './services/zoomIn'
-import zoomOut from './services/zoomOut'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -54,7 +52,6 @@ const Presentation = ({
   grid,
   changeEditorActionType,
   editorActionType,
-  currentStageScale,
   startPlaying,
   stopPlaying,
   nextIteration,
@@ -63,9 +60,8 @@ const Presentation = ({
   previousIteration,
   nextAlgorithmEntryExist,
   previousAlgorithmEntryExist,
-  cursorPosition,
-  scaleStageBy,
-  updateStagePosition,
+  zoomIn,
+  zoomOut,
 }) => {
   const classes = useStyles()
 
@@ -112,17 +108,7 @@ const Presentation = ({
 
           <Tooltip title="Zoom in">
             <div>
-              <IconButton
-                className={classes.button}
-                onClick={() =>
-                  zoomIn({
-                    currentStageScale,
-                    cursorPosition,
-                    scaleStageBy,
-                    updateStagePosition,
-                  })
-                }
-              >
+              <IconButton className={classes.button} onClick={zoomIn}>
                 <ZoomInIcon />
               </IconButton>
             </div>
@@ -130,17 +116,7 @@ const Presentation = ({
 
           <Tooltip title="Zoom out">
             <div>
-              <IconButton
-                className={classes.button}
-                onClick={() =>
-                  zoomOut({
-                    currentStageScale,
-                    cursorPosition,
-                    scaleStageBy,
-                    updateStagePosition,
-                  })
-                }
-              >
+              <IconButton className={classes.button} onClick={zoomOut}>
                 <ZoomOutIcon />
               </IconButton>
             </div>
