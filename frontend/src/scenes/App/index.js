@@ -27,26 +27,26 @@ import Overlay from '../../atoms/Overlay'
 import PropertiesEditor from './organisms/PropertiesEditor'
 
 /**
- * Connect App component to Redux.
+ * Connect component to Redux.
  */
 const mapStateToProps = state => ({
   editorActionType: state.editor.present.editorActionType,
   isMultiSelect: state.editor.isMultiSelect,
-  selectedArrow: state.editor.present.selectedArrow,
-  selectedNode: state.editor.present.selectedNode,
+  selectedEdges: state.editor.present.selectedArrow,
+  selectedNodes: state.editor.present.selectedNode,
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(editorOperations, dispatch)
 
 /**
- * App component.
+ * Component.
  */
 const App = ({
   editorActionType,
   isMultiSelect,
-  selectedArrow,
-  selectedNode,
+  selectedEdges,
+  selectedNodes,
 }) => {
   const [grid, makeGridVisible] = useState(false)
   const [dashboard, makeDashboardVisible] = useState(false)
@@ -57,7 +57,7 @@ const App = ({
   const shouldRenderPropertiesEditor =
     editorActionType === 'select' &&
     !isMultiSelect &&
-    (selectedArrow.length ^ selectedNode.length) === 1
+    (selectedEdges.length ^ selectedNodes.length) === 1
 
   const showAlgorithmPanel = editorActionType === 'isPlaying'
 
