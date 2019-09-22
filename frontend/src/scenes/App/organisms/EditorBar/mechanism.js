@@ -15,6 +15,8 @@ const mapStateToProps = state => ({
     state.algorithm.steps[state.algorithm.currentIndex - 1] !== undefined,
   isSignIn: state.user.isSignIn,
   selectedProjectId: state.user.selectedProjectId,
+  currentStageScale: state.editor.present.scaleStage,
+  cursorPosition: state.editor.present.cursor,
 })
 
 const mapDispatchToProps = dispatch =>

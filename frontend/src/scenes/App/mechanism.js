@@ -35,7 +35,6 @@ class App extends React.Component {
 
     this.toggleGrid = this.toggleGrid.bind(this)
     this.toggleDashboard = this.toggleDashboard.bind(this)
-    this.zoom = this.zoom.bind(this)
     this.saveInCloud = this.saveInCloud.bind(this)
     this.updateInCloud = this.updateInCloud.bind(this)
     this.open = this.open.bind(this)
@@ -167,27 +166,6 @@ class App extends React.Component {
     for (const arrow of this.props.selectedArrow) {
       this.props.deleteArrow(arrow)
     }
-  }
-
-  zoom(type) {
-    const scaleBy = 1.1
-    const oldScale = this.props.scaleStage
-
-    const mousePointTo = {
-      x: this.props.cursor.x / oldScale / oldScale,
-      y: this.props.cursor.y / oldScale / oldScale,
-    }
-
-    let newScale = type === 'zoomIn' ? oldScale * scaleBy : oldScale / scaleBy
-
-    this.props.scaleStageBy(newScale)
-
-    const newPos = {
-      x: -(mousePointTo.x / newScale) * newScale,
-      y: -(mousePointTo.y / newScale) * newScale,
-    }
-
-    this.props.updateStagePosition(newPos)
   }
 
   render() {

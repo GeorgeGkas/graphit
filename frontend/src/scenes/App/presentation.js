@@ -11,7 +11,6 @@ import PropertiesEditor from './organisms/PropertiesEditor'
 const Presentation = ({
   grid,
   toggleGrid,
-  zoom,
   open,
   isMultiSelect,
   selectedNode,
@@ -37,7 +36,7 @@ const Presentation = ({
         updateInCloud={updateInCloud}
         toggleDashboard={toggleDashboard}
       />
-      <EditorBar toggleGrid={toggleGrid} grid={grid} zoom={zoom} />
+      <EditorBar toggleGrid={toggleGrid} grid={grid} />
     </div>
 
     <Editor grid={grid} />
