@@ -15,7 +15,6 @@ const Presentation = ({
   futureExist,
   initEditorHistory,
   selectProject,
-  open,
   isSignIn,
   selectedProjectId,
   fileDropdownMenu,
@@ -48,7 +47,7 @@ const Presentation = ({
         <MenuItem
           button
           disabled={editorActionType === 'isPlaying'}
-          onClick={open}
+          onClick={() => document.getElementById('load_state').click()}
         >
           <ListItem component="div">
             <ListItemText primary="Open" />

@@ -11,7 +11,6 @@ import PropertiesEditor from './organisms/PropertiesEditor'
 const Presentation = ({
   grid,
   toggleGrid,
-  open,
   isMultiSelect,
   selectedNode,
   editorActionType,
@@ -28,7 +27,7 @@ const Presentation = ({
     ) : null}
 
     <div style={{ position: 'relative' }}>
-      <AppBar open={open} toggleDashboard={toggleDashboard} />
+      <AppBar toggleDashboard={toggleDashboard} />
       <EditorBar toggleGrid={toggleGrid} grid={grid} />
     </div>
 

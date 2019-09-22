@@ -35,15 +35,10 @@ class App extends React.Component {
 
     this.toggleGrid = this.toggleGrid.bind(this)
     this.toggleDashboard = this.toggleDashboard.bind(this)
-    this.open = this.open.bind(this)
     this.state = {
       grid: false,
       dashboard: false,
     }
-  }
-
-  open() {
-    document.getElementById('load_state').click()
   }
 
   toggleDashboard() {
@@ -91,7 +86,6 @@ class App extends React.Component {
       <Presentation
         grid={this.state.grid}
         toggleGrid={this.toggleGrid}
-        open={this.open}
         isMultiSelect={this.props.isMultiSelect}
         selectedNode={this.props.selectedNode}
         nodes={this.props.nodes}
