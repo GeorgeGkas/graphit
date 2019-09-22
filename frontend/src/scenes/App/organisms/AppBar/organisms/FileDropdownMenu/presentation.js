@@ -6,6 +6,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import localDownload from './services/localDownload'
+import cloudUpdate from './services/cloudUpdate'
 
 const Presentation = ({
   editorActionType,
@@ -16,7 +17,6 @@ const Presentation = ({
   open,
   isSignIn,
   selectedProjectId,
-  updateInCloud,
   saveInCloud,
   fileDropdownMenu,
   graph,
@@ -60,7 +60,9 @@ const Presentation = ({
             button
             disabled={editorActionType === 'isPlaying'}
             onClick={() =>
-              selectedProjectId ? updateInCloud() : saveInCloud()
+              selectedProjectId
+                ? cloudUpdate(selectedProjectId, graph)
+                : saveInCloud()
             }
           >
             <ListItem component="div">

@@ -19,7 +19,6 @@ const Presentation = ({
   dashboard,
   toggleDashboard,
   saveInCloud,
-  updateInCloud,
 }) => (
   <React.Fragment>
     {dashboard ? (
@@ -33,7 +32,6 @@ const Presentation = ({
       <AppBar
         open={open}
         saveInCloud={saveInCloud}
-        updateInCloud={updateInCloud}
         toggleDashboard={toggleDashboard}
       />
       <EditorBar toggleGrid={toggleGrid} grid={grid} />

@@ -36,7 +36,6 @@ class App extends React.Component {
     this.toggleGrid = this.toggleGrid.bind(this)
     this.toggleDashboard = this.toggleDashboard.bind(this)
     this.saveInCloud = this.saveInCloud.bind(this)
-    this.updateInCloud = this.updateInCloud.bind(this)
     this.open = this.open.bind(this)
     this.state = {
       grid: false,
@@ -71,42 +70,6 @@ class App extends React.Component {
         }
       })
     }
-  }
-
-  updateInCloud() {
-    const bodyBlob = new Blob(
-      [
-        JSON.stringify(
-          {
-            content: JSON.stringify(this.props.present),
-          },
-          null,
-          2,
-        ),
-      ],
-      {
-        type: 'application/json',
-      },
-    )
-
-    const requestOptions = {
-      method: 'PATCH',
-      body: bodyBlob,
-      mode: 'cors',
-      cache: 'default',
-      credentials: 'same-origin',
-    }
-
-    fetch(
-      `/api/v1/projects/${this.props.selectedProjectId}`,
-      requestOptions,
-    ).then(res => {
-      if (res.ok) {
-        toast.success('Project updated successfully')
-      } else {
-        toast.error('Could not update project')
-      }
-    })
   }
 
   saveInCloud() {
@@ -173,7 +136,6 @@ class App extends React.Component {
       <Presentation
         grid={this.state.grid}
         toggleGrid={this.toggleGrid}
-        zoom={this.zoom}
         open={this.open}
         isMultiSelect={this.props.isMultiSelect}
         selectedNode={this.props.selectedNode}
@@ -186,7 +148,6 @@ class App extends React.Component {
         dashboard={this.state.dashboard}
         toggleDashboard={this.toggleDashboard}
         saveInCloud={this.saveInCloud}
-        updateInCloud={this.updateInCloud}
       />
     )
   }
