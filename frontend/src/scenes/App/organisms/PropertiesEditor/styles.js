@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import buildEdge from '../Editor/organisms/EdgeNotLoop/services/buildEdge'
 
 const getEdgeCenter = props => {
   let secondExist = props.edges.some(
@@ -7,45 +8,17 @@ const getEdgeCenter = props => {
       arr.to.id === props.selectedEdge.from.id,
   )
 
-  const dx = props.selectedEdge.to.x - props.selectedEdge.from.x
-  const dy = props.selectedEdge.to.y - props.selectedEdge.from.y
-  let angle = Math.atan2(-dy, dx)
+  let points = buildEdge({
+    edge: props.selectedEdge,
+    secondExist,
+    nodeRadius: 25,
+    curvePower: 20,
+  })
 
-  const radius = 25
-  const curvePower = 20
-
-  const arrowStart = {
-    x:
-      props.selectedEdge.from.x +
-      -radius * Math.cos(angle + Math.PI) +
-      (secondExist ? 5 * Math.cos(angle + Math.PI / 2) : 0),
-    y:
-      props.selectedEdge.from.y +
-      radius * Math.sin(angle + Math.PI) +
-      (secondExist ? 5 * Math.sin(angle - Math.PI / 2) : 0),
+  return {
+    x: points[2],
+    y: points[3],
   }
-
-  const arrowEnd = {
-    x:
-      props.selectedEdge.to.x +
-      -radius * Math.cos(angle) +
-      (secondExist ? 5 * Math.cos(angle + Math.PI / 2) : 0),
-    y:
-      props.selectedEdge.to.y +
-      radius * Math.sin(angle) +
-      (secondExist ? 5 * Math.sin(angle - Math.PI / 2) : 0),
-  }
-
-  const arrowCenter = {
-    x:
-      (arrowStart.x + arrowEnd.x) / 2 +
-      (secondExist ? curvePower * Math.cos(angle + Math.PI / 2) : 0),
-    y:
-      (arrowStart.y + arrowEnd.y) / 2 +
-      (secondExist ? curvePower * Math.sin(angle - Math.PI / 2) : 0),
-  }
-
-  return arrowCenter
 }
 
 export const Wrapper = styled.div`
