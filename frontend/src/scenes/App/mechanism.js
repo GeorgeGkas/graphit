@@ -3,27 +3,17 @@ import Presentation from './presentation'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { operations as editorOperations } from './organisms/Editor/duck'
-import { operations as profileOperations } from './organisms/AppBar/duck'
 import { toast } from 'react-toastify'
 
 const mapStateToProps = state => ({
   selectedNode: state.editor.present.selectedNode,
   selectedArrow: state.editor.present.selectedArrow,
-  nodes: state.editor.present.nodes,
-  arrows: state.editor.present.connected,
   editorActionType: state.editor.present.editorActionType,
-  scaleStage: state.editor.present.scaleStage,
-  cursor: state.editor.present.cursor,
-  pastExist: state.editor.past.length,
-  futureExist: state.editor.future.length,
-  present: state.editor.present,
   isMultiSelect: state.editor.isMultiSelect,
-  selectedProjectId: state.user.selectedProjectId,
-  isSignIn: state.user.isSignIn,
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ ...editorOperations, ...profileOperations }, dispatch)
+  bindActionCreators(editorOperations, dispatch)
 
 @connect(
   mapStateToProps,
@@ -70,17 +60,6 @@ class App extends React.Component {
     this.setState({ grid: !this.state.grid })
   }
 
-  deleteShape() {
-    this.props.deleteShape()
-
-    for (const node of this.props.selectedNode) {
-      this.props.deleteNode(node)
-    }
-    for (const arrow of this.props.selectedArrow) {
-      this.props.deleteArrow(arrow)
-    }
-  }
-
   render() {
     return (
       <Presentation
@@ -88,12 +67,8 @@ class App extends React.Component {
         toggleGrid={this.toggleGrid}
         isMultiSelect={this.props.isMultiSelect}
         selectedNode={this.props.selectedNode}
-        nodes={this.props.nodes}
-        updateNodeName={this.props.updateNodeName}
         editorActionType={this.props.editorActionType}
         selectedArrow={this.props.selectedArrow}
-        arrows={this.props.arrows}
-        updateArrowWeight={this.props.updateArrowWeight}
         dashboard={this.state.dashboard}
         toggleDashboard={this.toggleDashboard}
       />
