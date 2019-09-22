@@ -22,10 +22,9 @@ import {
 } from 'material-ui-popup-state/hooks'
 import Fade from '@material-ui/core/Fade'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip'
+import FileDropdownMenu from './organisms/FileDropdownMenu'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,6 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
   buttonApp: {
     marginRight: theme.spacing(1),
+    borderRadius: 0,
   },
   grow: {
     flexGrow: 1,
@@ -54,9 +54,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(1),
     },
-  },
-  fileMenu: {
-    borderRadius: 0,
   },
   menuItemKey: {
     paddingTop: '3px',
@@ -82,15 +79,12 @@ const useStyles = makeStyles(theme => ({
 const Presentation = ({
   pastExist,
   futureExist,
-  editorActionType,
   initEditorHistory,
   save: saveHistory,
   loadState,
   open,
   isSignIn,
   saveInCloud,
-  selectedProjectId,
-  selectProject,
   updateInCloud,
   signIn,
   profile,
@@ -163,71 +157,14 @@ const Presentation = ({
             style={{ zIndex: 9999 }}
           >
             {({ TransitionProps }) => (
-              <Fade
-                {...TransitionProps}
-                timeout={360}
-                className={classes.fileMenu}
-              >
-                <Paper id="menu-list-grow">
-                  <ClickAwayListener onClickAway={fileDropdownMenu.close}>
-                    <MenuList>
-                      <MenuItem
-                        button
-                        disabled={editorActionType === 'isPlaying'}
-                        onClick={() => {
-                          if (
-                            (!pastExist && !futureExist) ||
-                            // eslint-disable-next-line no-restricted-globals
-                            confirm(
-                              'Are you sure you want to quit as there are unsaved documents?',
-                            )
-                          ) {
-                            initEditorHistory()
-                            selectProject('')
-                          }
-                        }}
-                      >
-                        <ListItem component="div">
-                          <ListItemText primary="New" />
-                        </ListItem>
-                      </MenuItem>
-
-                      <MenuItem
-                        button
-                        disabled={editorActionType === 'isPlaying'}
-                        onClick={open}
-                      >
-                        <ListItem component="div">
-                          <ListItemText primary="Open" />
-                        </ListItem>
-                      </MenuItem>
-
-                      {isSignIn ? (
-                        <MenuItem
-                          button
-                          disabled={editorActionType === 'isPlaying'}
-                          onClick={() =>
-                            selectedProjectId ? updateInCloud() : saveInCloud()
-                          }
-                        >
-                          <ListItem component="div">
-                            <ListItemText primary="Save" />
-                          </ListItem>
-                        </MenuItem>
-                      ) : null}
-
-                      <MenuItem
-                        button
-                        disabled={editorActionType === 'isPlaying'}
-                        onClick={saveHistory}
-                      >
-                        <ListItem component="div">
-                          <ListItemText primary="Download" />
-                        </ListItem>
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
+              <Fade {...TransitionProps} timeout={360}>
+                <FileDropdownMenu
+                  open={open}
+                  updateInCloud={updateInCloud}
+                  saveInCloud={saveInCloud}
+                  saveHistory={saveHistory}
+                  fileDropdownMenu={fileDropdownMenu}
+                />
               </Fade>
             )}
           </Popper>
