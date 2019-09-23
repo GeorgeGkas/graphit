@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import GlobalStyle from './styles.global'
 import App from './scenes/App'
 import * as serviceWorker from './services/serviceWorker'
-import { Normalize } from 'styled-normalize'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import { Provider } from 'react-redux'
 import configureReduxStore from './services/configureStore'
 
@@ -11,7 +11,7 @@ const store = configureReduxStore()
 
 ReactDOM.render(
   <Provider store={store}>
-    <Normalize />
+    <CssBaseline />
     <GlobalStyle />
     <App />
   </Provider>,

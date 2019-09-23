@@ -18,9 +18,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "redux-undo": "file:third-party/redux-undo",
-    "reflexbox": "^4.0.5",
-    "styled-components": "^5.0.0-beta.6",
-    "styled-normalize": "^8.0.6"
+    "styled-components": "^5.0.0-beta.6"
   },
   "scripts": {
     "preinstall": "./third-party/install.sh",
