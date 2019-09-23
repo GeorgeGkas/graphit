@@ -4,22 +4,15 @@ const CloseButton = styled.button`
   background: 0;
   border: 0;
   cursor: pointer;
-  opacity: 0.5;
   float: right;
   height: 100%;
-  width: 100%;
-  padding: 0;
   margin: 0;
+  opacity: 0.5;
+  padding: 0;
+  width: 100%;
 
   &:hover {
     background: #ddd;
-  }
-
-  &,
-  &:hover,
-  &:active,
-  &:focus {
-    outline: 0;
   }
 `
 
