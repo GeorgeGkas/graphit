@@ -101,7 +101,7 @@ const EdgeEditor = ({
       }}
       TransitionComponent={Transition}
     >
-      <DialogTitle id="form-dialog-title">Edit Node</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Edge</DialogTitle>
       <DialogContent>
         <form
           className={classes.form}
