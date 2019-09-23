@@ -89,14 +89,14 @@ const mapDispatchToProps = dispatch =>
  */
 const EditorBar = ({
   changeEditorActionType,
-  cursorPosition,
   currentStageScale,
+  cursorPosition,
   editorActionType,
   firstIteration,
   futureExist,
   grid,
-  nextAlgorithmEntryExist,
   lastIteration,
+  nextAlgorithmEntryExist,
   nextIteration,
   pastExist,
   previousAlgorithmEntryExist,
@@ -154,12 +154,12 @@ const EditorBar = ({
   return (
     <React.Fragment>
       <ToastContainer
-        autoClose={4000}
-        className={classes.notificationContainer}
-        closeButton={false}
         closeOnClick
         draggable
         hideProgressBar
+        autoClose={4000}
+        className={classes.notificationContainer}
+        closeButton={false}
         pauseOnHover={false}
         position={toast.POSITION.TOP_RIGHT}
       />
@@ -291,11 +291,11 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={classes.button}
-                onClick={() => firstIteration()}
                 disabled={
                   editorActionType !== 'isPlaying' ||
                   !previousAlgorithmEntryExist
                 }
+                onClick={() => firstIteration()}
               >
                 <SkipPreviousIcon />
               </IconButton>
@@ -306,11 +306,11 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={classes.button}
-                onClick={() => previousIteration()}
                 disabled={
                   editorActionType !== 'isPlaying' ||
                   !previousAlgorithmEntryExist
                 }
+                onClick={() => previousIteration()}
               >
                 <ChevronLeftIcon />
               </IconButton>
@@ -320,10 +320,10 @@ const EditorBar = ({
           <Tooltip title="Next step">
             <div>
               <IconButton
-                onClick={() => nextIteration()}
                 disabled={
                   editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
                 }
+                onClick={() => nextIteration()}
               >
                 <ChevronRightIcon />
               </IconButton>
@@ -334,10 +334,10 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={classes.button}
-                onClick={() => lastIteration()}
                 disabled={
                   editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
                 }
+                onClick={() => lastIteration()}
               >
                 <SkipNextIcon />
               </IconButton>

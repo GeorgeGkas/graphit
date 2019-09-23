@@ -92,17 +92,17 @@ const PropertiesEditor = ({
 
   return (
     <Wrapper
-      edges={Object.values(edges)}
       currentStageScale={currentStageScale}
+      edges={Object.values(edges)}
       selectedEdge={selectedEdge}
       selectedNode={selectedNode}
     >
       <Button
         className={classes.editButton}
         color="secondary"
-        onClick={toggleEditorDialog}
         size="small"
         variant="contained"
+        onClick={toggleEditorDialog}
       >
         <EditIcon className={classes.buttonIcon} />
         Edit
@@ -111,9 +111,9 @@ const PropertiesEditor = ({
       <IconButton
         className={classes.deleteButton}
         color="secondary"
-        onClick={deleteShapes}
         size="small"
         variant="contained"
+        onClick={deleteShapes}
       >
         <DeleteIcon />
       </IconButton>

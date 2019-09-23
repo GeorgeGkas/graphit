@@ -76,7 +76,7 @@ const App = ({
 
       <div style={{ position: 'relative' }}>
         <AppBar toggleDashboard={toggleDashboard} />
-        <EditorBar toggleGrid={toggleGrid} grid={grid} />
+        <EditorBar grid={grid} toggleGrid={toggleGrid} />
       </div>
 
       <Editor grid={grid} />

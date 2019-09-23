@@ -29,7 +29,39 @@
     "cm": "git-cz"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "plugins": [
+      "sort-destructure-keys",
+      "sort-exports"
+    ],
+    "rules": {
+      "sort-exports/sort-exports": [
+        "error",
+        {
+          "sortDir": "asc",
+          "ignoreCase": false
+        }
+      ],
+      "sort-destructure-keys/sort-destructure-keys": [
+        "error",
+        {
+          "caseSensitive": true
+        }
+      ],
+      "sort-keys": "error",
+      "import/group-exports": "error",
+      "react/jsx-sort-props": [
+        "error",
+        {
+          "callbacksLast": true,
+          "shorthandFirst": true,
+          "shorthandLast": false,
+          "ignoreCase": false,
+          "noSortAlphabetically": false,
+          "reservedFirst": true
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -45,6 +77,8 @@
   },
   "devDependencies": {
     "cross-env": "^6.0.0",
+    "eslint-plugin-sort-destructure-keys": "^1.3.3",
+    "eslint-plugin-sort-exports": "^0.1.1",
     "react-app-rewired": "^2.1.3"
   }
 }

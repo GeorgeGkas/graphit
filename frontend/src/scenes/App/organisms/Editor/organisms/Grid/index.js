@@ -12,7 +12,7 @@ import editorComponentsTheme from '../../../../../../themes/editorComponents.the
 /**
  * Build X axis.
  */
-const buildX = ({ scaleStage, padding, stage }) => {
+const buildX = ({ padding, scaleStage, stage }) => {
   const gridX = []
 
   for (let i = 0; i < (window.innerWidth * (1 / scaleStage)) / padding; ++i) {
@@ -43,7 +43,7 @@ const buildX = ({ scaleStage, padding, stage }) => {
 /**
  * Build Y axis.
  */
-const buildY = ({ scaleStage, padding, stage }) => {
+const buildY = ({ padding, scaleStage, stage }) => {
   const gridY = []
 
   for (let i = 0; i < (window.innerHeight * (1 / scaleStage)) / padding; ++i) {
@@ -74,19 +74,20 @@ const buildY = ({ scaleStage, padding, stage }) => {
 /**
  * Component.
  */
-const Grid = ({ stage, scaleStage }) => {
+const Grid = ({ scaleStage, stage }) => {
   const padding = 35
 
   const gridX = buildX({
-    stage,
     padding,
+
     scaleStage,
+    stage,
   })
 
   const gridY = buildY({
-    stage,
     padding,
     scaleStage,
+    stage,
   })
 
   const grid = [...gridX, ...gridY]

@@ -4,9 +4,10 @@ export const initialState = {
   isSignIn: false,
   profile: {
     email: '',
-    name: '',
-    imageUrl: '',
     id: '',
+    imageUrl: '',
+
+    name: '',
   },
   selectedProjectId: null,
 }

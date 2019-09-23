@@ -19,24 +19,24 @@ import buildEdge from './services/buildEdge'
  * Component.
  */
 const EdgeNotLoop = ({
+  algorithm_current_step,
   arrow,
-  secondExist,
-  nodeRadius,
   curvePower,
-  selectArrow,
-  unselectArrow,
   editorActionType,
   isMultiSelect,
-  unselectNode,
+  nodeRadius,
+  secondExist,
+  selectArrow,
   selectedArrowId,
   selectedNodeId,
-  algorithm_current_step,
+  unselectArrow,
+  unselectNode,
 }) => {
   let points = buildEdge({
+    curvePower,
     edge: arrow,
     nodeRadius,
     secondExist,
-    curvePower,
   })
 
   return (
@@ -67,31 +67,19 @@ const EdgeNotLoop = ({
       {selectedArrowId.includes(arrow.id) ? (
         <Arrow
           key={arrow.id + '_selected'}
-          tension={0.8}
-          points={points}
-          stroke={editorComponentsTheme.edge.selected.color}
           fill={editorComponentsTheme.edge.selected.color}
-          strokeWidth={5}
+          opacity={0.7}
           pointerLength={15}
           pointerWidth={10}
-          opacity={0.7}
+          points={points}
+          stroke={editorComponentsTheme.edge.selected.color}
+          strokeWidth={5}
+          tension={0.8}
         />
       ) : null}
 
       <Arrow
-        id={arrow.id}
         key={arrow.id}
-        tension={0.8}
-        points={points}
-        stroke={
-          algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
-            ? algorithmComponentsTheme.edge.highlighted.color
-            : algorithm_current_step.selected_edges.some(id => id === arrow.id)
-            ? algorithmComponentsTheme.edge.selected.color
-            : editorActionType === 'isPlaying'
-            ? algorithmComponentsTheme.edge.neutral.color
-            : editorComponentsTheme.edge.neutral.color
-        }
         fill={
           algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
             ? algorithmComponentsTheme.edge.highlighted.color
@@ -102,46 +90,58 @@ const EdgeNotLoop = ({
             : editorComponentsTheme.edge.neutral.color
         }
         hitStrokeWidth={25}
+        id={arrow.id}
         pointerLength={15}
         pointerWidth={10}
+        points={points}
+        stroke={
+          algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
+            ? algorithmComponentsTheme.edge.highlighted.color
+            : algorithm_current_step.selected_edges.some(id => id === arrow.id)
+            ? algorithmComponentsTheme.edge.selected.color
+            : editorActionType === 'isPlaying'
+            ? algorithmComponentsTheme.edge.neutral.color
+            : editorComponentsTheme.edge.neutral.color
+        }
         strokeWidth={1}
-        onMouseOver={e => {
-          if (editorActionType === 'select') {
-            e.target.stroke(editorComponentsTheme.edge.hovered.color)
-            e.target.fill(editorComponentsTheme.edge.hovered.color)
-          }
-        }}
+        tension={0.8}
         onMouseOut={e => {
           if (editorActionType === 'select') {
             e.target.stroke(editorComponentsTheme.edge.neutral.color)
             e.target.fill(editorComponentsTheme.edge.neutral.color)
           }
         }}
+        onMouseOver={e => {
+          if (editorActionType === 'select') {
+            e.target.stroke(editorComponentsTheme.edge.hovered.color)
+            e.target.fill(editorComponentsTheme.edge.hovered.color)
+          }
+        }}
       />
 
       <Text
+        align="center"
+        fontFamily="Roboto"
+        fontSize={15}
+        height={2 * 24}
         stroke={editorComponentsTheme.stage.fill.color}
         strokeWidth={7}
+        text={arrow.weight}
+        verticalAlign="middle"
+        width={2 * 24}
         x={points[2] - 24}
         y={points[3] - 24}
-        width={2 * 24}
-        height={2 * 24}
-        align="center"
-        verticalAlign="middle"
-        fontSize={15}
-        text={arrow.weight}
-        fontFamily="Roboto"
       />
       <Text
+        align="center"
+        fontFamily="Roboto"
+        fontSize={15}
+        height={2 * 24}
+        text={arrow.weight}
+        verticalAlign="middle"
+        width={2 * 24}
         x={points[2] - 24}
         y={points[3] - 24}
-        width={2 * 24}
-        height={2 * 24}
-        align="center"
-        verticalAlign="middle"
-        fontSize={15}
-        text={arrow.weight}
-        fontFamily="Roboto"
       />
     </Group>
   )

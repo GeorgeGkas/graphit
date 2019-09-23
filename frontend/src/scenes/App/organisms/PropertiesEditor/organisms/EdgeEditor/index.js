@@ -55,7 +55,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
  * Transition component, used when toggle NodeEditor.
  */
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction="up" ref={ref} {...props} />
+  return <Fade ref={ref} direction="up" {...props} />
 })
 
 /**
@@ -92,49 +92,49 @@ const EdgeEditor = ({
   return (
     <Dialog
       fullWidth
-      open={editorDialogVisible}
-      onClose={handleClose}
       PaperProps={{
         style: {
           borderRadius: 0,
         },
       }}
       TransitionComponent={Transition}
+      open={editorDialogVisible}
+      onClose={handleClose}
     >
       <DialogTitle id="form-dialog-title">Edit Edge</DialogTitle>
       <DialogContent>
         <form
-          className={classes.form}
           noValidate
+          className={classes.form}
           onSubmit={e => e.preventDefault()}
         >
           <FormControl className={classes.formControl}>
             <TextField
               autoFocus
+              fullWidth
               defaultValue={selectedArrow.weight}
               error={!edgeWeight.valid}
-              fullWidth
               helperText="Use any negative or positive integer."
               id="edge_weight_input"
               label="Weight"
               margin="dense"
+              type="text"
               onChange={validateEdgeWeight}
               onFocus={() => {
                 document.getElementById('edge_weight_input').select()
               }}
-              type="text"
             />
           </FormControl>
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button color="primary" onClick={handleClose}>
           Cancel
         </Button>
         <Button
+          color="primary"
           disabled={!edgeWeight.valid}
           onClick={submitForm}
-          color="primary"
         >
           Apply Changes
         </Button>

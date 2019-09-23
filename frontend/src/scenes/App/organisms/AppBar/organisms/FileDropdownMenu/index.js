@@ -16,13 +16,13 @@ import cloudSave from './services/cloudSave'
 import Fade from '@material-ui/core/Fade'
 
 const mapStateToProps = state => ({
-  pastExist: state.editor.past.length,
-  futureExist: state.editor.future.length,
   editorActionType: state.editor.present.editorActionType,
-  isSignIn: state.user.isSignIn,
-  selectedProjectId: state.user.selectedProjectId,
-  profile: state.user.profile,
+  futureExist: state.editor.future.length,
   graph: state.editor.present,
+  isSignIn: state.user.isSignIn,
+  pastExist: state.editor.past.length,
+  profile: state.user.profile,
+  selectedProjectId: state.user.selectedProjectId,
 })
 
 const mapDispatchToProps = dispatch =>
@@ -32,19 +32,19 @@ const mapDispatchToProps = dispatch =>
   )
 
 const FileDropdownMenu = ({
-  editorActionType,
-  pastExist,
-  futureExist,
-  initEditorHistory,
-  selectProject,
-  isSignIn,
-  selectedProjectId,
-  fileDropdownMenu,
-  graph,
   TransitionProps,
+  editorActionType,
+  fileDropdownMenu,
+  futureExist,
+  graph,
+  initEditorHistory,
+  isSignIn,
+  pastExist,
+  selectProject,
+  selectedProjectId,
 }) => (
   <Fade {...TransitionProps} timeout={360}>
-    <Paper id="menu-list-grow" square>
+    <Paper square id="menu-list-grow">
       <ClickAwayListener onClickAway={fileDropdownMenu.close}>
         <MenuList>
           <MenuItem

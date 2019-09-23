@@ -9,10 +9,10 @@ const getEdgeCenter = props => {
   )
 
   let points = buildEdge({
-    edge: props.selectedEdge,
-    secondExist,
-    nodeRadius: 25,
     curvePower: 20,
+    edge: props.selectedEdge,
+    nodeRadius: 25,
+    secondExist,
   })
 
   return {

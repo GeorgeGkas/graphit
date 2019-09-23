@@ -1,8 +1,8 @@
 import * as types from './types'
 
 const startPlaying = steps => ({
-  type: types.START_PLAYING,
   payload: steps,
+  type: types.START_PLAYING,
 })
 
 const stopPlaying = () => ({
@@ -26,10 +26,10 @@ const previousIteration = () => ({
 })
 
 export {
+  firstIteration,
+  lastIteration,
+  nextIteration,
+  previousIteration,
   startPlaying,
   stopPlaying,
-  nextIteration,
-  lastIteration,
-  firstIteration,
-  previousIteration,
 }

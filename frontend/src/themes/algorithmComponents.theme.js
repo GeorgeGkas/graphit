@@ -3,28 +3,28 @@
  * component when algorithm mode is active (ie. running an algorithm).
  */
 
+import cyan from '@material-ui/core/colors/cyan'
 import grey from '@material-ui/core/colors/grey'
 import pink from '@material-ui/core/colors/pink'
-import cyan from '@material-ui/core/colors/cyan'
 
 export default {
-  node: {
-    neutral: {
-      color: grey['400'],
-    },
+  edge: {
     highlighted: {
       color: cyan['400'],
+    },
+    neutral: {
+      color: grey['400'],
     },
     selected: {
       color: pink['400'],
     },
   },
-  edge: {
-    neutral: {
-      color: grey['400'],
-    },
+  node: {
     highlighted: {
       color: cyan['400'],
+    },
+    neutral: {
+      color: grey['400'],
     },
     selected: {
       color: pink['400'],

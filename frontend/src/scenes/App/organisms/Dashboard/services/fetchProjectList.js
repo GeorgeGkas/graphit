@@ -1,9 +1,9 @@
 export default async function fetchProjectList(profileId) {
   const requestOptions = {
-    method: 'GET',
-    mode: 'cors',
     cache: 'default',
     credentials: 'same-origin',
+    method: 'GET',
+    mode: 'cors',
   }
 
   const response = await fetch(

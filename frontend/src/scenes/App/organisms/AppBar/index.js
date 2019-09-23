@@ -2,9 +2,10 @@
  * Import globals.
  */
 import React from 'react'
-import { GoogleLogout } from 'react-google-login'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { GoogleLogin } from 'react-google-login'
+import { GoogleLogout } from 'react-google-login'
 import {
   usePopupState,
   bindToggle,
@@ -15,23 +16,22 @@ import {
  * Import UI framework modules.
  */
 import blue from '@material-ui/core/colors/blue'
+import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import MUIAppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import { GoogleLogin } from 'react-google-login'
-import IconButton from '@material-ui/core/IconButton'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import DashboardIcon from '@material-ui/icons/DashboardSharp'
-import ShareIcon from '@material-ui/icons/ShareSharp'
+import Fade from '@material-ui/core/Fade'
+import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
+import MUIAppBar from '@material-ui/core/AppBar'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
-import { makeStyles } from '@material-ui/core/styles'
-import Fade from '@material-ui/core/Fade'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import Avatar from '@material-ui/core/Avatar'
+import ShareIcon from '@material-ui/icons/ShareSharp'
+import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 
 /**
  * Import ducks.
@@ -49,52 +49,53 @@ import FileDropdownMenu from './organisms/FileDropdownMenu'
  * Construct component styles.
  */
 const useStyles = makeStyles(theme => ({
-  root: {
-    background: blue['500'],
-    display: 'flex',
+  avatar: {
+    height: 30,
+    margin: 10,
+    width: 30,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+
+  avatarMenu: {
+    borderRadius: 0,
+    marginTop: '-30px',
   },
-  title: {
-    marginRight: theme.spacing(3),
+  avatarMenuButton: {
+    padding: 0,
   },
   button: {
     margin: theme.spacing(1),
   },
-  paper: {
-    marginRight: theme.spacing(2),
-  },
   buttonApp: {
-    marginRight: theme.spacing(1),
     borderRadius: 0,
+    marginRight: theme.spacing(1),
+  },
+  fileInput: {
+    display: 'none',
+    position: 'absolute',
   },
   grow: {
     flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  menuItemKey: {
+    paddingTop: '3px',
+  },
+  paper: {
+    marginRight: theme.spacing(2),
+  },
+  root: {
+    background: blue['500'],
+    display: 'flex',
   },
   signin: {
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(1),
     },
   },
-  menuItemKey: {
-    paddingTop: '3px',
-  },
-  avatar: {
-    margin: 10,
-    width: 30,
-    height: 30,
-  },
-  avatarMenuButton: {
-    padding: 0,
-  },
-  avatarMenu: {
-    borderRadius: 0,
-    marginTop: '-30px',
-  },
-  fileInput: {
-    position: 'absolute',
-    display: 'none',
+  title: {
+    marginRight: theme.spacing(3),
   },
 }))
 
@@ -102,10 +103,11 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  pastExist: state.editor.past.length,
-  futureExist: state.editor.future.length,
   editorActionType: state.editor.present.editorActionType,
+  futureExist: state.editor.future.length,
   isSignIn: state.user.isSignIn,
+  pastExist: state.editor.past.length,
+
   profile: state.user.profile,
 })
 
@@ -119,33 +121,33 @@ const mapDispatchToProps = dispatch =>
  * Component.
  */
 const AppBar = ({
-  pastExist,
   futureExist,
   initEditorHistory,
-  loadState,
   isSignIn,
-  signIn,
+  loadState,
+  pastExist,
   profile,
+  signIn,
   signOut,
   toggleDashboard,
 }) => {
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
-    variant: 'popover',
     popupId: 'fileDropdownMenu',
+    variant: 'popover',
   })
   const profileDropdownMenu = usePopupState({
-    variant: 'popover',
     popupId: 'profileDropdownMenu',
+    variant: 'popover',
   })
 
   return (
     <React.Fragment>
       <input
+        accept=".json"
         className={classes.fileInput}
         id="load_state"
         type="file"
-        accept=".json"
         onChange={e => {
           const reader = new FileReader()
           reader.onloadend = () => {
@@ -164,27 +166,26 @@ const AppBar = ({
         }}
       />
 
-      <MUIAppBar position="static" className={classes.root}>
+      <MUIAppBar className={classes.root} position="static">
         <Toolbar>
           <Tooltip title="Dashboard">
             <IconButton
-              edge="start"
               className={classes.menuButton}
               color="inherit"
-              aria-label="menu"
+              edge="start"
               onClick={toggleDashboard}
             >
               <DashboardIcon />
             </IconButton>
           </Tooltip>
 
-          <Typography variant="h6" className={classes.title}>
+          <Typography className={classes.title} variant="h6">
             Editor
           </Typography>
 
           <Button
-            color="inherit"
             className={classes.buttonApp}
+            color="inherit"
             {...bindToggle(fileDropdownMenu)}
           >
             File
@@ -196,8 +197,8 @@ const AppBar = ({
           >
             {({ TransitionProps }) => (
               <FileDropdownMenu
-                fileDropdownMenu={fileDropdownMenu}
                 TransitionProps={TransitionProps}
+                fileDropdownMenu={fileDropdownMenu}
               />
             )}
           </Popper>
@@ -206,9 +207,8 @@ const AppBar = ({
 
           <Tooltip title="Share your project">
             <IconButton
-              color="inherit"
               className={classes.button}
-              aria-label="add an alarm"
+              color="inherit"
               onClick={() => alert('Not implemented.')}
             >
               <ShareIcon />
@@ -218,14 +218,14 @@ const AppBar = ({
           {isSignIn ? (
             <React.Fragment>
               <IconButton
-                color="inherit"
                 className={classes.avatarMenuButton}
+                color="inherit"
                 {...bindToggle(profileDropdownMenu)}
               >
                 <Avatar
                   alt=""
-                  src={profile.imageUrl}
                   className={classes.avatar}
+                  src={profile.imageUrl}
                 />
               </IconButton>
               <Popper
@@ -236,8 +236,8 @@ const AppBar = ({
                 {({ TransitionProps }) => (
                   <Fade
                     {...TransitionProps}
-                    timeout={360}
                     className={classes.avatarMenu}
+                    timeout={360}
                   >
                     <Paper id="menu-list-grow">
                       <ClickAwayListener
@@ -245,13 +245,8 @@ const AppBar = ({
                       >
                         <MenuList>
                           <GoogleLogout
-                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                             buttonText="Logout"
-                            onLogoutSuccess={() => {
-                              profileDropdownMenu.close()
-                              signOut()
-                            }}
-                            onFailure={console.log}
+                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                             render={renderProps => (
                               <MenuItem
                                 onClick={() => {
@@ -261,6 +256,11 @@ const AppBar = ({
                                 Sign out
                               </MenuItem>
                             )}
+                            onFailure={console.log}
+                            onLogoutSuccess={() => {
+                              profileDropdownMenu.close()
+                              signOut()
+                            }}
                           />
                         </MenuList>
                       </ClickAwayListener>
@@ -271,15 +271,15 @@ const AppBar = ({
             </React.Fragment>
           ) : (
             <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              isSignedIn
               buttonText="Sign In"
-              cookiePolicy={'single_host_origin'}
               className={classes.signin}
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              cookiePolicy={'single_host_origin'}
+              onFailure={console.log}
               onSuccess={googleResponse => {
                 signIn(googleResponse.accessToken)
               }}
-              onFailure={console.log}
-              isSignedIn
             />
           )}
         </Toolbar>

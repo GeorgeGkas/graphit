@@ -3,12 +3,13 @@ import * as actions from './actions'
 import { operations as editorOperations } from '../../Editor/duck'
 
 const {
+  firstIteration: firstIterationAction,
+  lastIteration: lastIterationAction,
+  nextIteration: nextIterationAction,
+
+  previousIteration: previousIterationAction,
   startPlaying: startPlayingAction,
   stopPlaying: stopPlayingAction,
-  nextIteration: nextIterationAction,
-  lastIteration: lastIterationAction,
-  firstIteration: firstIterationAction,
-  previousIteration: previousIterationAction,
 } = actions
 
 function dijkstra(nodes, edges, start) {
@@ -26,14 +27,14 @@ function dijkstra(nodes, edges, start) {
   dist.set(nodes[start].name, 0)
 
   steps.push({
-    selected_nodes: [],
-    selected_edges: [],
-    highlighted_nodes: [],
-    highlighted_edges: [],
     distances: [...dist.entries()].reduce(
       (obj, [node, distance]) => ({ ...obj, [node]: distance }),
       {},
     ),
+    highlighted_edges: [],
+    highlighted_nodes: [],
+    selected_edges: [],
+    selected_nodes: [],
     unvisited: Object.values(nodes)
       .map(node => node.name)
       .reduce((obj, name) => ({ ...obj, [name]: Q.has(name) }), {}),
@@ -86,33 +87,35 @@ function dijkstra(nodes, edges, start) {
     }
 
     steps.push({
+      distances: steps[steps.length - 1].distances,
+      highlighted_edges: [],
+      highlighted_nodes: [],
+      selected_edges: [],
       selected_nodes: [
         Object.values(nodes)
           .filter(node => node.name === u)
           .pop().id,
       ],
-      selected_edges: [],
-      highlighted_nodes: [],
-      highlighted_edges: [],
-      distances: steps[steps.length - 1].distances,
       unvisited: Object.values(nodes)
         .map(node => node.name)
         .reduce((obj, name) => ({ ...obj, [name]: Q.has(name) }), {}),
     })
 
     steps.push({
+      distances: [...dist.entries()].reduce(
+        (obj, [node, distance]) => ({ ...obj, [node]: distance }),
+        {},
+      ),
+      highlighted_edges,
+      highlighted_nodes,
+      selected_edges: [],
+
       selected_nodes: [
         Object.values(nodes)
           .filter(node => node.name === u)
           .pop().id,
       ],
-      selected_edges: [],
-      highlighted_nodes,
-      highlighted_edges,
-      distances: [...dist.entries()].reduce(
-        (obj, [node, distance]) => ({ ...obj, [node]: distance }),
-        {},
-      ),
+
       unvisited: Object.values(nodes)
         .map(node => node.name)
         .reduce((obj, name) => ({ ...obj, [name]: Q.has(name) }), {}),
@@ -120,7 +123,13 @@ function dijkstra(nodes, edges, start) {
   }
 
   steps.push({
-    selected_nodes: Object.values(nodes).map(node => node.id),
+    distances: [...dist.entries()].reduce(
+      (obj, [node, distance]) => ({ ...obj, [node]: distance }),
+      {},
+    ),
+    highlighted_edges: [],
+    highlighted_nodes: [],
+
     selected_edges: [...prev.entries()]
       .filter(([, from_name]) => from_name !== null)
       .map(
@@ -139,12 +148,8 @@ function dijkstra(nodes, edges, start) {
             )
             .pop().id,
       ),
-    highlighted_nodes: [],
-    highlighted_edges: [],
-    distances: [...dist.entries()].reduce(
-      (obj, [node, distance]) => ({ ...obj, [node]: distance }),
-      {},
-    ),
+    selected_nodes: Object.values(nodes).map(node => node.id),
+
     unvisited: Object.values(nodes)
       .map(node => node.name)
       .reduce((obj, name) => ({ ...obj, [name]: Q.has(name) }), {}),
@@ -208,10 +213,10 @@ const previousIteration = () => dispatch => {
 }
 
 export {
+  firstIteration,
+  lastIteration,
+  nextIteration,
+  previousIteration,
   startPlaying,
   stopPlaying,
-  nextIteration,
-  lastIteration,
-  firstIteration,
-  previousIteration,
 }

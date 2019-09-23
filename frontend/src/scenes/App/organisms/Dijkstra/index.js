@@ -83,12 +83,12 @@ class Dijkstra extends React.Component {
     } = this.props
 
     return (
-      <Card className={classes.card} ref={forwardedRef}>
+      <Card ref={forwardedRef} className={classes.card}>
         <CardContent>
           <Typography
+            gutterBottom
             className={classes.title}
             color="textSecondary"
-            gutterBottom
           >
             Distances from start node
           </Typography>
@@ -117,9 +117,9 @@ class Dijkstra extends React.Component {
           ))}
 
           <Typography
+            gutterBottom
             className={classes.title}
             color="textSecondary"
-            gutterBottom
           >
             Unvisited nodes
           </Typography>

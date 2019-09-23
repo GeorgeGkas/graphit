@@ -14,54 +14,30 @@ import algorithmComponentsTheme from '../../../../../../themes/algorithmComponen
  * Component.
  */
 const Node = ({
-  thisNode,
-  editorActionType,
-  isMultiSelect,
-  selectedNodeId,
-  selectedArrowId,
-  selectNode,
-  unselectNode,
-  unselectArrow,
-  drawTempArrow,
-  createArrow,
-  grid,
-  createShape,
-  updateNodePositionStart,
-  updateNodePositionEnd,
-  nodes,
-  initialNode,
   algorithm_current_step,
+  createArrow,
+  createShape,
+  drawTempArrow,
+  editorActionType,
+  grid,
+  initialNode,
+  isMultiSelect,
+  nodes,
+  selectNode,
+  selectedArrowId,
+  selectedNodeId,
+  thisNode,
+  unselectArrow,
+  unselectNode,
+  updateNodePositionEnd,
+  updateNodePositionStart,
 }) => (
   <Group
-    id={thisNode.id}
     key={thisNode.id}
     draggable={editorActionType === 'select'}
+    id={thisNode.id}
     x={thisNode.x}
     y={thisNode.y}
-    onMouseOver={e => {
-      if (editorActionType === 'select') {
-        e.currentTarget
-          .getStage()
-          .find('#' + thisNode.id + '_node')[0]
-          .fill(editorComponentsTheme.node.hovered.color)
-
-        e.currentTarget
-          .getStage()
-          .find('#' + thisNode.id + '_node')[0]
-          .fill(editorComponentsTheme.node.hovered.color)
-      }
-    }}
-    onMouseOut={e => {
-      e.currentTarget
-        .getStage()
-        .find('#' + thisNode.id + '_node')[0]
-        .fill(editorComponentsTheme.node.neutral.color)
-
-      e.currentTarget
-        .getStage()
-        .find('#' + thisNode.id + '_node')[0]
-        .fill(editorComponentsTheme.node.neutral.color)
-    }}
     onClick={e => {
       e.cancelBubble = true
 
@@ -98,6 +74,109 @@ const Node = ({
         }
       }
     }}
+    onDragEnd={e => {
+      if (editorActionType === 'select' || editorActionType === 'isPlaying') {
+        if (grid) {
+          for (const selected_node of selectedNodeId) {
+            e.currentTarget
+              .getStage()
+              .find('#' + selected_node)[0]
+              .position({
+                x:
+                  Math.round(
+                    (nodes[selected_node].x +
+                      (e.target.getPosition().x - nodes[thisNode.id].x)) /
+                      35,
+                  ) * 35,
+                y:
+                  Math.round(
+                    (nodes[selected_node].y +
+                      (e.target.getPosition().y - nodes[thisNode.id].y)) /
+                      35,
+                  ) * 35,
+              })
+          }
+        }
+
+        for (const selected_node of selectedNodeId) {
+          updateNodePositionEnd({
+            id: selected_node,
+            pos: grid
+              ? {
+                  x:
+                    Math.round(
+                      (nodes[selected_node].x +
+                        (e.target.getPosition().x - nodes[thisNode.id].x)) /
+                        35,
+                    ) * 35,
+                  y:
+                    Math.round(
+                      (nodes[selected_node].y +
+                        (e.target.getPosition().y - nodes[thisNode.id].y)) /
+                        35,
+                    ) * 35,
+                }
+              : {
+                  x:
+                    nodes[selected_node].x +
+                    (e.target.getPosition().x - nodes[thisNode.id].x),
+                  y:
+                    nodes[selected_node].y +
+                    (e.target.getPosition().y - nodes[thisNode.id].y),
+                },
+          })
+        }
+
+        e.currentTarget
+          .getStage()
+          .find('#shadowCircle')[0]
+          .hide()
+      }
+
+      e.cancelBubble = true
+    }}
+    onDragMove={e => {
+      if (editorActionType === 'select' || editorActionType === 'isPlaying') {
+        if (grid) {
+          if (selectedNodeId.length === 1) {
+            e.currentTarget
+              .getStage()
+              .find('#shadowCircle')[0]
+              .position({
+                x: Math.round(e.target.x() / 35) * 35,
+                y: Math.round(e.target.y() / 35) * 35,
+              })
+          }
+        }
+
+        for (const selected_node of selectedNodeId) {
+          updateNodePositionStart({
+            id: selected_node,
+            pos: {
+              x:
+                nodes[selected_node].x +
+                (e.target.getPosition().x - nodes[thisNode.id].x),
+              y:
+                nodes[selected_node].y +
+                (e.target.getPosition().y - nodes[thisNode.id].y),
+            },
+          })
+
+          e.currentTarget
+            .getStage()
+            .find('#' + selected_node)[0]
+            .position({
+              x:
+                nodes[selected_node].x +
+                (e.target.getPosition().x - nodes[thisNode.id].x),
+              y:
+                nodes[selected_node].y +
+                (e.target.getPosition().y - nodes[thisNode.id].y),
+            })
+        }
+      }
+      e.cancelBubble = true
+    }}
     onDragStart={e => {
       if (editorActionType === 'select') {
         if (grid) {
@@ -125,126 +204,45 @@ const Node = ({
       }
       e.cancelBubble = true
     }}
-    onDragMove={e => {
-      if (editorActionType === 'select' || editorActionType === 'isPlaying') {
-        if (grid) {
-          if (selectedNodeId.length === 1) {
-            e.currentTarget
-              .getStage()
-              .find('#shadowCircle')[0]
-              .position({
-                x: Math.round(e.target.x() / 35) * 35,
-                y: Math.round(e.target.y() / 35) * 35,
-              })
-          }
-        }
+    onMouseOut={e => {
+      e.currentTarget
+        .getStage()
+        .find('#' + thisNode.id + '_node')[0]
+        .fill(editorComponentsTheme.node.neutral.color)
 
-        for (const selected_node of selectedNodeId) {
-          updateNodePositionStart({
-            pos: {
-              x:
-                nodes[selected_node].x +
-                (e.target.getPosition().x - nodes[thisNode.id].x),
-              y:
-                nodes[selected_node].y +
-                (e.target.getPosition().y - nodes[thisNode.id].y),
-            },
-            id: selected_node,
-          })
-
-          e.currentTarget
-            .getStage()
-            .find('#' + selected_node)[0]
-            .position({
-              x:
-                nodes[selected_node].x +
-                (e.target.getPosition().x - nodes[thisNode.id].x),
-              y:
-                nodes[selected_node].y +
-                (e.target.getPosition().y - nodes[thisNode.id].y),
-            })
-        }
-      }
-      e.cancelBubble = true
+      e.currentTarget
+        .getStage()
+        .find('#' + thisNode.id + '_node')[0]
+        .fill(editorComponentsTheme.node.neutral.color)
     }}
-    onDragEnd={e => {
-      if (editorActionType === 'select' || editorActionType === 'isPlaying') {
-        if (grid) {
-          for (const selected_node of selectedNodeId) {
-            e.currentTarget
-              .getStage()
-              .find('#' + selected_node)[0]
-              .position({
-                x:
-                  Math.round(
-                    (nodes[selected_node].x +
-                      (e.target.getPosition().x - nodes[thisNode.id].x)) /
-                      35,
-                  ) * 35,
-                y:
-                  Math.round(
-                    (nodes[selected_node].y +
-                      (e.target.getPosition().y - nodes[thisNode.id].y)) /
-                      35,
-                  ) * 35,
-              })
-          }
-        }
-
-        for (const selected_node of selectedNodeId) {
-          updateNodePositionEnd({
-            pos: grid
-              ? {
-                  x:
-                    Math.round(
-                      (nodes[selected_node].x +
-                        (e.target.getPosition().x - nodes[thisNode.id].x)) /
-                        35,
-                    ) * 35,
-                  y:
-                    Math.round(
-                      (nodes[selected_node].y +
-                        (e.target.getPosition().y - nodes[thisNode.id].y)) /
-                        35,
-                    ) * 35,
-                }
-              : {
-                  x:
-                    nodes[selected_node].x +
-                    (e.target.getPosition().x - nodes[thisNode.id].x),
-                  y:
-                    nodes[selected_node].y +
-                    (e.target.getPosition().y - nodes[thisNode.id].y),
-                },
-            id: selected_node,
-          })
-        }
+    onMouseOver={e => {
+      if (editorActionType === 'select') {
+        e.currentTarget
+          .getStage()
+          .find('#' + thisNode.id + '_node')[0]
+          .fill(editorComponentsTheme.node.hovered.color)
 
         e.currentTarget
           .getStage()
-          .find('#shadowCircle')[0]
-          .hide()
+          .find('#' + thisNode.id + '_node')[0]
+          .fill(editorComponentsTheme.node.hovered.color)
       }
-
-      e.cancelBubble = true
     }}
   >
     {selectedNodeId.includes(thisNode.id) ? (
       <Circle
-        width={45}
-        height={45}
-        strokeWidth={1}
         fill={editorComponentsTheme.node.selected.color}
+        height={45}
         opacity={0.7}
+        strokeWidth={1}
+        width={45}
       />
     ) : null}
 
     {initialNode === thisNode.id ? (
       <Circle
-        width={40}
-        height={40}
-        strokeWidth={1}
         fill={'rgba(0, 0, 0, 0)'}
+        height={40}
         stroke={
           algorithm_current_step.highlighted_nodes.some(
             id => id === thisNode.id,
@@ -258,11 +256,12 @@ const Node = ({
             ? algorithmComponentsTheme.node.neutral.color
             : editorComponentsTheme.node.neutral.color
         }
+        strokeWidth={1}
+        width={40}
       />
     ) : null}
 
     <Circle
-      id={thisNode.id + '_node'}
       fill={
         algorithm_current_step.highlighted_nodes.some(id => id === thisNode.id)
           ? algorithmComponentsTheme.node.highlighted.color
@@ -272,22 +271,23 @@ const Node = ({
           ? algorithmComponentsTheme.node.neutral.color
           : thisNode.fill
       }
-      width={35}
       height={35}
-      stroke={'rgba(0, 0, 0, 0)'}
       hitStrokeWidth={10}
+      id={thisNode.id + '_node'}
       shadowEnabled={false}
       shadowOffset={{ x: 2, y: 2 }}
+      stroke={'rgba(0, 0, 0, 0)'}
+      width={35}
     />
 
     <Text
-      x={-5}
-      y={-5}
-      text={thisNode.name}
       fill="#fff"
       fontFamily="Roboto"
       fontSize={14}
       lineHeight={0.8}
+      text={thisNode.name}
+      x={-5}
+      y={-5}
     />
   </Group>
 )

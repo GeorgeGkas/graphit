@@ -1,16 +1,17 @@
 import * as actions from './actions'
 
-const { signIn: signInAction, signOut: signOutAction, selectProject } = actions
+const { selectProject, signIn: signInAction, signOut: signOutAction } = actions
 
 const signIn = access_token => dispatch => {
   const tokenBlob = new Blob([JSON.stringify({ access_token }, null, 2)], {
     type: 'application/json',
   })
   const requestOptions = {
-    method: 'POST',
     body: tokenBlob,
-    mode: 'cors',
     cache: 'default',
+    method: 'POST',
+
+    mode: 'cors',
   }
 
   fetch('/api/v1/auth/google', requestOptions)
@@ -20,10 +21,11 @@ const signIn = access_token => dispatch => {
 
 const signOut = () => dispatch => {
   const requestOptions = {
-    method: 'POST',
     body: {},
-    mode: 'cors',
     cache: 'default',
+    method: 'POST',
+
+    mode: 'cors',
   }
 
   fetch('/api/v1/auth/logout', requestOptions).then(() => {
@@ -31,4 +33,4 @@ const signOut = () => dispatch => {
   })
 }
 
-export { signIn, signOut, selectProject }
+export { selectProject, signIn, signOut }

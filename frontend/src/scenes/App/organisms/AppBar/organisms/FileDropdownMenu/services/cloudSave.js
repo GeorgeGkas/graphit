@@ -11,9 +11,9 @@ export default function cloudSave(graph, selectProject) {
     [
       JSON.stringify(
         {
+          algorithm: 'Dijkstra',
           content: JSON.stringify(graph),
           name: projectName.trim(),
-          algorithm: 'Dijkstra',
         },
         null,
         2,
@@ -25,11 +25,12 @@ export default function cloudSave(graph, selectProject) {
   )
 
   const requestOptions = {
-    method: 'POST',
     body: bodyBlob,
-    mode: 'cors',
     cache: 'default',
     credentials: 'same-origin',
+    method: 'POST',
+
+    mode: 'cors',
   }
 
   fetch('/api/v1/projects', requestOptions).then(res => {

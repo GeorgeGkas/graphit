@@ -3,26 +3,18 @@
  * component when editor mode is active (ie. not running any algorithm).
  */
 
-import grey from '@material-ui/core/colors/grey'
 import deepOrange from '@material-ui/core/colors/deepOrange'
+import grey from '@material-ui/core/colors/grey'
 
 export default {
-  node: {
-    neutral: {
-      color: grey['900'],
-    },
-    hovered: {
-      color: grey['900'],
-    },
-    selected: {
-      color: grey['400'],
-    },
+  connectArrow: {
+    color: grey['300'],
   },
   edge: {
-    neutral: {
+    hovered: {
       color: grey['900'],
     },
-    hovered: {
+    neutral: {
       color: grey['900'],
     },
     selected: {
@@ -32,15 +24,23 @@ export default {
   grid: {
     color: grey['300'],
   },
-  connectArrow: {
-    color: grey['300'],
+  node: {
+    hovered: {
+      color: grey['900'],
+    },
+    neutral: {
+      color: grey['900'],
+    },
+    selected: {
+      color: grey['400'],
+    },
   },
   shadowNode: {
-    stroke: {
-      color: deepOrange['400'],
-    },
     fill: {
       color: deepOrange['300'],
+    },
+    stroke: {
+      color: deepOrange['400'],
     },
   },
   stage: {

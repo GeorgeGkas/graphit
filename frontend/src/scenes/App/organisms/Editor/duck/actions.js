@@ -1,33 +1,33 @@
 import * as types from './types'
 
 const createNode = node => ({
-  type: types.CREATE_NODE,
   payload: node,
+  type: types.CREATE_NODE,
 })
 
 const selectNode = node => ({
-  type: types.SELECT_NODE,
   payload: node,
+  type: types.SELECT_NODE,
 })
 
 const unselectNode = node => ({
-  type: types.UNSELECT_NODE,
   payload: node,
+  type: types.UNSELECT_NODE,
 })
 
 const deleteNode = id => ({
-  type: types.DELETE_NODE,
   payload: id,
+  type: types.DELETE_NODE,
 })
 
 const updateCursorPosition = pos => ({
-  type: types.UPDATE_CURSOR_POSITION,
   payload: pos,
+  type: types.UPDATE_CURSOR_POSITION,
 })
 
 const updateNodePositionStart = node => ({
-  type: types.UPDATE_NODE_POSITION_START,
   payload: node,
+  type: types.UPDATE_NODE_POSITION_START,
 })
 
 const updateNodePositionEnd = () => ({
@@ -35,43 +35,43 @@ const updateNodePositionEnd = () => ({
 })
 
 const drawTempArrow = visible => ({
-  type: types.DRAW_TEMP_ARROW,
   payload: visible,
+  type: types.DRAW_TEMP_ARROW,
 })
 
 const updateStagePosition = pos => ({
-  type: types.UPDATE_STAGE_POSITION,
   payload: pos,
+  type: types.UPDATE_STAGE_POSITION,
 })
 
 const createArrow = nodes => ({
-  type: types.CREATE_ARROW,
   payload: nodes,
+  type: types.CREATE_ARROW,
 })
 
 const updateArrowPosition = arrow => ({
-  type: types.UPDATE_ARROW_POSITION,
   payload: arrow,
+  type: types.UPDATE_ARROW_POSITION,
 })
 
 const selectArrow = arrow => ({
-  type: types.SELECT_ARROW,
   payload: arrow,
+  type: types.SELECT_ARROW,
 })
 
 const unselectArrow = arrow => ({
-  type: types.UNSELECT_ARROW,
   payload: arrow,
+  type: types.UNSELECT_ARROW,
 })
 
 const deleteArrow = id => ({
-  type: types.DELETE_ARROW,
   payload: id,
+  type: types.DELETE_ARROW,
 })
 
 const multiSelect = state => ({
-  type: types.MULTI_SELECT,
   payload: state,
+  type: types.MULTI_SELECT,
 })
 
 const deleteShape = () => ({
@@ -83,13 +83,13 @@ const createShape = () => ({
 })
 
 const scaleStage = scaleBy => ({
-  type: types.SCALE_STAGE,
   payload: scaleBy,
+  type: types.SCALE_STAGE,
 })
 
 const changeEditorActionType = editorActionType => ({
-  type: types.CHANGE_EDITOR_ACTION_TYPE,
   payload: editorActionType,
+  type: types.CHANGE_EDITOR_ACTION_TYPE,
 })
 
 const initHistory = () => ({
@@ -97,18 +97,18 @@ const initHistory = () => ({
 })
 
 const loadState = state => ({
-  type: types.LOAD_STATE,
   payload: state,
+  type: types.LOAD_STATE,
 })
 
 const updateNodeName = payload => ({
-  type: types.UPDATE_NODE_NAME,
   payload,
+  type: types.UPDATE_NODE_NAME,
 })
 
 const updateArrowWeight = payload => ({
-  type: types.UPDATE_ARROW_WEIGHT,
   payload,
+  type: types.UPDATE_ARROW_WEIGHT,
 })
 
 const undoEditorHistory = () => ({
@@ -124,36 +124,36 @@ const initEditorHistory = () => ({
 })
 
 const setInitialNode = id => ({
-  type: types.SET_INITIAL_NODE,
   payload: id,
+  type: types.SET_INITIAL_NODE,
 })
 
 export {
-  createNode,
-  selectNode,
-  unselectNode,
-  deleteNode,
-  updateCursorPosition,
-  updateNodePositionStart,
-  updateNodePositionEnd,
-  drawTempArrow,
-  updateStagePosition,
-  createArrow,
-  updateArrowPosition,
-  selectArrow,
-  unselectArrow,
-  deleteArrow,
-  multiSelect,
-  deleteShape,
-  createShape,
-  scaleStage,
   changeEditorActionType,
+  createArrow,
+  createNode,
+  createShape,
+  deleteArrow,
+  deleteNode,
+  deleteShape,
+  drawTempArrow,
+  initEditorHistory,
   initHistory,
   loadState,
-  updateNodeName,
-  updateArrowWeight,
-  undoEditorHistory,
+  multiSelect,
   redoEditorHistory,
-  initEditorHistory,
+  scaleStage,
+  selectArrow,
+  selectNode,
   setInitialNode,
+  undoEditorHistory,
+  unselectArrow,
+  unselectNode,
+  updateArrowPosition,
+  updateArrowWeight,
+  updateNodeName,
+  updateCursorPosition,
+  updateNodePositionEnd,
+  updateNodePositionStart,
+  updateStagePosition,
 }

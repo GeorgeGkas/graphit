@@ -1,10 +1,10 @@
+import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import GlobalStyle from './styles.global'
-import App from './scenes/App'
-import * as serviceWorker from './services/serviceWorker'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import { Provider } from 'react-redux'
+import * as serviceWorker from './services/serviceWorker'
+import App from './scenes/App'
+import GlobalStyle from './styles.global'
 import configureReduxStore from './services/configureStore'
 
 const store = configureReduxStore()

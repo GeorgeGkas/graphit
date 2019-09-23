@@ -1,8 +1,8 @@
 import * as types from './types'
 
 const signIn = user => ({
-  type: types.SIGN_IN,
   payload: user,
+  type: types.SIGN_IN,
 })
 
 const signOut = () => ({
@@ -10,8 +10,8 @@ const signOut = () => ({
 })
 
 const selectProject = id => ({
-  type: types.SELECT_PROJECT,
   payload: id,
+  type: types.SELECT_PROJECT,
 })
 
-export { signIn, signOut, selectProject }
+export { selectProject, signIn, signOut }

@@ -1,9 +1,9 @@
 export default async function fetchProject(projectId) {
   const requestOptions = {
-    method: 'GET',
-    mode: 'cors',
     cache: 'default',
     credentials: 'same-origin',
+    method: 'GET',
+    mode: 'cors',
   }
 
   const response = await fetch(`/api/v1/projects/${projectId}`, requestOptions)

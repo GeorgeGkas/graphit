@@ -14,16 +14,16 @@ import algorithmComponentsTheme from '../../../../../../themes/algorithmComponen
  * Component.
  */
 const EdgeLoop = ({
+  algorithm_current_step,
   arrow,
-  selectArrow,
-  unselectArrow,
   editorActionType,
   isMultiSelect,
-  unselectNode,
+  scaleStage,
+  selectArrow,
   selectedArrowId,
   selectedNodeId,
-  algorithm_current_step,
-  scaleStage,
+  unselectArrow,
+  unselectNode,
 }) => (
   <Group
     onClick={e => {
@@ -50,13 +50,40 @@ const EdgeLoop = ({
     }}
   >
     <Circle
-      id={arrow.id}
       key={arrow.id}
+      dragBoundFunc={pos => {
+        const x = arrow.from.x * scaleStage
+        const y = arrow.from.y * scaleStage
+        const radius = 20 * scaleStage
+        const scale =
+          radius / Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2))
+
+        return scale !== Infinity
+          ? {
+              x: Math.round((pos.x - x) * scale + x),
+              y: Math.round((pos.y - y) * scale + y),
+            }
+          : pos
+      }}
+      draggable={editorActionType === 'select'}
+      height={35}
+      hitStrokeWidth={20}
+      id={arrow.id}
+      stroke={
+        algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
+          ? algorithmComponentsTheme.edge.highlighted.color
+          : algorithm_current_step.selected_edges.some(id => id === arrow.id)
+          ? algorithmComponentsTheme.edge.selected.color
+          : editorActionType === 'isPlaying'
+          ? algorithmComponentsTheme.edge.neutral.color
+          : selectedArrowId.includes(arrow.id)
+          ? editorComponentsTheme.edge.selected.color
+          : arrow.stroke
+      }
+      strokeWidth={selectedArrowId.includes(arrow.id) ? 5 : 1}
+      width={35}
       x={arrow.from.x - 35 / 2 + 5}
       y={arrow.from.y - 35 / 2 + 5}
-      onDragStart={e => {
-        e.cancelBubble = true
-      }}
       onDragMove={e => {
         e.cancelBubble = true
 
@@ -73,8 +100,8 @@ const EdgeLoop = ({
         const position =
           scale !== Infinity
             ? {
-                y: Math.round((e.currentTarget.position().y - y) * scale + y),
                 x: Math.round((e.currentTarget.position().x - x) * scale + x),
+                y: Math.round((e.currentTarget.position().y - y) * scale + y),
               }
             : e.currentTarget.position()
 
@@ -87,43 +114,8 @@ const EdgeLoop = ({
           .find('#' + arrow.id + '_text_back')[0]
           .position(position)
       }}
-      draggable={editorActionType === 'select'}
-      dragBoundFunc={pos => {
-        const x = arrow.from.x * scaleStage
-        const y = arrow.from.y * scaleStage
-        const radius = 20 * scaleStage
-        const scale =
-          radius / Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2))
-
-        return scale !== Infinity
-          ? {
-              y: Math.round((pos.y - y) * scale + y),
-              x: Math.round((pos.x - x) * scale + x),
-            }
-          : pos
-      }}
-      width={35}
-      height={35}
-      stroke={
-        algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
-          ? algorithmComponentsTheme.edge.highlighted.color
-          : algorithm_current_step.selected_edges.some(id => id === arrow.id)
-          ? algorithmComponentsTheme.edge.selected.color
-          : editorActionType === 'isPlaying'
-          ? algorithmComponentsTheme.edge.neutral.color
-          : selectedArrowId.includes(arrow.id)
-          ? editorComponentsTheme.edge.selected.color
-          : arrow.stroke
-      }
-      hitStrokeWidth={20}
-      strokeWidth={selectedArrowId.includes(arrow.id) ? 5 : 1}
-      onMouseOver={e => {
-        if (
-          editorActionType === 'select' &&
-          !selectedArrowId.includes(arrow.id)
-        ) {
-          e.target.stroke(editorComponentsTheme.edge.hovered.color)
-        }
+      onDragStart={e => {
+        e.cancelBubble = true
       }}
       onMouseOut={e => {
         if (
@@ -133,24 +125,32 @@ const EdgeLoop = ({
           e.target.stroke(editorComponentsTheme.edge.neutral.color)
         }
       }}
+      onMouseOver={e => {
+        if (
+          editorActionType === 'select' &&
+          !selectedArrowId.includes(arrow.id)
+        ) {
+          e.target.stroke(editorComponentsTheme.edge.hovered.color)
+        }
+      }}
     />
     <Text
+      fontFamily="Roboto"
+      fontSize={15}
       id={arrow.id + '_text_back'}
       stroke={editorComponentsTheme.stage.fill.color}
       strokeWidth={7}
+      text={arrow.weight}
       x={arrow.from.x - 30}
       y={arrow.from.y - 30}
-      fontSize={15}
-      text={arrow.weight}
-      fontFamily="Roboto"
     />
     <Text
+      fontFamily="Roboto"
+      fontSize={15}
       id={arrow.id + '_text'}
+      text={arrow.weight}
       x={arrow.from.x - 30}
       y={arrow.from.y - 30}
-      fontSize={15}
-      text={arrow.weight}
-      fontFamily="Roboto"
     />
   </Group>
 )

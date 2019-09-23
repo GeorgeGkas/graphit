@@ -44,8 +44,9 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(3),
   },
   paper: {
-    height: '100vh',
     borderRadius: 0,
+    height: '100vh',
+
     left: '50%',
     marginLeft: '-32.5%',
     position: 'absolute',
@@ -219,8 +220,8 @@ const Dashboard = ({
             const id = displayData[selectedRows.data[0].dataIndex].data[3]
             return (
               <IconButton
-                onClick={() => deleteProject(id)}
                 className={classes.delete}
+                onClick={() => deleteProject(id)}
               >
                 <DeleteIcon />
               </IconButton>
@@ -231,10 +232,11 @@ const Dashboard = ({
           filter: false,
           print: false,
           responsive: 'scrollMaxHeight',
-          selectableRows: 'single',
-          selectableRowsHeader: false,
           search: true,
           searchPlaceholder: 'Search by project name',
+          selectableRows: 'single',
+          selectableRowsHeader: false,
+
           sort: true,
           viewColumns: false,
         }}

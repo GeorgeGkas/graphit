@@ -58,7 +58,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
  * Transition component, used when toggle NodeEditor.
  */
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction="up" ref={ref} {...props} />
+  return <Fade ref={ref} direction="up" {...props} />
 })
 
 /**
@@ -114,37 +114,37 @@ const NodeEditor = ({
   return (
     <Dialog
       fullWidth
-      onClose={handleClose}
-      open={editorDialogVisible}
       PaperProps={{
         style: {
           borderRadius: 0,
         },
       }}
       TransitionComponent={Transition}
+      open={editorDialogVisible}
+      onClose={handleClose}
     >
       <DialogTitle id="form-dialog-title">Edit Node</DialogTitle>
       <DialogContent>
         <form
-          className={classes.form}
           noValidate
+          className={classes.form}
           onSubmit={e => e.preventDefault()}
         >
           <FormControl className={classes.formControl}>
             <TextField
               autoFocus
+              fullWidth
               defaultValue={selectedNode.name}
               error={!nodeName.valid}
-              fullWidth
               helperText="Allowed names are all values from a through Z."
               id="node_name_input"
               label="Name"
               margin="dense"
+              type="text"
               onChange={validateNodeName}
               onFocus={() => {
                 document.getElementById('node_name_input').select()
               }}
-              type="text"
             />
           </FormControl>
           <FormControlLabel

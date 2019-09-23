@@ -24,19 +24,20 @@ import Node from './organisms/Node'
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  nodes: state.editor.present.nodes,
-  selectedNodeId: state.editor.present.selectedNode,
-  cursor: state.editor.present.cursor,
-  isDrawingTempArrow: state.editor.present.drawTempArrow,
-  stage: state.editor.present.stage,
-  connectedNodes: state.editor.present.connected,
-  selectedArrowId: state.editor.present.selectedArrow,
-  isMultiSelect: state.editor.present.isMultiSelect,
-  scaleStage: state.editor.present.scaleStage,
-  editorActionType: state.editor.present.editorActionType,
   algorithm_current_step: state.algorithm.steps[state.algorithm.currentIndex],
   algorithm_is_final_step: state.algorithm.isFinal,
+  connectedNodes: state.editor.present.connected,
+  cursor: state.editor.present.cursor,
+  editorActionType: state.editor.present.editorActionType,
   initialNode: state.editor.present.initialNode,
+  isDrawingTempArrow: state.editor.present.drawTempArrow,
+  isMultiSelect: state.editor.present.isMultiSelect,
+
+  nodes: state.editor.present.nodes,
+  scaleStage: state.editor.present.scaleStage,
+  selectedArrowId: state.editor.present.selectedArrow,
+  selectedNodeId: state.editor.present.selectedNode,
+  stage: state.editor.present.stage,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
@@ -55,43 +56,43 @@ const buildCursorStyle = editorActionType =>
  * Component.
  */
 const Editor = ({
-  nodes,
-  unselectNode,
-  selectNode,
-  selectedNodeId,
-  updateCursorPosition,
-  updateNodePositionStart,
-  updateNodePositionEnd,
-  cursor,
-  isDrawingTempArrow,
-  createArrow,
-  connectedNodes,
-  selectedArrowId,
-  unselectArrow,
-  selectArrow,
-  isMultiSelect,
-  drawTempArrow,
-  createShape,
-  stage,
-  grid,
-  scaleStage,
-  editorActionType,
-  createNode,
   algorithm_current_step,
   algorithm_is_final_step,
+  connectedNodes,
+  createArrow,
+  createNode,
+  createShape,
+  cursor,
+  drawTempArrow,
+  editorActionType,
+  grid,
   initialNode,
+  isDrawingTempArrow,
+  isMultiSelect,
+  nodes,
+  scaleStage,
+  selectArrow,
+  selectNode,
+  selectedArrowId,
+  selectedNodeId,
+  stage,
+  unselectArrow,
+  unselectNode,
+  updateCursorPosition,
+  updateNodePositionEnd,
+  updateNodePositionStart,
 }) => (
   <Stage
+    height={window.innerHeight - 128}
     scale={{
       x: scaleStage,
       y: scaleStage,
     }}
     style={{
-      cursor: buildCursorStyle(editorActionType),
       background: editorComponentsTheme.stage.fill.color,
+      cursor: buildCursorStyle(editorActionType),
     }}
     width={window.innerWidth}
-    height={window.innerHeight - 128}
     onClick={e => {
       /**
        * When user clicks on stage and is in select mode
@@ -137,7 +138,7 @@ const Editor = ({
     {/**
      * Build Grid.
      */
-    grid && <Grid stage={stage} scaleStage={scaleStage} />}
+    grid && <Grid scaleStage={scaleStage} stage={stage} />}
 
     <Layer>
       {/**
@@ -149,10 +150,10 @@ const Editor = ({
         selectedNodeId.map((node, id) => (
           <Arrow
             key={id}
+            dash={[10, 10]}
             points={[nodes[node].x, nodes[node].y, cursor.x, cursor.y]}
             stroke={editorComponentsTheme.connectArrow.color}
             strokeWidth={3}
-            dash={[10, 10]}
           />
         ))}
 
@@ -192,32 +193,32 @@ const Editor = ({
             return arrow.to.id !== arrow.from.id ? (
               <EdgeNotLoop
                 key={index}
+                algorithm_current_step={algorithm_current_step}
                 arrow={arrow}
-                secondExist={secondExist}
-                nodeRadius={nodeRadius}
                 curvePower={curvePower}
-                selectArrow={selectArrow}
-                unselectArrow={unselectArrow}
                 editorActionType={editorActionType}
                 isMultiSelect={isMultiSelect}
-                unselectNode={unselectNode}
+                nodeRadius={nodeRadius}
+                secondExist={secondExist}
+                selectArrow={selectArrow}
                 selectedArrowId={selectedArrowId}
                 selectedNodeId={selectedNodeId}
-                algorithm_current_step={algorithm_current_step}
+                unselectArrow={unselectArrow}
+                unselectNode={unselectNode}
               />
             ) : (
               <EdgeLoop
                 key={index}
+                algorithm_current_step={algorithm_current_step}
                 arrow={arrow}
-                selectArrow={selectArrow}
-                unselectArrow={unselectArrow}
                 editorActionType={editorActionType}
                 isMultiSelect={isMultiSelect}
-                unselectNode={unselectNode}
+                scaleStage={scaleStage}
+                selectArrow={selectArrow}
                 selectedArrowId={selectedArrowId}
                 selectedNodeId={selectedNodeId}
-                algorithm_current_step={algorithm_current_step}
-                scaleStage={scaleStage}
+                unselectArrow={unselectArrow}
+                unselectNode={unselectNode}
               />
             )
           })
@@ -228,17 +229,17 @@ const Editor = ({
        * Determine the snap position of the node.
        */}
       <Circle
-        id="shadowCircle"
-        x={0}
-        y={0}
-        width={35}
-        height={35}
+        dash={[20, 2]}
         fill={editorComponentsTheme.shadowNode.fill.color}
+        height={35}
+        id="shadowCircle"
         opacity={0.6}
         stroke={editorComponentsTheme.shadowNode.stroke.color}
         strokeWidth={3}
-        dash={[20, 2]}
         visible={false}
+        width={35}
+        x={0}
+        y={0}
       />
 
       {/**
@@ -256,23 +257,23 @@ const Editor = ({
         .map((node, index) => (
           <Node
             key={index}
-            thisNode={node}
-            editorActionType={editorActionType}
-            isMultiSelect={isMultiSelect}
-            selectedNodeId={selectedNodeId}
-            selectedArrowId={selectedArrowId}
-            selectNode={selectNode}
-            unselectNode={unselectNode}
-            unselectArrow={unselectArrow}
-            drawTempArrow={drawTempArrow}
-            createArrow={createArrow}
-            grid={grid}
-            createShape={createShape}
-            updateNodePositionStart={updateNodePositionStart}
-            updateNodePositionEnd={updateNodePositionEnd}
-            nodes={nodes}
-            initialNode={initialNode}
             algorithm_current_step={algorithm_current_step}
+            createArrow={createArrow}
+            createShape={createShape}
+            drawTempArrow={drawTempArrow}
+            editorActionType={editorActionType}
+            grid={grid}
+            initialNode={initialNode}
+            isMultiSelect={isMultiSelect}
+            nodes={nodes}
+            selectNode={selectNode}
+            selectedArrowId={selectedArrowId}
+            selectedNodeId={selectedNodeId}
+            thisNode={node}
+            unselectArrow={unselectArrow}
+            unselectNode={unselectNode}
+            updateNodePositionEnd={updateNodePositionEnd}
+            updateNodePositionStart={updateNodePositionStart}
           />
         ))}
     </Layer>

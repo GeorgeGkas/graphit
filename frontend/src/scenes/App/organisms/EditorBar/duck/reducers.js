@@ -8,18 +8,18 @@ import {
 } from './types'
 
 export const initialState = {
+  currentIndex: 0,
+  isFinal: false,
   steps: [
     {
-      highlighted_nodes: [],
-      highlighted_edges: [],
-      selected_nodes: [],
-      selected_edges: [],
       distances: {},
+      highlighted_edges: [],
+      highlighted_nodes: [],
+      selected_edges: [],
+      selected_nodes: [],
       unvisited: {},
     },
   ],
-  isFinal: false,
-  currentIndex: 0,
 }
 
 const update = (state = initialState, action) => {

@@ -2,33 +2,32 @@ import * as actions from './actions'
 import editorComponentsTheme from '../../../../../themes/editorComponents.theme'
 
 const {
-  createNode: createNodeAction,
-  selectNode: selectNodeAction,
-  unselectNode: unselectNodeAction,
-  deleteNode: deleteNodeAction,
-  updateCursorPosition,
-  updateNodePositionStart: updateNodePositionStartAction,
-  updateNodePositionEnd: updateNodePositionEndAction,
-  drawTempArrow,
-  updateStagePosition,
-  createArrow: createArrowAction,
-  updateArrowPosition,
-  selectArrow: selectArrowAction,
-  unselectArrow: unselectArrowAction,
-  deleteArrow,
-  multiSelect,
-  deleteShape,
-  createShape,
-  scaleStage: scaleStageBy,
   changeEditorActionType: changeEditorActionTypeAction,
-  initHistory,
-  loadState,
-  updateNodeName,
-  updateArrowWeight,
-  undoEditorHistory,
-  redoEditorHistory,
+  createArrow: createArrowAction,
+  createNode: createNodeAction,
+  createShape,
+  deleteArrow,
+  deleteNode: deleteNodeAction,
+  deleteShape,
+  drawTempArrow,
   initEditorHistory,
+  loadState,
+  multiSelect,
+  redoEditorHistory,
+  scaleStage: scaleStageBy,
+  selectArrow: selectArrowAction,
+  selectNode: selectNodeAction,
   setInitialNode,
+  undoEditorHistory,
+  unselectArrow: unselectArrowAction,
+  unselectNode: unselectNodeAction,
+  updateArrowPosition,
+  updateArrowWeight,
+  updateCursorPosition,
+  updateNodeName,
+  updateNodePositionEnd: updateNodePositionEndAction,
+  updateNodePositionStart: updateNodePositionStartAction,
+  updateStagePosition,
 } = actions
 
 const changeEditorActionType = editorType => (dispatch, getState) => {
@@ -59,8 +58,9 @@ const createNode = gridVisible => (dispatch, getState) => {
       }
 
   const node = {
-    id: '' + Math.random() * 100,
     fill: editorComponentsTheme.node.neutral.color,
+    id: '' + Math.random() * 100,
+
     name: 's',
     ...pos,
   }
@@ -149,20 +149,20 @@ const createArrow = nodes => (dispatch, getState) => {
   if (!connectExist) {
     dispatch(
       createArrowAction({
-        id: '' + Math.random() * 100,
-        stroke: editorComponentsTheme.edge.neutral.color,
         fill: editorComponentsTheme.edge.neutral.color,
-        weight: '0',
         from: {
           id: nodes.from,
           x: getState().editor.present.nodes[nodes.from].x,
           y: getState().editor.present.nodes[nodes.from].y,
         },
+        id: '' + Math.random() * 100,
+        stroke: editorComponentsTheme.edge.neutral.color,
         to: {
           id: nodes.to,
           x: getState().editor.present.nodes[nodes.to].x,
           y: getState().editor.present.nodes[nodes.to].y,
         },
+        weight: '0',
       }),
     )
   }
@@ -181,8 +181,8 @@ const deleteNode = id => (dispatch, getState) => {
 const selectArrow = id => (dispatch, getState) => {
   const arrow = {
     ...getState().editor.present.connected[id],
-    stroke: editorComponentsTheme.edge.selected.color,
     fill: editorComponentsTheme.edge.selected.color,
+    stroke: editorComponentsTheme.edge.selected.color,
   }
 
   dispatch(selectArrowAction(arrow))
@@ -191,39 +191,38 @@ const selectArrow = id => (dispatch, getState) => {
 const unselectArrow = id => (dispatch, getState) => {
   const arrow = {
     ...getState().editor.present.connected[id],
-    stroke: editorComponentsTheme.edge.neutral.color,
     fill: editorComponentsTheme.edge.neutral.color,
+    stroke: editorComponentsTheme.edge.neutral.color,
   }
 
   dispatch(unselectArrowAction(arrow))
 }
 
 export {
-  createNode,
-  selectNode,
-  unselectNode,
-  deleteNode,
-  updateCursorPosition,
-  updateNodePositionStart,
-  updateNodePositionEnd,
-  drawTempArrow,
-  updateStagePosition,
-  createArrow,
-  updateArrowPosition,
-  selectArrow,
-  unselectArrow,
-  deleteArrow,
-  multiSelect,
-  deleteShape,
-  createShape,
-  scaleStageBy,
   changeEditorActionType,
-  initHistory,
-  loadState,
-  updateNodeName,
-  updateArrowWeight,
-  undoEditorHistory,
-  redoEditorHistory,
+  createArrow,
+  createNode,
+  createShape,
+  deleteArrow,
+  deleteNode,
+  deleteShape,
+  drawTempArrow,
   initEditorHistory,
+  loadState,
+  redoEditorHistory,
+  multiSelect,
+  scaleStageBy,
+  selectArrow,
+  selectNode,
   setInitialNode,
+  undoEditorHistory,
+  unselectArrow,
+  unselectNode,
+  updateArrowPosition,
+  updateArrowWeight,
+  updateNodeName,
+  updateCursorPosition,
+  updateNodePositionEnd,
+  updateNodePositionStart,
+  updateStagePosition,
 }

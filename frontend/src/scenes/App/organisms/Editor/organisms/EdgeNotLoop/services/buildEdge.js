@@ -1,8 +1,8 @@
 export default function buildEdge({
+  curvePower,
   edge,
   nodeRadius,
   secondExist,
-  curvePower,
 }) {
   const dx = edge.to.x - edge.from.x
   const dy = edge.to.y - edge.from.y

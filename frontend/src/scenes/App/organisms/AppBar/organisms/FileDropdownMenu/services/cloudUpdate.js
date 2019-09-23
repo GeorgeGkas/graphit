@@ -17,11 +17,12 @@ export default function cloudUpdate(projectId, graph) {
   )
 
   const requestOptions = {
-    method: 'PATCH',
     body: bodyBlob,
-    mode: 'cors',
     cache: 'default',
     credentials: 'same-origin',
+    method: 'PATCH',
+
+    mode: 'cors',
   }
 
   fetch(`/api/v1/projects/${projectId}`, requestOptions).then(res => {
