@@ -2,7 +2,7 @@
 
 A Dijkstra Visualizer built with React.
 
-**Note:** This project is in early development stage (we still evaluate the idea). You should expect hard fails, security vulnerabilities and non-tested code.
+**Note:** This project is in early development stage (we still evaluate the idea). You should expect hard fails, security vulnerabilities and untested code.
 
 ## Clone the repository
 
