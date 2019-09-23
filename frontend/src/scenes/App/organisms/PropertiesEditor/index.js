@@ -119,12 +119,15 @@ const PropertiesEditor = ({
       </IconButton>
 
       {selectedNode ? (
-        <NodeEditor handleClose={toggleEditorDialog} open={editorDialog} />
+        <NodeEditor
+          editorDialog={editorDialog}
+          handleClose={toggleEditorDialog}
+        />
       ) : (
         <EdgeEditor
+          editorDialog={editorDialog}
           handleClickOpen={toggleEditorDialog}
           handleClose={toggleEditorDialog}
-          open={editorDialog}
         />
       )}
     </Wrapper>
