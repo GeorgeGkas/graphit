@@ -75,9 +75,9 @@ const PropertiesEditor = ({
   selectedNode,
 }) => {
   const classes = useStyles()
-  const [editorDialog, makeEditorDialogVisible] = useState(false)
+  const [editorDialogVisible, makeEditorDialogVisible] = useState(false)
 
-  const toggleEditorDialog = () => makeEditorDialogVisible(!editorDialog)
+  const toggleEditorDialog = () => makeEditorDialogVisible(!editorDialogVisible)
 
   const deleteShapes = () => {
     deleteShape()
@@ -120,12 +120,12 @@ const PropertiesEditor = ({
 
       {selectedNode ? (
         <NodeEditor
-          editorDialog={editorDialog}
+          editorDialogVisible={editorDialogVisible}
           handleClose={toggleEditorDialog}
         />
       ) : (
         <EdgeEditor
-          editorDialog={editorDialog}
+          editorDialogVisible={editorDialogVisible}
           handleClickOpen={toggleEditorDialog}
           handleClose={toggleEditorDialog}
         />

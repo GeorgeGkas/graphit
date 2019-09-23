@@ -65,7 +65,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
  * Component.
  */
 const NodeEditor = ({
-  editorDialog,
+  editorDialogVisible,
   handleClose,
   initialNode,
   selectedNode,
@@ -115,7 +115,7 @@ const NodeEditor = ({
     <Dialog
       fullWidth
       onClose={handleClose}
-      open={editorDialog}
+      open={editorDialogVisible}
       PaperProps={{
         style: {
           borderRadius: 0,

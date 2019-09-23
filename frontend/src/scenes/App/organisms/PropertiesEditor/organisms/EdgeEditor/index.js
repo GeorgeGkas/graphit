@@ -62,7 +62,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
  * Component.
  */
 const EdgeEditor = ({
-  editorDialog,
+  editorDialogVisible,
   handleClose,
   selectedArrow,
   updateArrowWeight,
@@ -92,7 +92,7 @@ const EdgeEditor = ({
   return (
     <Dialog
       fullWidth
-      open={editorDialog}
+      open={editorDialogVisible}
       onClose={handleClose}
       PaperProps={{
         style: {
