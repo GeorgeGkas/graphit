@@ -55,6 +55,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
 
 /**
+ * Transition component, used when toggle NodeEditor.
+ */
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Fade direction="up" ref={ref} {...props} />
+})
+
+/**
  * Component.
  */
 const NodeEditor = ({
@@ -79,7 +86,7 @@ const NodeEditor = ({
 
   const validateNodeName = e =>
     setNodeName({
-      nodeName: e.target.value,
+      name: e.target.value,
       valid: /^[A-Za-z]$/.test(e.target.value),
     })
 
@@ -114,9 +121,7 @@ const NodeEditor = ({
           borderRadius: 0,
         },
       }}
-      TransitionComponent={React.forwardRef(function Transition(props, ref) {
-        return <Fade direction="up" ref={ref} {...props} />
-      })}
+      TransitionComponent={Transition}
     >
       <DialogTitle id="form-dialog-title">Edit Node</DialogTitle>
       <DialogContent>
