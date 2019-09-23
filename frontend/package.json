@@ -44,9 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.4.4",
     "cross-env": "^6.0.0",
-    "customize-cra": "^0.5.0",
     "react-app-rewired": "^2.1.3"
   }
 }
