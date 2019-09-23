@@ -25,6 +25,7 @@ import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
 import Overlay from '../../atoms/Overlay'
 import PropertiesEditor from './organisms/PropertiesEditor'
+import { Fade } from '@material-ui/core'
 
 /**
  * Connect component to Redux.
@@ -63,12 +64,19 @@ const App = ({
 
   return (
     <React.Fragment>
-      {dashboard ? (
-        <React.Fragment>
+      <Fade mountOnEnter unmountOnExit in={dashboard}>
+        <div
+          style={{
+            height: '100%',
+            position: 'absolute',
+            width: '100%',
+            zIndex: 9999,
+          }}
+        >
           <Dashboard toggleDashboard={toggleDashboard} />
           <Overlay />
-        </React.Fragment>
-      ) : null}
+        </div>
+      </Fade>
 
       <Slide direction="left" in={showAlgorithmPanel}>
         <Dijkstra />
