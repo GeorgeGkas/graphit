@@ -18,7 +18,7 @@ import buildEdge from './services/buildEdge'
 /**
  * Component.
  */
-const Presentation = ({
+const EdgeNotLoop = ({
   arrow,
   secondExist,
   nodeRadius,
@@ -147,4 +147,4 @@ const Presentation = ({
   )
 }
 
-export default Presentation
+export default EdgeNotLoop
