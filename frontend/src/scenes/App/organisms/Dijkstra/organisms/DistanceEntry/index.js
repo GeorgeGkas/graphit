@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container'
 /**
  * Import components.
  */
-import arrowRight from './images/arrow_right.svg'
+import arrowRight from './images/arrowRight.svg'
 import Arrow from './atoms/Arrow'
 import Highlighted from './atoms/Highlighted'
 import Selected from './atoms/Selected'
