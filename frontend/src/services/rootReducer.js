@@ -32,7 +32,6 @@ export default () =>
             }))
             .reduce((obj, edge) => ({ ...obj, [edge.id]: edge }), {}),
           cursor: currenState.cursor,
-          drawTempArrow: false,
           editorActionType: 'select',
           nodes: Object.values(currenState.nodes)
             .map(node => ({

@@ -34,11 +34,6 @@ const updateNodePositionEnd = () => ({
   type: types.UPDATE_NODE_POSITION_END,
 })
 
-const drawTempArrow = visible => ({
-  payload: visible,
-  type: types.DRAW_TEMP_ARROW,
-})
-
 const updateStagePosition = pos => ({
   payload: pos,
   type: types.UPDATE_STAGE_POSITION,
@@ -131,7 +126,6 @@ export {
   deleteEdge,
   deleteNode,
   deleteShape,
-  drawTempArrow,
   initEditorHistory,
   initHistory,
   loadState,

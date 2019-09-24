@@ -17,7 +17,7 @@ const Node = ({
   algorithm_current_step,
   createEdge,
   createShape,
-  drawTempArrow,
+  setTempArrowVisibility,
   editorActionType,
   grid,
   initialNode,
@@ -53,13 +53,13 @@ const Node = ({
       } else if (editorActionType === 'edge') {
         if (selectedNodesId.length === 0) {
           selectNode(thisNode.id)
-          drawTempArrow(true)
+          setTempArrowVisibility(true)
         } else {
           createEdge({
             from: selectedNodesId[0],
             to: thisNode.id,
           })
-          drawTempArrow(false)
+          setTempArrowVisibility(false)
           unselectNode(selectedNodesId[0])
           createShape()
         }

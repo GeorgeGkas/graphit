@@ -6,7 +6,6 @@ import {
   DELETE_EDGE,
   DELETE_NODE,
   DELETE_SHAPE,
-  DRAW_TEMP_ARROW,
   INIT_EDITOR_HISTORY,
   LOAD_STATE,
   REDO_EDITOR_HISTORY,
@@ -31,7 +30,6 @@ export const initialState = {
     x: 0,
     y: 0,
   },
-  drawTempArrow: false,
   edges: {},
   editorActionType: 'select',
   initialNode: null,
@@ -79,11 +77,6 @@ const update = (state = initialState, action) => {
       return {
         ...state,
         cursor: action.payload,
-      }
-    case DRAW_TEMP_ARROW:
-      return {
-        ...state,
-        drawTempArrow: action.payload,
       }
     case UPDATE_STAGE_POSITION:
       return {
