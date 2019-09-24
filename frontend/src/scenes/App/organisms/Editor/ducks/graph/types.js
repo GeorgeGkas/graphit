@@ -1,0 +1,26 @@
+const CREATE_NODE = 'app/editor/graph/CREATE_NODE'
+const DELETE_NODE = 'app/editor/graph/DELETE_NODE'
+const SELECT_NODE = 'app/editor/graph/SELECT_NODE'
+const UNSELECT_NODE = 'app/editor/graph/UNSELECT_NODE'
+const UPDATE_NODE_POSITION = 'app/editor/graph/UPDATE_NODE_POSITION'
+const UPDATE_NODE_PROPERTIES = 'app/editor/graph/UPDATE_NODE_PROPERTIES'
+
+const CREATE_EDGE = 'app/editor/graph/CREATE_EDGE'
+const DELETE_EDGE = 'app/editor/graph/DELETE_EDGE'
+const SELECT_EDGE = 'app/editor/graph/SELECT_EDGE'
+const UNSELECT_EDGE = 'app/editor/graph/UNSELECT_EDGE'
+const UPDATE_EDGE_PROPERTIES = 'app/editor/graph/UPDATE_EDGE_PROPERTIES'
+
+export {
+  CREATE_EDGE,
+  CREATE_NODE,
+  DELETE_EDGE,
+  DELETE_NODE,
+  SELECT_EDGE,
+  SELECT_NODE,
+  UNSELECT_EDGE,
+  UNSELECT_NODE,
+  UPDATE_EDGE_PROPERTIES,
+  UPDATE_NODE_POSITION,
+  UPDATE_NODE_PROPERTIES,
+}
