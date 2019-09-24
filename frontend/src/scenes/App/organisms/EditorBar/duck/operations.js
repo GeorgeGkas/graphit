@@ -181,7 +181,7 @@ const startPlaying = () => (dispatch, getState) => {
 
   const { steps } = dijkstra(
     getState().editor.present.nodes,
-    getState().editor.present.connected,
+    getState().editor.present.edges,
     getState().editor.present.initialNode,
   )
   dispatch(
