@@ -21,16 +21,16 @@ export default () =>
         editorTypes.CREATE_SHAPE,
         editorTypes.DELETE_SHAPE,
         editor.UPDATE_NODE_NAME,
-        editor.UPDATE_ARROW_WEIGHT,
+        editor.UPDATE_EDGE_WEIGHT,
       ]),
       filterStateProps: currenState => {
         return {
-          connected: Object.values(currenState.connected)
-            .map(arrow => ({
-              ...arrow,
+          edges: Object.values(currenState.edges)
+            .map(edge => ({
+              ...edge,
               stroke: editorComponentsTheme.edge.neutral.color,
             }))
-            .reduce((obj, arrow) => ({ ...obj, [arrow.id]: arrow }), {}),
+            .reduce((obj, edge) => ({ ...obj, [edge.id]: edge }), {}),
           cursor: currenState.cursor,
           drawTempArrow: false,
           editorActionType: 'select',
@@ -42,7 +42,7 @@ export default () =>
             }))
             .reduce((obj, node) => ({ ...obj, [node.id]: node }), {}),
           scaleStage: currenState.scaleStage,
-          selectedArrow: [],
+          selectedEdge: [],
           selectedNode: [],
           stage: currenState.stage,
         }

@@ -26,7 +26,7 @@ import Node from './organisms/Node'
 const mapStateToProps = state => ({
   algorithm_current_step: state.algorithm.steps[state.algorithm.currentIndex],
   algorithm_is_final_step: state.algorithm.isFinal,
-  connectedNodes: state.editor.present.connected,
+  edges: state.editor.present.edges,
   cursor: state.editor.present.cursor,
   editorActionType: state.editor.present.editorActionType,
   initialNode: state.editor.present.initialNode,
@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
 
   nodes: state.editor.present.nodes,
   scaleStage: state.editor.present.scaleStage,
-  selectedArrowId: state.editor.present.selectedArrow,
+  selectedEdgeId: state.editor.present.selectedEdge,
   selectedNodeId: state.editor.present.selectedNode,
   stage: state.editor.present.stage,
 })
@@ -58,8 +58,8 @@ const buildCursorStyle = editorActionType =>
 const Editor = ({
   algorithm_current_step,
   algorithm_is_final_step,
-  connectedNodes,
-  createArrow,
+  edges,
+  createEdge,
   createNode,
   createShape,
   cursor,
@@ -71,12 +71,12 @@ const Editor = ({
   isMultiSelect,
   nodes,
   scaleStage,
-  selectArrow,
+  selectEdge,
   selectNode,
-  selectedArrowId,
+  selectedEdgeId,
   selectedNodeId,
   stage,
-  unselectArrow,
+  unselectEdge,
   unselectNode,
   updateCursorPosition,
   updateNodePositionEnd,
@@ -106,8 +106,8 @@ const Editor = ({
           unselectNode(node)
         }
 
-        for (const arrow of selectedArrowId) {
-          unselectArrow(arrow)
+        for (const edge of selectedEdgeId) {
+          unselectEdge(edge)
         }
       } else if (editorActionType === 'node') {
         createNode(grid)
@@ -163,61 +163,61 @@ const Editor = ({
          */
         const exist = []
 
-        return Object.values(connectedNodes)
+        return Object.values(edges)
           .filter(
-            arrow =>
+            edge =>
               !algorithm_is_final_step ||
               algorithm_current_step.highlighted_edges.some(
-                id => id === arrow.id,
+                id => id === edge.id,
               ) ||
-              algorithm_current_step.selected_edges.some(id => id === arrow.id),
+              algorithm_current_step.selected_edges.some(id => id === edge.id),
           )
-          .map((arrow, index, arrows) => {
+          .map((edge, index, edges) => {
             const nodeRadius = 25
             const curvePower = 20
 
             /**
-             * Track double connected nodes.
+             * Track double edges.
              */
-            let secondExist = arrows.some(
-              arr => arr.from.id === arrow.to.id && arr.to.id === arrow.from.id,
+            let secondExist = edges.some(
+              arr => arr.from.id === edge.to.id && arr.to.id === edge.from.id,
             )
-            if (secondExist && !exist.includes(arrow.from.id)) {
-              exist.push(arrow.from.id)
-              exist.push(arrow.to.id)
+            if (secondExist && !exist.includes(edge.from.id)) {
+              exist.push(edge.from.id)
+              exist.push(edge.to.id)
             }
 
             /**
              * Paint the edge based on its type.
              */
-            return arrow.to.id !== arrow.from.id ? (
+            return edge.to.id !== edge.from.id ? (
               <EdgeNotLoop
                 key={index}
                 algorithm_current_step={algorithm_current_step}
-                arrow={arrow}
+                edge={edge}
                 curvePower={curvePower}
                 editorActionType={editorActionType}
                 isMultiSelect={isMultiSelect}
                 nodeRadius={nodeRadius}
                 secondExist={secondExist}
-                selectArrow={selectArrow}
-                selectedArrowId={selectedArrowId}
+                selectEdge={selectEdge}
+                selectedEdgeId={selectedEdgeId}
                 selectedNodeId={selectedNodeId}
-                unselectArrow={unselectArrow}
+                unselectEdge={unselectEdge}
                 unselectNode={unselectNode}
               />
             ) : (
               <EdgeLoop
                 key={index}
                 algorithm_current_step={algorithm_current_step}
-                arrow={arrow}
+                edge={edge}
                 editorActionType={editorActionType}
                 isMultiSelect={isMultiSelect}
                 scaleStage={scaleStage}
-                selectArrow={selectArrow}
-                selectedArrowId={selectedArrowId}
+                selectEdge={selectEdge}
+                selectedEdgeId={selectedEdgeId}
                 selectedNodeId={selectedNodeId}
-                unselectArrow={unselectArrow}
+                unselectEdge={unselectEdge}
                 unselectNode={unselectNode}
               />
             )
@@ -258,7 +258,7 @@ const Editor = ({
           <Node
             key={index}
             algorithm_current_step={algorithm_current_step}
-            createArrow={createArrow}
+            createEdge={createEdge}
             createShape={createShape}
             drawTempArrow={drawTempArrow}
             editorActionType={editorActionType}
@@ -267,10 +267,10 @@ const Editor = ({
             isMultiSelect={isMultiSelect}
             nodes={nodes}
             selectNode={selectNode}
-            selectedArrowId={selectedArrowId}
+            selectedEdgeId={selectedEdgeId}
             selectedNodeId={selectedNodeId}
             thisNode={node}
-            unselectArrow={unselectArrow}
+            unselectEdge={unselectEdge}
             unselectNode={unselectNode}
             updateNodePositionEnd={updateNodePositionEnd}
             updateNodePositionStart={updateNodePositionStart}

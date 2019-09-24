@@ -1,9 +1,9 @@
 import {
   CHANGE_EDITOR_ACTION_TYPE,
-  CREATE_ARROW,
+  CREATE_EDGE,
   CREATE_NODE,
   CREATE_SHAPE,
-  DELETE_ARROW,
+  DELETE_EDGE,
   DELETE_NODE,
   DELETE_SHAPE,
   DRAW_TEMP_ARROW,
@@ -11,15 +11,15 @@ import {
   LOAD_STATE,
   MULTI_SELECT,
   REDO_EDITOR_HISTORY,
-  SELECT_ARROW,
+  SELECT_EDGE,
   SCALE_STAGE,
   SET_INITIAL_NODE,
   SELECT_NODE,
   UNDO_EDITOR_HISTORY,
-  UNSELECT_ARROW,
+  UNSELECT_EDGE,
   UNSELECT_NODE,
-  UPDATE_ARROW_POSITION,
-  UPDATE_ARROW_WEIGHT,
+  UPDATE_EDGE_POSITION,
+  UPDATE_EDGE_WEIGHT,
   UPDATE_CURSOR_POSITION,
   UPDATE_NODE_NAME,
   UPDATE_NODE_POSITION_END,
@@ -28,19 +28,19 @@ import {
 } from './types'
 
 export const initialState = {
-  connected: {},
   cursor: {
     x: 0,
     y: 0,
   },
   drawTempArrow: false,
+  edges: {},
   editorActionType: 'select',
   initialNode: null,
   isMultiSelect: false,
 
   nodes: {},
   scaleStage: 1.4641,
-  selectedArrow: [],
+  selectedEdge: [],
   selectedNode: [],
 
   stage: {
@@ -90,38 +90,36 @@ const update = (state = initialState, action) => {
         ...state,
         stage: action.payload,
       }
-    case CREATE_ARROW:
+    case CREATE_EDGE:
       return {
         ...state,
-        connected: {
-          ...state.connected,
+        edges: {
+          ...state.edges,
           [action.payload.id]: action.payload,
         },
       }
-    case UPDATE_ARROW_POSITION:
+    case UPDATE_EDGE_POSITION:
       return {
         ...state,
-        connected: { ...state.connected, [action.payload.id]: action.payload },
+        edges: { ...state.edges, [action.payload.id]: action.payload },
       }
-    case SELECT_ARROW:
+    case SELECT_EDGE:
       return {
         ...state,
-        connected: { ...state.connected, [action.payload.id]: action.payload },
-        selectedArrow: [...state.selectedArrow, action.payload.id],
+        edges: { ...state.edges, [action.payload.id]: action.payload },
+        selectedEdge: [...state.selectedEdge, action.payload.id],
       }
-    case UNSELECT_ARROW:
+    case UNSELECT_EDGE:
       return {
         ...state,
-        connected: { ...state.connected, [action.payload.id]: action.payload },
-        selectedArrow: state.selectedArrow.filter(
-          id => id !== action.payload.id,
-        ),
+        edges: { ...state.edges, [action.payload.id]: action.payload },
+        selectedEdge: state.selectedEdge.filter(id => id !== action.payload.id),
       }
-    case DELETE_ARROW:
+    case DELETE_EDGE:
       return {
         ...state,
-        connected: delete state.connected[action.payload] && state.connected,
-        selectedArrow: state.selectedArrow.filter(id => id !== action.payload),
+        edges: delete state.edges[action.payload] && state.edges,
+        selectedEdge: state.selectedEdge.filter(id => id !== action.payload),
       }
     case MULTI_SELECT:
       return {
@@ -153,13 +151,13 @@ const update = (state = initialState, action) => {
           },
         },
       }
-    case UPDATE_ARROW_WEIGHT:
+    case UPDATE_EDGE_WEIGHT:
       return {
         ...state,
-        connected: {
-          ...state.connected,
+        edges: {
+          ...state.edges,
           [action.payload.id]: {
-            ...state.connected[action.payload.id],
+            ...state.edges[action.payload.id],
             weight: action.payload.weight,
           },
         },

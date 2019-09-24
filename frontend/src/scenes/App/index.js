@@ -33,7 +33,7 @@ import { Fade } from '@material-ui/core'
 const mapStateToProps = state => ({
   editorActionType: state.editor.present.editorActionType,
   isMultiSelect: state.editor.isMultiSelect,
-  selectedEdges: state.editor.present.selectedArrow,
+  selectedEdges: state.editor.present.selectedEdge,
   selectedNodes: state.editor.present.selectedNode,
 })
 

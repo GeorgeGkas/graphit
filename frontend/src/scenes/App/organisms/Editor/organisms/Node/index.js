@@ -15,7 +15,7 @@ import algorithmComponentsTheme from '../../../../../../themes/algorithmComponen
  */
 const Node = ({
   algorithm_current_step,
-  createArrow,
+  createEdge,
   createShape,
   drawTempArrow,
   editorActionType,
@@ -24,10 +24,10 @@ const Node = ({
   isMultiSelect,
   nodes,
   selectNode,
-  selectedArrowId,
+  selectedEdgeId,
   selectedNodeId,
   thisNode,
-  unselectArrow,
+  unselectEdge,
   unselectNode,
   updateNodePositionEnd,
   updateNodePositionStart,
@@ -53,8 +53,8 @@ const Node = ({
             unselectNode(ID)
           }
 
-          for (const ID of selectedArrowId) {
-            unselectArrow(ID)
+          for (const ID of selectedEdgeId) {
+            unselectEdge(ID)
           }
 
           selectNode(thisNode.id)
@@ -64,7 +64,7 @@ const Node = ({
           selectNode(thisNode.id)
           drawTempArrow(true)
         } else {
-          createArrow({
+          createEdge({
             from: selectedNodeId[0],
             to: thisNode.id,
           })
@@ -191,8 +191,8 @@ const Node = ({
             unselectNode(ID)
           }
 
-          for (const ID of selectedArrowId) {
-            unselectArrow(ID)
+          for (const ID of selectedEdgeId) {
+            unselectEdge(ID)
           }
 
           selectNode(thisNode.id)

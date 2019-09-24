@@ -3,10 +3,10 @@ import editorComponentsTheme from '../../../../../themes/editorComponents.theme'
 
 const {
   changeEditorActionType: changeEditorActionTypeAction,
-  createArrow: createArrowAction,
+  createEdge: createEdgeAction,
   createNode: createNodeAction,
   createShape,
-  deleteArrow,
+  deleteEdge,
   deleteNode: deleteNodeAction,
   deleteShape,
   drawTempArrow,
@@ -15,14 +15,14 @@ const {
   multiSelect,
   redoEditorHistory,
   scaleStage: scaleStageBy,
-  selectArrow: selectArrowAction,
+  selectEdge: selectEdgeAction,
   selectNode: selectNodeAction,
   setInitialNode,
   undoEditorHistory,
-  unselectArrow: unselectArrowAction,
+  unselectEdge: unselectEdgeAction,
   unselectNode: unselectNodeAction,
-  updateArrowPosition,
-  updateArrowWeight,
+  updateEdgePosition,
+  updateEdgeWeight,
   updateCursorPosition,
   updateNodeName,
   updateNodePositionEnd: updateNodePositionEndAction,
@@ -39,8 +39,8 @@ const changeEditorActionType = editorType => (dispatch, getState) => {
     dispatch(unselectNode(ID))
   }
 
-  for (const ID of getState().editor.present.selectedArrow) {
-    dispatch(unselectArrow(ID))
+  for (const ID of getState().editor.present.selectedEdge) {
+    dispatch(unselectEdge(ID))
   }
 
   dispatch(changeEditorActionTypeAction(editorType))
@@ -87,37 +87,37 @@ const unselectNode = id => (dispatch, getState) => {
 }
 
 const updateNodePositionStart = node => (dispatch, getState) => {
-  for (const connector of Object.values(getState().editor.present.connected)) {
-    if (connector.from.id === node.id && connector.to.id === node.id) {
+  for (const edge of Object.values(getState().editor.present.edges)) {
+    if (edge.from.id === node.id && edge.to.id === node.id) {
       dispatch(
-        updateArrowPosition({
-          ...connector,
+        updateEdgePosition({
+          ...edge,
           from: {
-            id: connector.from.id,
+            id: edge.from.id,
             ...node.pos,
           },
           to: {
-            id: connector.from.id,
+            id: edge.from.id,
             ...node.pos,
           },
         }),
       )
-    } else if (connector.from.id === node.id) {
+    } else if (edge.from.id === node.id) {
       dispatch(
-        updateArrowPosition({
-          ...connector,
+        updateEdgePosition({
+          ...edge,
           from: {
-            id: connector.from.id,
+            id: edge.from.id,
             ...node.pos,
           },
         }),
       )
-    } else if (connector.to.id === node.id) {
+    } else if (edge.to.id === node.id) {
       dispatch(
-        updateArrowPosition({
-          ...connector,
+        updateEdgePosition({
+          ...edge,
           to: {
-            id: connector.to.id,
+            id: edge.to.id,
             ...node.pos,
           },
         }),
@@ -137,18 +137,18 @@ const updateNodePositionEnd = node => (dispatch, getState) => {
   dispatch(updateNodePositionEndAction())
 }
 
-const createArrow = nodes => (dispatch, getState) => {
-  let connectExist = false
+const createEdge = nodes => (dispatch, getState) => {
+  let edgeExist = false
 
-  for (const connector of Object.values(getState().editor.present.connected)) {
-    if (connector.from.id === nodes.from && connector.to.id === nodes.to) {
-      connectExist = true
+  for (const edge of Object.values(getState().editor.present.edges)) {
+    if (edge.from.id === nodes.from && edge.to.id === nodes.to) {
+      edgeExist = true
     }
   }
 
-  if (!connectExist) {
+  if (!edgeExist) {
     dispatch(
-      createArrowAction({
+      createEdgeAction({
         fill: editorComponentsTheme.edge.neutral.color,
         from: {
           id: nodes.from,
@@ -169,41 +169,41 @@ const createArrow = nodes => (dispatch, getState) => {
 }
 
 const deleteNode = id => (dispatch, getState) => {
-  for (const connector of Object.values(getState().editor.present.connected)) {
-    if (connector.from.id === id || connector.to.id === id) {
-      dispatch(deleteArrow(connector.id))
+  for (const edge of Object.values(getState().editor.present.edges)) {
+    if (edge.from.id === id || edge.to.id === id) {
+      dispatch(deleteEdge(edge.id))
     }
   }
 
   dispatch(deleteNodeAction(id))
 }
 
-const selectArrow = id => (dispatch, getState) => {
-  const arrow = {
-    ...getState().editor.present.connected[id],
+const selectEdge = id => (dispatch, getState) => {
+  const edge = {
+    ...getState().editor.present.edges[id],
     fill: editorComponentsTheme.edge.selected.color,
     stroke: editorComponentsTheme.edge.selected.color,
   }
 
-  dispatch(selectArrowAction(arrow))
+  dispatch(selectEdgeAction(edge))
 }
 
-const unselectArrow = id => (dispatch, getState) => {
-  const arrow = {
-    ...getState().editor.present.connected[id],
+const unselectEdge = id => (dispatch, getState) => {
+  const edge = {
+    ...getState().editor.present.edges[id],
     fill: editorComponentsTheme.edge.neutral.color,
     stroke: editorComponentsTheme.edge.neutral.color,
   }
 
-  dispatch(unselectArrowAction(arrow))
+  dispatch(unselectEdgeAction(edge))
 }
 
 export {
   changeEditorActionType,
-  createArrow,
+  createEdge,
   createNode,
   createShape,
-  deleteArrow,
+  deleteEdge,
   deleteNode,
   deleteShape,
   drawTempArrow,
@@ -212,14 +212,14 @@ export {
   redoEditorHistory,
   multiSelect,
   scaleStageBy,
-  selectArrow,
+  selectEdge,
   selectNode,
   setInitialNode,
   undoEditorHistory,
-  unselectArrow,
+  unselectEdge,
   unselectNode,
-  updateArrowPosition,
-  updateArrowWeight,
+  updateEdgePosition,
+  updateEdgeWeight,
   updateNodeName,
   updateCursorPosition,
   updateNodePositionEnd,

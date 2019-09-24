@@ -45,8 +45,8 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  selectedArrow:
-    state.editor.present.connected[state.editor.present.selectedArrow[0]],
+  selectedEdge:
+    state.editor.present.edges[state.editor.present.selectedEdge[0]],
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
@@ -64,14 +64,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const EdgeEditor = ({
   editorDialogVisible,
   handleClose,
-  selectedArrow,
-  updateArrowWeight,
+  selectedEdge,
+  updateEdgeWeight,
 }) => {
   const classes = useStyles()
 
   const [edgeWeight, setEdgeWeight] = useState({
     valid: true,
-    weight: selectedArrow.weight,
+    weight: selectedEdge.weight,
   })
 
   const validateEdgeWeight = e =>
@@ -81,8 +81,8 @@ const EdgeEditor = ({
     })
 
   const submitForm = () => {
-    updateArrowWeight({
-      id: selectedArrow.id,
+    updateEdgeWeight({
+      id: selectedEdge.id,
       weight: edgeWeight.weight,
     })
 
@@ -112,7 +112,7 @@ const EdgeEditor = ({
             <TextField
               autoFocus
               fullWidth
-              defaultValue={selectedArrow.weight}
+              defaultValue={selectedEdge.weight}
               error={!edgeWeight.valid}
               helperText="Use any negative or positive integer."
               id="edge_weight_input"

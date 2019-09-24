@@ -20,21 +20,21 @@ import buildEdge from './services/buildEdge'
  */
 const EdgeNotLoop = ({
   algorithm_current_step,
-  arrow,
+  edge,
   curvePower,
   editorActionType,
   isMultiSelect,
   nodeRadius,
   secondExist,
-  selectArrow,
-  selectedArrowId,
+  selectEdge,
+  selectedEdgeId,
   selectedNodeId,
-  unselectArrow,
+  unselectEdge,
   unselectNode,
 }) => {
   let points = buildEdge({
     curvePower,
-    edge: arrow,
+    edge,
     nodeRadius,
     secondExist,
   })
@@ -44,29 +44,29 @@ const EdgeNotLoop = ({
       onClick={e => {
         if (editorActionType === 'select') {
           if (isMultiSelect) {
-            if (!selectedArrowId.includes(arrow.id)) {
-              selectArrow(arrow.id)
+            if (!selectedEdgeId.includes(edge.id)) {
+              selectEdge(edge.id)
             } else {
-              unselectArrow(arrow.id)
+              unselectEdge(edge.id)
             }
           } else {
             for (const ID of selectedNodeId) {
               unselectNode(ID)
             }
 
-            for (const ID of selectedArrowId) {
-              unselectArrow(ID)
+            for (const ID of selectedEdgeId) {
+              unselectEdge(ID)
             }
 
-            selectArrow(arrow.id)
+            selectEdge(edge.id)
           }
         }
         e.cancelBubble = true
       }}
     >
-      {selectedArrowId.includes(arrow.id) ? (
+      {selectedEdgeId.includes(edge.id) ? (
         <Arrow
-          key={arrow.id + '_selected'}
+          key={edge.id + '_selected'}
           fill={editorComponentsTheme.edge.selected.color}
           opacity={0.7}
           pointerLength={15}
@@ -79,25 +79,25 @@ const EdgeNotLoop = ({
       ) : null}
 
       <Arrow
-        key={arrow.id}
+        key={edge.id}
         fill={
-          algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
+          algorithm_current_step.highlighted_edges.some(id => id === edge.id)
             ? algorithmComponentsTheme.edge.highlighted.color
-            : algorithm_current_step.selected_edges.some(id => id === arrow.id)
+            : algorithm_current_step.selected_edges.some(id => id === edge.id)
             ? algorithmComponentsTheme.edge.selected.color
             : editorActionType === 'isPlaying'
             ? algorithmComponentsTheme.edge.neutral.color
             : editorComponentsTheme.edge.neutral.color
         }
         hitStrokeWidth={25}
-        id={arrow.id}
+        id={edge.id}
         pointerLength={15}
         pointerWidth={10}
         points={points}
         stroke={
-          algorithm_current_step.highlighted_edges.some(id => id === arrow.id)
+          algorithm_current_step.highlighted_edges.some(id => id === edge.id)
             ? algorithmComponentsTheme.edge.highlighted.color
-            : algorithm_current_step.selected_edges.some(id => id === arrow.id)
+            : algorithm_current_step.selected_edges.some(id => id === edge.id)
             ? algorithmComponentsTheme.edge.selected.color
             : editorActionType === 'isPlaying'
             ? algorithmComponentsTheme.edge.neutral.color
@@ -126,7 +126,7 @@ const EdgeNotLoop = ({
         height={2 * 24}
         stroke={editorComponentsTheme.stage.fill.color}
         strokeWidth={7}
-        text={arrow.weight}
+        text={edge.weight}
         verticalAlign="middle"
         width={2 * 24}
         x={points[2] - 24}
@@ -137,7 +137,7 @@ const EdgeNotLoop = ({
         fontFamily="Roboto"
         fontSize={15}
         height={2 * 24}
-        text={arrow.weight}
+        text={edge.weight}
         verticalAlign="middle"
         width={2 * 24}
         x={points[2] - 24}

@@ -47,12 +47,12 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  allSelectedEdges: state.editor.present.selectedArrow,
+  allSelectedEdges: state.editor.present.selectedEdge,
   allSelectedNodes: state.editor.present.selectedNode,
   currentStageScale: state.editor.present.scaleStage,
-  edges: state.editor.present.connected,
+  edges: state.editor.present.edges,
   selectedEdge:
-    state.editor.present.connected[state.editor.present.selectedArrow[0]],
+    state.editor.present.edges[state.editor.present.selectedEdge[0]],
   selectedNode:
     state.editor.present.nodes[state.editor.present.selectedNode[0]],
 })
@@ -67,7 +67,7 @@ const PropertiesEditor = ({
   allSelectedEdges,
   allSelectedNodes,
   currentStageScale,
-  deleteArrow: deleteEdge,
+  deleteEdge,
   deleteNode,
   deleteShape,
   edges,
@@ -85,8 +85,8 @@ const PropertiesEditor = ({
     for (const node of allSelectedNodes) {
       deleteNode(node)
     }
-    for (const arrow of allSelectedEdges) {
-      deleteEdge(arrow)
+    for (const edge of allSelectedEdges) {
+      deleteEdge(edge)
     }
   }
 
