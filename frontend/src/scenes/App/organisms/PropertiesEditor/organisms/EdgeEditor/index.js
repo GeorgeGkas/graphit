@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
  */
 const mapStateToProps = state => ({
   selectedEdge:
-    state.editor.present.edges[state.editor.present.selectedEdge[0]],
+    state.editor.present.edges[state.editor.present.selectedEdges[0]],
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)

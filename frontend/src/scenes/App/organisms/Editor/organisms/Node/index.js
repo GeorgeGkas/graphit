@@ -24,7 +24,7 @@ const Node = ({
   isMultiSelect,
   nodes,
   selectNode,
-  selectedEdgeId,
+  selectedEdgesId,
   selectedNodeId,
   thisNode,
   unselectEdge,
@@ -53,7 +53,7 @@ const Node = ({
             unselectNode(ID)
           }
 
-          for (const ID of selectedEdgeId) {
+          for (const ID of selectedEdgesId) {
             unselectEdge(ID)
           }
 
@@ -191,7 +191,7 @@ const Node = ({
             unselectNode(ID)
           }
 
-          for (const ID of selectedEdgeId) {
+          for (const ID of selectedEdgesId) {
             unselectEdge(ID)
           }
 

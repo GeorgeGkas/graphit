@@ -42,7 +42,7 @@ export default () =>
             }))
             .reduce((obj, node) => ({ ...obj, [node.id]: node }), {}),
           scaleStage: currenState.scaleStage,
-          selectedEdge: [],
+          selectedEdges: [],
           selectedNode: [],
           stage: currenState.stage,
         }

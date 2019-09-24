@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
 
   nodes: state.editor.present.nodes,
   scaleStage: state.editor.present.scaleStage,
-  selectedEdgeId: state.editor.present.selectedEdge,
+  selectedEdgesId: state.editor.present.selectedEdges,
   selectedNodeId: state.editor.present.selectedNode,
   stage: state.editor.present.stage,
 })
@@ -73,7 +73,7 @@ const Editor = ({
   scaleStage,
   selectEdge,
   selectNode,
-  selectedEdgeId,
+  selectedEdgesId,
   selectedNodeId,
   stage,
   unselectEdge,
@@ -106,7 +106,7 @@ const Editor = ({
           unselectNode(node)
         }
 
-        for (const edge of selectedEdgeId) {
+        for (const edge of selectedEdgesId) {
           unselectEdge(edge)
         }
       } else if (editorActionType === 'node') {
@@ -201,7 +201,7 @@ const Editor = ({
                 nodeRadius={nodeRadius}
                 secondExist={secondExist}
                 selectEdge={selectEdge}
-                selectedEdgeId={selectedEdgeId}
+                selectedEdgesId={selectedEdgesId}
                 selectedNodeId={selectedNodeId}
                 unselectEdge={unselectEdge}
                 unselectNode={unselectNode}
@@ -215,7 +215,7 @@ const Editor = ({
                 isMultiSelect={isMultiSelect}
                 scaleStage={scaleStage}
                 selectEdge={selectEdge}
-                selectedEdgeId={selectedEdgeId}
+                selectedEdgesId={selectedEdgesId}
                 selectedNodeId={selectedNodeId}
                 unselectEdge={unselectEdge}
                 unselectNode={unselectNode}
@@ -267,7 +267,7 @@ const Editor = ({
             isMultiSelect={isMultiSelect}
             nodes={nodes}
             selectNode={selectNode}
-            selectedEdgeId={selectedEdgeId}
+            selectedEdgesId={selectedEdgesId}
             selectedNodeId={selectedNodeId}
             thisNode={node}
             unselectEdge={unselectEdge}

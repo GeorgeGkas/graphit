@@ -27,7 +27,7 @@ const EdgeNotLoop = ({
   nodeRadius,
   secondExist,
   selectEdge,
-  selectedEdgeId,
+  selectedEdgesId,
   selectedNodeId,
   unselectEdge,
   unselectNode,
@@ -44,7 +44,7 @@ const EdgeNotLoop = ({
       onClick={e => {
         if (editorActionType === 'select') {
           if (isMultiSelect) {
-            if (!selectedEdgeId.includes(edge.id)) {
+            if (!selectedEdgesId.includes(edge.id)) {
               selectEdge(edge.id)
             } else {
               unselectEdge(edge.id)
@@ -54,7 +54,7 @@ const EdgeNotLoop = ({
               unselectNode(ID)
             }
 
-            for (const ID of selectedEdgeId) {
+            for (const ID of selectedEdgesId) {
               unselectEdge(ID)
             }
 
@@ -64,7 +64,7 @@ const EdgeNotLoop = ({
         e.cancelBubble = true
       }}
     >
-      {selectedEdgeId.includes(edge.id) ? (
+      {selectedEdgesId.includes(edge.id) ? (
         <Arrow
           key={edge.id + '_selected'}
           fill={editorComponentsTheme.edge.selected.color}

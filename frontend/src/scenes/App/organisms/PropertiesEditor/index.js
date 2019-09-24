@@ -47,12 +47,12 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  allSelectedEdges: state.editor.present.selectedEdge,
+  allSelectedEdges: state.editor.present.selectedEdges,
   allSelectedNodes: state.editor.present.selectedNode,
   currentStageScale: state.editor.present.scaleStage,
   edges: state.editor.present.edges,
   selectedEdge:
-    state.editor.present.edges[state.editor.present.selectedEdge[0]],
+    state.editor.present.edges[state.editor.present.selectedEdges[0]],
   selectedNode:
     state.editor.present.nodes[state.editor.present.selectedNode[0]],
 })

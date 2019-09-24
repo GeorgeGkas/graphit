@@ -20,7 +20,7 @@ const EdgeLoop = ({
   isMultiSelect,
   scaleStage,
   selectEdge,
-  selectedEdgeId,
+  selectedEdgesId,
   selectedNodeId,
   unselectEdge,
   unselectNode,
@@ -29,7 +29,7 @@ const EdgeLoop = ({
     onClick={e => {
       if (editorActionType === 'select') {
         if (isMultiSelect) {
-          if (!selectedEdgeId.includes(edge.id)) {
+          if (!selectedEdgesId.includes(edge.id)) {
             selectEdge(edge.id)
           } else {
             unselectEdge(edge.id)
@@ -39,7 +39,7 @@ const EdgeLoop = ({
             unselectNode(ID)
           }
 
-          for (const ID of selectedEdgeId) {
+          for (const ID of selectedEdgesId) {
             unselectEdge(ID)
           }
 
@@ -76,11 +76,11 @@ const EdgeLoop = ({
           ? algorithmComponentsTheme.edge.selected.color
           : editorActionType === 'isPlaying'
           ? algorithmComponentsTheme.edge.neutral.color
-          : selectedEdgeId.includes(edge.id)
+          : selectedEdgesId.includes(edge.id)
           ? editorComponentsTheme.edge.selected.color
           : edge.stroke
       }
-      strokeWidth={selectedEdgeId.includes(edge.id) ? 5 : 1}
+      strokeWidth={selectedEdgesId.includes(edge.id) ? 5 : 1}
       width={35}
       x={edge.from.x - 35 / 2 + 5}
       y={edge.from.y - 35 / 2 + 5}
@@ -120,7 +120,7 @@ const EdgeLoop = ({
       onMouseOut={e => {
         if (
           editorActionType === 'select' &&
-          !selectedEdgeId.includes(edge.id)
+          !selectedEdgesId.includes(edge.id)
         ) {
           e.target.stroke(editorComponentsTheme.edge.neutral.color)
         }
@@ -128,7 +128,7 @@ const EdgeLoop = ({
       onMouseOver={e => {
         if (
           editorActionType === 'select' &&
-          !selectedEdgeId.includes(edge.id)
+          !selectedEdgesId.includes(edge.id)
         ) {
           e.target.stroke(editorComponentsTheme.edge.hovered.color)
         }

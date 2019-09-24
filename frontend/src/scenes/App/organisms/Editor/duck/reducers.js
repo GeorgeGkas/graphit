@@ -40,7 +40,7 @@ export const initialState = {
 
   nodes: {},
   scaleStage: 1.4641,
-  selectedEdge: [],
+  selectedEdges: [],
   selectedNode: [],
 
   stage: {
@@ -107,19 +107,21 @@ const update = (state = initialState, action) => {
       return {
         ...state,
         edges: { ...state.edges, [action.payload.id]: action.payload },
-        selectedEdge: [...state.selectedEdge, action.payload.id],
+        selectedEdges: [...state.selectedEdges, action.payload.id],
       }
     case UNSELECT_EDGE:
       return {
         ...state,
         edges: { ...state.edges, [action.payload.id]: action.payload },
-        selectedEdge: state.selectedEdge.filter(id => id !== action.payload.id),
+        selectedEdges: state.selectedEdges.filter(
+          id => id !== action.payload.id,
+        ),
       }
     case DELETE_EDGE:
       return {
         ...state,
         edges: delete state.edges[action.payload] && state.edges,
-        selectedEdge: state.selectedEdge.filter(id => id !== action.payload),
+        selectedEdges: state.selectedEdges.filter(id => id !== action.payload),
       }
     case MULTI_SELECT:
       return {
