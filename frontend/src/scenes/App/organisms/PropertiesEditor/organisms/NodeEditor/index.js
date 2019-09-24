@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 const mapStateToProps = state => ({
   initialNode: state.editor.present.initialNode,
   selectedNode:
-    state.editor.present.nodes[state.editor.present.selectedNode[0]],
+    state.editor.present.nodes[state.editor.present.selectedNodes[0]],
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)

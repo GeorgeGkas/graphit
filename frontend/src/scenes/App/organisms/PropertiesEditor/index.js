@@ -48,13 +48,13 @@ const useStyles = makeStyles(theme => ({
  */
 const mapStateToProps = state => ({
   allSelectedEdges: state.editor.present.selectedEdges,
-  allSelectedNodes: state.editor.present.selectedNode,
+  allSelectedNodes: state.editor.present.selectedNodes,
   currentStageScale: state.editor.present.scaleStage,
   edges: state.editor.present.edges,
   selectedEdge:
     state.editor.present.edges[state.editor.present.selectedEdges[0]],
   selectedNode:
-    state.editor.present.nodes[state.editor.present.selectedNode[0]],
+    state.editor.present.nodes[state.editor.present.selectedNodes[0]],
 })
 
 const mapDispatchToProps = dispatch =>

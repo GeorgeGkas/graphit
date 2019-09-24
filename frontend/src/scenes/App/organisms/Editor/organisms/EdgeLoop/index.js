@@ -21,7 +21,7 @@ const EdgeLoop = ({
   scaleStage,
   selectEdge,
   selectedEdgesId,
-  selectedNodeId,
+  selectedNodesId,
   unselectEdge,
   unselectNode,
 }) => (
@@ -35,7 +35,7 @@ const EdgeLoop = ({
             unselectEdge(edge.id)
           }
         } else {
-          for (const ID of selectedNodeId) {
+          for (const ID of selectedNodesId) {
             unselectNode(ID)
           }
 

@@ -25,7 +25,7 @@ const Node = ({
   nodes,
   selectNode,
   selectedEdgesId,
-  selectedNodeId,
+  selectedNodesId,
   thisNode,
   unselectEdge,
   unselectNode,
@@ -43,13 +43,13 @@ const Node = ({
 
       if (editorActionType === 'select') {
         if (isMultiSelect) {
-          if (selectedNodeId.includes(thisNode.id)) {
+          if (selectedNodesId.includes(thisNode.id)) {
             unselectNode(thisNode.id)
           } else {
             selectNode(thisNode.id)
           }
         } else {
-          for (const ID of selectedNodeId) {
+          for (const ID of selectedNodesId) {
             unselectNode(ID)
           }
 
@@ -60,16 +60,16 @@ const Node = ({
           selectNode(thisNode.id)
         }
       } else if (editorActionType === 'edge') {
-        if (selectedNodeId.length === 0) {
+        if (selectedNodesId.length === 0) {
           selectNode(thisNode.id)
           drawTempArrow(true)
         } else {
           createEdge({
-            from: selectedNodeId[0],
+            from: selectedNodesId[0],
             to: thisNode.id,
           })
           drawTempArrow(false)
-          unselectNode(selectedNodeId[0])
+          unselectNode(selectedNodesId[0])
           createShape()
         }
       }
@@ -77,7 +77,7 @@ const Node = ({
     onDragEnd={e => {
       if (editorActionType === 'select' || editorActionType === 'isPlaying') {
         if (grid) {
-          for (const selected_node of selectedNodeId) {
+          for (const selected_node of selectedNodesId) {
             e.currentTarget
               .getStage()
               .find('#' + selected_node)[0]
@@ -98,7 +98,7 @@ const Node = ({
           }
         }
 
-        for (const selected_node of selectedNodeId) {
+        for (const selected_node of selectedNodesId) {
           updateNodePositionEnd({
             id: selected_node,
             pos: grid
@@ -138,7 +138,7 @@ const Node = ({
     onDragMove={e => {
       if (editorActionType === 'select' || editorActionType === 'isPlaying') {
         if (grid) {
-          if (selectedNodeId.length === 1) {
+          if (selectedNodesId.length === 1) {
             e.currentTarget
               .getStage()
               .find('#shadowCircle')[0]
@@ -149,7 +149,7 @@ const Node = ({
           }
         }
 
-        for (const selected_node of selectedNodeId) {
+        for (const selected_node of selectedNodesId) {
           updateNodePositionStart({
             id: selected_node,
             pos: {
@@ -187,7 +187,7 @@ const Node = ({
         }
 
         if (!isMultiSelect) {
-          for (const ID of selectedNodeId) {
+          for (const ID of selectedNodesId) {
             unselectNode(ID)
           }
 
@@ -197,7 +197,7 @@ const Node = ({
 
           selectNode(thisNode.id)
         } else {
-          if (!selectedNodeId.includes(thisNode.id)) {
+          if (!selectedNodesId.includes(thisNode.id)) {
             selectNode(thisNode.id)
           }
         }
@@ -229,7 +229,7 @@ const Node = ({
       }
     }}
   >
-    {selectedNodeId.includes(thisNode.id) ? (
+    {selectedNodesId.includes(thisNode.id) ? (
       <Circle
         fill={editorComponentsTheme.node.selected.color}
         height={45}

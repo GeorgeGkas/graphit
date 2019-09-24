@@ -28,7 +28,7 @@ const EdgeNotLoop = ({
   secondExist,
   selectEdge,
   selectedEdgesId,
-  selectedNodeId,
+  selectedNodesId,
   unselectEdge,
   unselectNode,
 }) => {
@@ -50,7 +50,7 @@ const EdgeNotLoop = ({
               unselectEdge(edge.id)
             }
           } else {
-            for (const ID of selectedNodeId) {
+            for (const ID of selectedNodesId) {
               unselectNode(ID)
             }
 

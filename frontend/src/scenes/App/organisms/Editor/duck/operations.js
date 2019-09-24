@@ -35,7 +35,7 @@ const changeEditorActionType = editorType => (dispatch, getState) => {
     return
   }
 
-  for (const ID of getState().editor.present.selectedNode) {
+  for (const ID of getState().editor.present.selectedNodes) {
     dispatch(unselectNode(ID))
   }
 

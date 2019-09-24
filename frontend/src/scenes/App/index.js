@@ -34,7 +34,7 @@ const mapStateToProps = state => ({
   editorActionType: state.editor.present.editorActionType,
   isMultiSelect: state.editor.isMultiSelect,
   selectedEdges: state.editor.present.selectedEdges,
-  selectedNodes: state.editor.present.selectedNode,
+  selectedNodes: state.editor.present.selectedNodes,
 })
 
 const mapDispatchToProps = dispatch =>

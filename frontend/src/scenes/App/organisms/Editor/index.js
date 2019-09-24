@@ -36,7 +36,7 @@ const mapStateToProps = state => ({
   nodes: state.editor.present.nodes,
   scaleStage: state.editor.present.scaleStage,
   selectedEdgesId: state.editor.present.selectedEdges,
-  selectedNodeId: state.editor.present.selectedNode,
+  selectedNodesId: state.editor.present.selectedNodes,
   stage: state.editor.present.stage,
 })
 
@@ -74,7 +74,7 @@ const Editor = ({
   selectEdge,
   selectNode,
   selectedEdgesId,
-  selectedNodeId,
+  selectedNodesId,
   stage,
   unselectEdge,
   unselectNode,
@@ -102,7 +102,7 @@ const Editor = ({
        * create new nodes.
        */
       if (editorActionType === 'select') {
-        for (const node of selectedNodeId) {
+        for (const node of selectedNodesId) {
           unselectNode(node)
         }
 
@@ -147,7 +147,7 @@ const Editor = ({
        */
       isDrawingTempArrow &&
         editorActionType === 'edge' &&
-        selectedNodeId.map((node, id) => (
+        selectedNodesId.map((node, id) => (
           <Arrow
             key={id}
             dash={[10, 10]}
@@ -202,7 +202,7 @@ const Editor = ({
                 secondExist={secondExist}
                 selectEdge={selectEdge}
                 selectedEdgesId={selectedEdgesId}
-                selectedNodeId={selectedNodeId}
+                selectedNodesId={selectedNodesId}
                 unselectEdge={unselectEdge}
                 unselectNode={unselectNode}
               />
@@ -216,7 +216,7 @@ const Editor = ({
                 scaleStage={scaleStage}
                 selectEdge={selectEdge}
                 selectedEdgesId={selectedEdgesId}
-                selectedNodeId={selectedNodeId}
+                selectedNodesId={selectedNodesId}
                 unselectEdge={unselectEdge}
                 unselectNode={unselectNode}
               />
@@ -268,7 +268,7 @@ const Editor = ({
             nodes={nodes}
             selectNode={selectNode}
             selectedEdgesId={selectedEdgesId}
-            selectedNodeId={selectedNodeId}
+            selectedNodesId={selectedNodesId}
             thisNode={node}
             unselectEdge={unselectEdge}
             unselectNode={unselectNode}

@@ -41,7 +41,7 @@ export const initialState = {
   nodes: {},
   scaleStage: 1.4641,
   selectedEdges: [],
-  selectedNode: [],
+  selectedNodes: [],
 
   stage: {
     x: 0,
@@ -61,19 +61,21 @@ const update = (state = initialState, action) => {
       return {
         ...state,
         nodes: { ...state.nodes, [action.payload.id]: action.payload },
-        selectedNode: [...state.selectedNode, action.payload.id],
+        selectedNodes: [...state.selectedNodes, action.payload.id],
       }
     case UNSELECT_NODE:
       return {
         ...state,
         nodes: { ...state.nodes, [action.payload.id]: action.payload },
-        selectedNode: state.selectedNode.filter(id => id !== action.payload.id),
+        selectedNodes: state.selectedNodes.filter(
+          id => id !== action.payload.id,
+        ),
       }
     case DELETE_NODE:
       return {
         ...state,
         nodes: delete state.nodes[action.payload] && state.nodes,
-        selectedNode: state.selectedNode.filter(id => id !== action.payload),
+        selectedNodes: state.selectedNodes.filter(id => id !== action.payload),
       }
     case UPDATE_CURSOR_POSITION:
       return {
