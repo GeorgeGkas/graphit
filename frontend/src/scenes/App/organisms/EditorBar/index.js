@@ -245,7 +245,7 @@ const EditorBar = ({
                 disabled={editorActionType === 'isPlaying'}
                 onClick={() => changeEditorActionType('node')}
               >
-                <DeviceHubIcon />
+                <CategoryIcon />
               </IconButton>
             </div>
           </Tooltip>
@@ -261,7 +261,7 @@ const EditorBar = ({
                 disabled={editorActionType === 'isPlaying'}
                 onClick={() => changeEditorActionType('edge')}
               >
-                <CategoryIcon />
+                <DeviceHubIcon />
               </IconButton>
             </div>
           </Tooltip>
