@@ -64,11 +64,17 @@ const updateEdgeProperties = (id, properties) => ({
   type: types.UPDATE_EDGE_PROPERTIES,
 })
 
+const loadGraph = graph => ({
+  payload: graph,
+  type: types.LOAD_GRAPH,
+})
+
 export {
   createEdge,
   createNode,
   deleteEdge,
   deleteNode,
+  loadGraph,
   selectEdge,
   selectNode,
   unselectEdge,

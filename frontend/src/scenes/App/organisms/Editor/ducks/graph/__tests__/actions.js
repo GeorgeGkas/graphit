@@ -7,6 +7,16 @@
 import * as actions from '../actions'
 import * as types from '../types'
 
+test('load graph', () => {
+  const payload = {}
+  const expectedAction = {
+    payload,
+    type: types.LOAD_GRAPH,
+  }
+
+  expect(actions.loadGraph(payload)).toEqual(expectedAction)
+})
+
 test('create a node', () => {
   const payload = {}
   const expectedAction = {

@@ -38,6 +38,31 @@ test('return initial state', () => {
   expect(reducer(undefined, {})).toEqual(initialState)
 })
 
+test('load graph', () => {
+  const initialReducerState = { ...initialState }
+  const afterLoadingGraph = reducer(initialReducerState, {
+    payload: {
+      edges: {
+        edge,
+      },
+      nodes: {
+        node,
+      },
+    },
+    type: types.LOAD_GRAPH,
+  })
+
+  expect(initialReducerState).toEqual(initialState)
+  expect(afterLoadingGraph).toEqual({
+    edges: {
+      edge,
+    },
+    nodes: {
+      node,
+    },
+  })
+})
+
 test('handle create node', () => {
   const initialReducerState = { ...initialState }
   const afterInsertingNode = reducer(initialReducerState, {

@@ -43,6 +43,8 @@ export const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.LOAD_GRAPH:
+      return action.payload
     case types.CREATE_NODE:
       return set(`nodes[${action.payload.id}]`, action.payload, state)
     case types.DELETE_NODE:
