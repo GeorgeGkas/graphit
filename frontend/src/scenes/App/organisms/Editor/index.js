@@ -31,8 +31,6 @@ const mapStateToProps = state => ({
   editorActionType: state.editor.present.editorActionType,
   initialNode: state.editor.present.initialNode,
   isDrawingTempArrow: state.editor.present.drawTempArrow,
-  isMultiSelect: state.editor.present.isMultiSelect,
-
   nodes: state.editor.present.nodes,
   scaleStage: state.editor.present.scaleStage,
   selectedEdgesId: state.editor.present.selectedEdges,
@@ -68,7 +66,6 @@ const Editor = ({
   grid,
   initialNode,
   isDrawingTempArrow,
-  isMultiSelect,
   nodes,
   scaleStage,
   selectEdge,
@@ -197,7 +194,6 @@ const Editor = ({
                 edge={edge}
                 curvePower={curvePower}
                 editorActionType={editorActionType}
-                isMultiSelect={isMultiSelect}
                 nodeRadius={nodeRadius}
                 secondExist={secondExist}
                 selectEdge={selectEdge}
@@ -212,7 +208,6 @@ const Editor = ({
                 algorithm_current_step={algorithm_current_step}
                 edge={edge}
                 editorActionType={editorActionType}
-                isMultiSelect={isMultiSelect}
                 scaleStage={scaleStage}
                 selectEdge={selectEdge}
                 selectedEdgesId={selectedEdgesId}
@@ -264,7 +259,6 @@ const Editor = ({
             editorActionType={editorActionType}
             grid={grid}
             initialNode={initialNode}
-            isMultiSelect={isMultiSelect}
             nodes={nodes}
             selectNode={selectNode}
             selectedEdgesId={selectedEdgesId}

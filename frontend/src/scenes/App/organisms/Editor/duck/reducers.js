@@ -9,7 +9,6 @@ import {
   DRAW_TEMP_ARROW,
   INIT_EDITOR_HISTORY,
   LOAD_STATE,
-  MULTI_SELECT,
   REDO_EDITOR_HISTORY,
   SELECT_EDGE,
   SCALE_STAGE,
@@ -36,7 +35,6 @@ export const initialState = {
   edges: {},
   editorActionType: 'select',
   initialNode: null,
-  isMultiSelect: false,
 
   nodes: {},
   scaleStage: 1.4641,
@@ -124,11 +122,6 @@ const update = (state = initialState, action) => {
         ...state,
         edges: delete state.edges[action.payload] && state.edges,
         selectedEdges: state.selectedEdges.filter(id => id !== action.payload),
-      }
-    case MULTI_SELECT:
-      return {
-        ...state,
-        isMultiSelect: action.payload,
       }
     case SCALE_STAGE:
       return {

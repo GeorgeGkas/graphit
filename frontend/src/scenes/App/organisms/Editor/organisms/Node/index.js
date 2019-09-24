@@ -21,7 +21,6 @@ const Node = ({
   editorActionType,
   grid,
   initialNode,
-  isMultiSelect,
   nodes,
   selectNode,
   selectedEdgesId,
@@ -42,23 +41,15 @@ const Node = ({
       e.cancelBubble = true
 
       if (editorActionType === 'select') {
-        if (isMultiSelect) {
-          if (selectedNodesId.includes(thisNode.id)) {
-            unselectNode(thisNode.id)
-          } else {
-            selectNode(thisNode.id)
-          }
-        } else {
-          for (const ID of selectedNodesId) {
-            unselectNode(ID)
-          }
-
-          for (const ID of selectedEdgesId) {
-            unselectEdge(ID)
-          }
-
-          selectNode(thisNode.id)
+        for (const ID of selectedNodesId) {
+          unselectNode(ID)
         }
+
+        for (const ID of selectedEdgesId) {
+          unselectEdge(ID)
+        }
+
+        selectNode(thisNode.id)
       } else if (editorActionType === 'edge') {
         if (selectedNodesId.length === 0) {
           selectNode(thisNode.id)
@@ -186,20 +177,8 @@ const Node = ({
             .show()
         }
 
-        if (!isMultiSelect) {
-          for (const ID of selectedNodesId) {
-            unselectNode(ID)
-          }
-
-          for (const ID of selectedEdgesId) {
-            unselectEdge(ID)
-          }
-
+        if (!selectedNodesId.includes(thisNode.id)) {
           selectNode(thisNode.id)
-        } else {
-          if (!selectedNodesId.includes(thisNode.id)) {
-            selectNode(thisNode.id)
-          }
         }
       }
       e.cancelBubble = true

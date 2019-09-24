@@ -69,11 +69,6 @@ const deleteEdge = id => ({
   type: types.DELETE_EDGE,
 })
 
-const multiSelect = state => ({
-  payload: state,
-  type: types.MULTI_SELECT,
-})
-
 const deleteShape = () => ({
   type: types.DELETE_SHAPE,
 })
@@ -140,7 +135,6 @@ export {
   initEditorHistory,
   initHistory,
   loadState,
-  multiSelect,
   redoEditorHistory,
   scaleStage,
   selectEdge,

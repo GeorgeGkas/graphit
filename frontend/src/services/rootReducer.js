@@ -34,7 +34,6 @@ export default () =>
           cursor: currenState.cursor,
           drawTempArrow: false,
           editorActionType: 'select',
-          isMultiSelect: false,
           nodes: Object.values(currenState.nodes)
             .map(node => ({
               ...node,

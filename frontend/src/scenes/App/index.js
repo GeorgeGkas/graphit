@@ -32,7 +32,6 @@ import { Fade } from '@material-ui/core'
  */
 const mapStateToProps = state => ({
   editorActionType: state.editor.present.editorActionType,
-  isMultiSelect: state.editor.isMultiSelect,
   selectedEdges: state.editor.present.selectedEdges,
   selectedNodes: state.editor.present.selectedNodes,
 })
@@ -43,12 +42,7 @@ const mapDispatchToProps = dispatch =>
 /**
  * Component.
  */
-const App = ({
-  editorActionType,
-  isMultiSelect,
-  selectedEdges,
-  selectedNodes,
-}) => {
+const App = ({ editorActionType, selectedEdges, selectedNodes }) => {
   const [grid, makeGridVisible] = useState(false)
   const [dashboard, makeDashboardVisible] = useState(false)
 
@@ -57,7 +51,6 @@ const App = ({
 
   const shouldRenderPropertiesEditor =
     editorActionType === 'select' &&
-    !isMultiSelect &&
     (selectedEdges.length ^ selectedNodes.length) === 1
 
   const showAlgorithmPanel = editorActionType === 'isPlaying'

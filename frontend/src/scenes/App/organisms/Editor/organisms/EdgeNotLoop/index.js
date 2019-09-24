@@ -23,7 +23,6 @@ const EdgeNotLoop = ({
   edge,
   curvePower,
   editorActionType,
-  isMultiSelect,
   nodeRadius,
   secondExist,
   selectEdge,
@@ -43,23 +42,15 @@ const EdgeNotLoop = ({
     <Group
       onClick={e => {
         if (editorActionType === 'select') {
-          if (isMultiSelect) {
-            if (!selectedEdgesId.includes(edge.id)) {
-              selectEdge(edge.id)
-            } else {
-              unselectEdge(edge.id)
-            }
-          } else {
-            for (const ID of selectedNodesId) {
-              unselectNode(ID)
-            }
-
-            for (const ID of selectedEdgesId) {
-              unselectEdge(ID)
-            }
-
-            selectEdge(edge.id)
+          for (const ID of selectedNodesId) {
+            unselectNode(ID)
           }
+
+          for (const ID of selectedEdgesId) {
+            unselectEdge(ID)
+          }
+
+          selectEdge(edge.id)
         }
         e.cancelBubble = true
       }}
