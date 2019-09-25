@@ -38,6 +38,26 @@ test('return initial state', () => {
   expect(reducer(undefined, {})).toEqual(initialState)
 })
 
+test('return initial state on history actions', () => {
+  expect(
+    reducer(initialState, {
+      type: types.INIT_GRAPH_HISTORY,
+    }),
+  ).toEqual(initialState)
+
+  expect(
+    reducer(initialState, {
+      type: types.REDO_GRAPH_HISTORY,
+    }),
+  ).toEqual(initialState)
+
+  expect(
+    reducer(initialState, {
+      type: types.UNDO_GRAPH_HISTORY,
+    }),
+  ).toEqual(initialState)
+})
+
 test('load graph', () => {
   const initialReducerState = { ...initialState }
   const afterLoadingGraph = reducer(initialReducerState, {

@@ -6,9 +6,12 @@ const {
   createNode: createNodeAction,
   deleteEdge,
   deleteNode,
-  loadGraph,
+  initGraphHistory,
+  loadGraph: loadGraphAction,
+  redoGraphHistory,
   selectEdge,
   selectNode,
+  undoGraphHistory,
   unselectEdge,
   unselectNode,
   updateEdgeProperties,
@@ -73,14 +76,22 @@ const createEdge = (fromNodeId, toNodeId) => (dispatch, getState) => {
   )
 }
 
+const loadGraph = graph => dispatch => {
+  dispatch(initGraphHistory())
+  dispatch(loadGraphAction(graph))
+}
+
 export {
   createEdge,
   createNode,
   deleteEdge,
   deleteNode,
+  initGraphHistory,
   loadGraph,
+  redoGraphHistory,
   selectEdge,
   selectNode,
+  undoGraphHistory,
   unselectEdge,
   unselectNode,
   updateEdgeProperties,

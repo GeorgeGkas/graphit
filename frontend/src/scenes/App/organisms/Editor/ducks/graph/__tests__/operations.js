@@ -241,3 +241,40 @@ test('do not create edge if exist', () => {
   expect(dispatch.mock.calls.length).toBe(0)
   expect(uuid.v4.mock.calls.length).toBe(0)
 })
+
+test('load Graph', () => {
+  const dispatch = jest.fn()
+  const graph = {
+    edges: {
+      edge: {
+        id: 'edge',
+        properties: {
+          weight: 0,
+        },
+        ui: {
+          connects: {
+            from: 'a',
+            to: 'a',
+          },
+          selected: false,
+        },
+      },
+    },
+    nodes: {},
+  }
+
+  operations.loadGraph(graph)(dispatch)
+
+  expect(dispatch.mock.calls.length).toBe(2)
+  expect(dispatch.mock.calls[0]).toEqual([
+    {
+      type: types.INIT_GRAPH_HISTORY,
+    },
+  ])
+  expect(dispatch.mock.calls[1]).toEqual([
+    {
+      payload: graph,
+      type: types.LOAD_GRAPH,
+    },
+  ])
+})

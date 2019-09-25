@@ -138,3 +138,30 @@ test('update edge properties', () => {
 
   expect(actions.updateEdgeProperties(id, properties)).toEqual(expectedAction)
 })
+
+test('init graph history', () => {
+  const payload = {}
+  const expectedAction = {
+    type: types.INIT_GRAPH_HISTORY,
+  }
+
+  expect(actions.initGraphHistory(payload)).toEqual(expectedAction)
+})
+
+test('undo graph history', () => {
+  const payload = {}
+  const expectedAction = {
+    type: types.UNDO_GRAPH_HISTORY,
+  }
+
+  expect(actions.undoGraphHistory(payload)).toEqual(expectedAction)
+})
+
+test('redo graph history', () => {
+  const payload = {}
+  const expectedAction = {
+    type: types.REDO_GRAPH_HISTORY,
+  }
+
+  expect(actions.redoGraphHistory(payload)).toEqual(expectedAction)
+})

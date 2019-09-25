@@ -69,14 +69,29 @@ const loadGraph = graph => ({
   type: types.LOAD_GRAPH,
 })
 
+const undoGraphHistory = () => ({
+  type: types.UNDO_GRAPH_HISTORY,
+})
+
+const redoGraphHistory = () => ({
+  type: types.REDO_GRAPH_HISTORY,
+})
+
+const initGraphHistory = () => ({
+  type: types.INIT_GRAPH_HISTORY,
+})
+
 export {
   createEdge,
   createNode,
   deleteEdge,
   deleteNode,
+  initGraphHistory,
   loadGraph,
+  redoGraphHistory,
   selectEdge,
   selectNode,
+  undoGraphHistory,
   unselectEdge,
   unselectNode,
   updateEdgeProperties,

@@ -85,6 +85,18 @@ const reducer = (state = initialState, action) => {
         ),
         state,
       )
+
+    /**
+     * Fall through graph history action types.
+     * This reducer is wrapped by redux-undo
+     * higher-order reducer which is invoked
+     * immediately after.
+     */
+    case types.INIT_GRAPH_HISTORY:
+    case types.UNDO_GRAPH_HISTORY:
+    case types.REDO_GRAPH_HISTORY:
+      return state
+
     default:
       return state
   }
