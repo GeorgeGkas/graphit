@@ -26,3 +26,13 @@ test('update current editor action', () => {
 
   expect(actions.updateCurrentEditorAction(payload)).toEqual(expectedAction)
 })
+
+test('update cursor position', () => {
+  const payload = {}
+  const expectedAction = {
+    payload,
+    type: types.UPDATE_CURSOR_POSITION,
+  }
+
+  expect(actions.updateCursorPosition(payload)).toEqual(expectedAction)
+})

@@ -6,6 +6,10 @@ import * as types from './types'
 
 export const initialState = {
   currentEditorAction: 'select',
+  cursor: {
+    x: 0,
+    y: 0,
+  },
   stage: {
     pos: {
       x: 0,
@@ -26,6 +30,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         stage: action.payload,
+      }
+    case types.UPDATE_CURSOR_POSITION:
+      return {
+        ...state,
+        cursor: action.payload,
       }
     default:
       return state

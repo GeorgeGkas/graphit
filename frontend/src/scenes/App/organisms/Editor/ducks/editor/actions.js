@@ -10,4 +10,9 @@ const updateCurrentEditorAction = actionType => ({
   type: types.UPDATE_CURRENT_EDITOR_ACTION,
 })
 
-export { updateCurrentEditorAction, updateStage }
+const updateCursorPosition = pos => ({
+  payload: pos,
+  type: types.UPDATE_CURSOR_POSITION,
+})
+
+export { updateCurrentEditorAction, updateCursorPosition, updateStage }

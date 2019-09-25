@@ -1,1 +1,5 @@
-export { updateCurrentEditorAction, updateStage } from './actions'
+export {
+  updateCurrentEditorAction,
+  updateCursorPosition,
+  updateStage,
+} from './actions'
