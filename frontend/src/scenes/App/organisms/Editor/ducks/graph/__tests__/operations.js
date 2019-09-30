@@ -278,3 +278,207 @@ test('load Graph', () => {
     },
   ])
 })
+
+test('unselect all - node is not selected, edge is not selected', () => {
+  const dispatch = jest.fn()
+  const getState = jest.fn().mockImplementation(() => ({
+    graph: {
+      present: {
+        edges: {
+          edge: {
+            id: 'edge',
+            properties: {
+              weight: 0,
+            },
+            ui: {
+              connects: {
+                from: 'b',
+                to: 'b',
+              },
+              selected: false,
+            },
+          },
+        },
+        nodes: {
+          node: {
+            id: 'node',
+            properties: {
+              initial: false,
+              name: 's',
+            },
+            ui: {
+              pos: {
+                x: 35,
+                y: 35,
+              },
+              selected: false,
+            },
+          },
+        },
+      },
+    },
+  }))
+
+  operations.unselectAll()(dispatch, getState)
+
+  expect(dispatch.mock.calls.length).toBe(0)
+})
+
+test('unselect all - node is selected, edge is not selected', () => {
+  const dispatch = jest.fn()
+  const getState = jest.fn().mockImplementation(() => ({
+    graph: {
+      present: {
+        edges: {
+          edge: {
+            id: 'edge',
+            properties: {
+              weight: 0,
+            },
+            ui: {
+              connects: {
+                from: 'b',
+                to: 'b',
+              },
+              selected: false,
+            },
+          },
+        },
+        nodes: {
+          node: {
+            id: 'node',
+            properties: {
+              initial: false,
+              name: 's',
+            },
+            ui: {
+              pos: {
+                x: 35,
+                y: 35,
+              },
+              selected: true,
+            },
+          },
+        },
+      },
+    },
+  }))
+
+  operations.unselectAll()(dispatch, getState)
+
+  expect(dispatch.mock.calls.length).toBe(1)
+  expect(dispatch.mock.calls[0]).toEqual([
+    {
+      payload: 'node',
+      type: types.UNSELECT_NODE,
+    },
+  ])
+})
+
+test('unselect all - node is not selected, edge is selected', () => {
+  const dispatch = jest.fn()
+  const getState = jest.fn().mockImplementation(() => ({
+    graph: {
+      present: {
+        edges: {
+          edge: {
+            id: 'edge',
+            properties: {
+              weight: 0,
+            },
+            ui: {
+              connects: {
+                from: 'b',
+                to: 'b',
+              },
+              selected: true,
+            },
+          },
+        },
+        nodes: {
+          node: {
+            id: 'node',
+            properties: {
+              initial: false,
+              name: 's',
+            },
+            ui: {
+              pos: {
+                x: 35,
+                y: 35,
+              },
+              selected: false,
+            },
+          },
+        },
+      },
+    },
+  }))
+
+  operations.unselectAll()(dispatch, getState)
+
+  expect(dispatch.mock.calls.length).toBe(1)
+  expect(dispatch.mock.calls[0]).toEqual([
+    {
+      payload: 'edge',
+      type: types.UNSELECT_EDGE,
+    },
+  ])
+})
+
+test('unselect all - node is selected, edge is selected', () => {
+  const dispatch = jest.fn()
+  const getState = jest.fn().mockImplementation(() => ({
+    graph: {
+      present: {
+        edges: {
+          edge: {
+            id: 'edge',
+            properties: {
+              weight: 0,
+            },
+            ui: {
+              connects: {
+                from: 'b',
+                to: 'b',
+              },
+              selected: true,
+            },
+          },
+        },
+        nodes: {
+          node: {
+            id: 'node',
+            properties: {
+              initial: false,
+              name: 's',
+            },
+            ui: {
+              pos: {
+                x: 35,
+                y: 35,
+              },
+              selected: true,
+            },
+          },
+        },
+      },
+    },
+  }))
+
+  operations.unselectAll()(dispatch, getState)
+
+  expect(dispatch.mock.calls.length).toBe(2)
+  expect(dispatch.mock.calls[0]).toEqual([
+    {
+      payload: 'node',
+      type: types.UNSELECT_NODE,
+    },
+  ])
+  expect(dispatch.mock.calls[1]).toEqual([
+    {
+      payload: 'edge',
+      type: types.UNSELECT_EDGE,
+    },
+  ])
+})

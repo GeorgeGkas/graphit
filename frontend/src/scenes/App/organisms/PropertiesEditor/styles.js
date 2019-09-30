@@ -1,18 +1,13 @@
 import styled from 'styled-components'
 import buildEdge from '../Editor/organisms/EdgeNotLoop/services/buildEdge'
+import { selectors as graphSelectors } from '../../organisms/Editor/ducks/graph'
 
-const getEdgeCenter = props => {
-  let secondExist = props.edges.some(
-    arr =>
-      arr.from.id === props.selectedEdge.to.id &&
-      arr.to.id === props.selectedEdge.from.id,
-  )
-
+const getEdgeCenter = ({ edges, selectedResolvedEdge }) => {
   let points = buildEdge({
     curvePower: 20,
-    edge: props.selectedEdge,
+    isDoubleEdge: graphSelectors.isDoubleEdge(selectedResolvedEdge, edges),
     nodeRadius: 25,
-    secondExist,
+    resolvedEdge: selectedResolvedEdge,
   })
 
   return {
@@ -23,18 +18,47 @@ const getEdgeCenter = props => {
 
 export const Wrapper = styled.div`
   position: absolute;
-  top: ${props => {
-    if (props.selectedNode) {
-      return Number(props.selectedNode.y * props.currentStageScale + 85)
+  top: ${({ currentStageScale, edges, selectedNode, selectedResolvedEdge }) => {
+    if (selectedNode) {
+      return Number(selectedNode.ui.pos.y * currentStageScale + 85)
+    } else if (selectedResolvedEdge) {
+      return Number(
+        getEdgeCenter({
+          edges,
+          selectedResolvedEdge,
+        }).y *
+          currentStageScale +
+          85,
+      )
     } else {
-      return Number(getEdgeCenter(props).y * props.currentStageScale + 85)
+      /**
+       * Should not be reached!
+       */
+      throw new Error('Properties editor wrapper cannot read selected shape.')
     }
   }}px;
-  left: ${props => {
-    if (props.selectedNode) {
-      return Number(props.selectedNode.x * props.currentStageScale + 40)
+  left: ${({
+    currentStageScale,
+    edges,
+    selectedNode,
+    selectedResolvedEdge,
+  }) => {
+    if (selectedNode) {
+      return Number(selectedNode.ui.pos.x * currentStageScale + 40)
+    } else if (selectedResolvedEdge) {
+      return Number(
+        getEdgeCenter({
+          edges,
+          selectedResolvedEdge,
+        }).x *
+          currentStageScale +
+          30,
+      )
     } else {
-      return Number(getEdgeCenter(props).x * props.currentStageScale + 30)
+      /**
+       * Should not be reached!
+       */
+      throw new Error('Properties editor wrapper cannot read selected shape.')
     }
   }}px;
 `

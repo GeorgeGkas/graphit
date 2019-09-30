@@ -23,7 +23,10 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations } from '../../../Editor/duck'
+import {
+  operations as graphOperations,
+  selectors as graphSelectors,
+} from '../../../Editor/ducks/graph'
 
 /**
  * Construct component styles.
@@ -47,12 +50,11 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  initialNode: state.editor.present.initialNode,
-  selectedNode:
-    state.editor.present.nodes[state.editor.present.selectedNodes[0]],
+  selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(graphOperations, dispatch)
 
 /**
  * Transition component, used when toggle NodeEditor.
@@ -67,45 +69,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const NodeEditor = ({
   editorDialogVisible,
   handleClose,
-  initialNode,
   selectedNode,
-  setInitialNode,
-  updateNodeName,
+  updateNodeProperties,
 }) => {
   const classes = useStyles()
-
-  const [nodeName, setNodeName] = useState({
-    name: selectedNode.name,
-    valid: true,
-  })
-
-  const [nodeIsInitial, setInitialState] = useState({
-    initial: initialNode === selectedNode.id,
-    initialStateChanged: false,
-  })
-
-  const validateNodeName = e =>
-    setNodeName({
-      name: e.target.value,
-      valid: /^[A-Za-z]$/.test(e.target.value),
-    })
-
-  const toggleInitialState = () =>
-    setInitialState({
-      initial: !nodeIsInitial.initial,
-      initialStateChanged: true,
-    })
+  const [validNodeName, validateNodeName] = useState(true)
+  const [nodeIsInitial, setInitialState] = useState(
+    selectedNode.properties.initial,
+  )
+  const toggleInitialState = () => setInitialState(!nodeIsInitial)
 
   const submitForm = () => {
-    if (nodeName.name !== selectedNode.name) {
-      updateNodeName({
-        id: selectedNode.id,
-        name: nodeName.name,
-      })
-    }
+    const newNodeName = document.getElementById('node_name_input').value
+    const oldNodeName = selectedNode.properties.name
 
-    if (nodeIsInitial.initialStateChanged) {
-      setInitialNode(nodeIsInitial.initial ? selectedNode.id : null)
+    /**
+     * Dispatch action only if node properties have changed.
+     */
+    if (
+      newNodeName !== oldNodeName ||
+      nodeIsInitial !== selectedNode.properties.initial
+    ) {
+      updateNodeProperties(selectedNode.id, {
+        initial: nodeIsInitial,
+        name: newNodeName,
+      })
     }
 
     handleClose()
@@ -134,14 +122,16 @@ const NodeEditor = ({
             <TextField
               autoFocus
               fullWidth
-              defaultValue={selectedNode.name}
-              error={!nodeName.valid}
+              defaultValue={selectedNode.properties.name}
+              error={!validNodeName}
               helperText="Allowed names are all values from a through Z."
               id="node_name_input"
               label="Name"
               margin="dense"
               type="text"
-              onChange={validateNodeName}
+              onChange={e =>
+                validateNodeName(/^[A-Za-z]$/.test(e.target.value))
+              }
               onFocus={() => {
                 document.getElementById('node_name_input').select()
               }}
@@ -150,10 +140,7 @@ const NodeEditor = ({
           <FormControlLabel
             className={classes.formControlLabel}
             control={
-              <Switch
-                checked={nodeIsInitial.initial}
-                onChange={toggleInitialState}
-              />
+              <Switch checked={nodeIsInitial} onChange={toggleInitialState} />
             }
             label="Set as initial node"
             labelPlacement="start"
@@ -164,7 +151,7 @@ const NodeEditor = ({
         <Button color="primary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button color="primary" disabled={!nodeName.valid} onClick={submitForm}>
+        <Button color="primary" disabled={!validNodeName} onClick={submitForm}>
           Apply Changes
         </Button>
       </DialogActions>

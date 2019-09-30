@@ -27,7 +27,7 @@ const update = (state = initialState, action) => {
     case START_PLAYING:
       return {
         ...state,
-        steps: action.payload.steps,
+        steps: action.payload,
       }
     case STOP_PLAYING:
       return initialState

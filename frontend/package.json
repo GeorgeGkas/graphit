@@ -25,7 +25,7 @@
   "scripts": {
     "preinstall": "./third-party/install.sh",
     "start": "cross-env NODE_ENV=development react-app-rewired start",
-    "build": "cross-env NODE_ENV=production react-app-rewired build",
+    "build": "cross-env NODE_ENV=production GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": " react-app-rewired test",
     "eject": "echo \"Eject is not allowed\" && exit 1",
     "cm": "git-cz"

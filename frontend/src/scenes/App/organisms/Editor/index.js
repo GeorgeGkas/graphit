@@ -1,6 +1,8 @@
 /**
  * Import globals.
  */
+import map from 'lodash/fp/map'
+import values from 'lodash/fp/values'
 import React, { useState } from 'react'
 import { Stage, Layer, Circle, Arrow } from 'react-konva'
 import { bindActionCreators } from 'redux'
@@ -9,7 +11,11 @@ import { connect } from 'react-redux'
 /**
  * Import ducks.
  */
-import { operations } from '../Editor/duck'
+import { operations as editorOperations } from './ducks/editor'
+import {
+  operations as graphOperations,
+  selectors as graphSelectors,
+} from './ducks/graph'
 
 /**
  * Import components.
@@ -26,26 +32,30 @@ import Node from './organisms/Node'
 const mapStateToProps = state => ({
   algorithm_current_step: state.algorithm.steps[state.algorithm.currentIndex],
   algorithm_is_final_step: state.algorithm.isFinal,
-  edges: state.editor.present.edges,
-  cursor: state.editor.present.cursor,
-  editorActionType: state.editor.present.editorActionType,
-  initialNode: state.editor.present.initialNode,
-  nodes: state.editor.present.nodes,
-  scaleStage: state.editor.present.scaleStage,
-  selectedEdgesId: state.editor.present.selectedEdges,
-  selectedNodesId: state.editor.present.selectedNodes,
-  stage: state.editor.present.stage,
+  currentEditorAction: state.editor.currentEditorAction,
+  cursor: state.editor.cursor,
+  edges: state.graph.present.edges,
+  nodes: state.graph.present.nodes,
+  selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
+  stage: state.editor.stage,
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      ...editorOperations,
+      ...graphOperations,
+    },
+    dispatch,
+  )
 
 /**
  * Construct appropriate cursor variant.
  */
-const buildCursorStyle = editorActionType =>
-  editorActionType === 'select' || editorActionType === 'isPlaying'
+const buildCursorStyle = currentEditorAction =>
+  currentEditorAction === 'select' || currentEditorAction === 'isPlaying'
     ? 'default'
-    : editorActionType === 'node'
+    : currentEditorAction === 'node'
     ? 'crosshair'
     : 'copy'
 
@@ -55,42 +65,40 @@ const buildCursorStyle = editorActionType =>
 const Editor = ({
   algorithm_current_step,
   algorithm_is_final_step,
-  edges,
   createEdge,
   createNode,
-  createShape,
+  currentEditorAction,
   cursor,
-  editorActionType,
-  grid,
-  initialNode,
+  edges,
+  gridVisible,
   nodes,
-  scaleStage,
   selectEdge,
   selectNode,
-  selectedEdgesId,
-  selectedNodesId,
+  selectedNode,
   stage,
-  unselectEdge,
+  unselectAll,
   unselectNode,
   updateCursorPosition,
   updateNodePositionEnd,
   updateNodePositionStart,
 }) => {
   const [drawTempArrow, setTempArrowVisibility] = useState(false)
+  const [shadowCircle, setShadowCircleVisibility] = useState(false)
 
   return (
     <Stage
       height={window.innerHeight - 128}
       scale={{
-        x: scaleStage,
-        y: scaleStage,
+        x: stage.scale,
+        y: stage.scale,
       }}
       style={{
         background: editorComponentsTheme.stage.fill.color,
-        cursor: buildCursorStyle(editorActionType),
+        cursor: buildCursorStyle(currentEditorAction),
       }}
       width={window.innerWidth}
       onClick={e => {
+        e.cancelBubble = true
         /**
          * When user clicks on stage and is in select mode
          * unselect all selected items.
@@ -98,25 +106,21 @@ const Editor = ({
          * When user clicks on stage and is in node mode
          * create new nodes.
          */
-        if (editorActionType === 'select') {
-          for (const node of selectedNodesId) {
-            unselectNode(node)
-          }
-
-          for (const edge of selectedEdgesId) {
-            unselectEdge(edge)
-          }
-        } else if (editorActionType === 'node') {
-          createNode(grid)
-          createShape()
+        if (
+          currentEditorAction === 'select' ||
+          currentEditorAction === 'edge'
+        ) {
+          setTempArrowVisibility(false)
+          unselectAll()
+        } else if (currentEditorAction === 'node') {
+          createNode(cursor, { grid: gridVisible })
         }
-        e.cancelBubble = true
       }}
       onMouseMove={e => {
         /**
          * Updates cursor position only in Editor mode.
          */
-        if (editorActionType === 'isPlaying') {
+        if (currentEditorAction === 'isPlaying') {
           return
         }
 
@@ -135,24 +139,26 @@ const Editor = ({
       {/**
        * Build Grid.
        */
-      grid && <Grid scaleStage={scaleStage} stage={stage} />}
+      gridVisible && <Grid stage={stage} />}
 
       <Layer>
         {/**
          * Show temp arrow when user selects a node in Edge mode
          * and want to connect with other nodes.
          */
-        drawTempArrow &&
-          editorActionType === 'edge' &&
-          selectedNodesId.map((node, id) => (
-            <Arrow
-              key={id}
-              dash={[10, 10]}
-              points={[nodes[node].x, nodes[node].y, cursor.x, cursor.y]}
-              stroke={editorComponentsTheme.connectArrow.color}
-              strokeWidth={3}
-            />
-          ))}
+        drawTempArrow && currentEditorAction === 'edge' && (
+          <Arrow
+            dash={[10, 10]}
+            points={[
+              selectedNode.ui.pos.x,
+              selectedNode.ui.pos.y,
+              cursor.x,
+              cursor.y,
+            ]}
+            stroke={editorComponentsTheme.connectArrow.color}
+            strokeWidth={3}
+          />
+        )}
 
         {(() => {
           /**
@@ -160,118 +166,92 @@ const Editor = ({
            */
           const exist = []
 
-          return Object.values(edges)
-            .filter(
-              edge =>
-                !algorithm_is_final_step ||
-                algorithm_current_step.highlighted_edges.some(
-                  id => id === edge.id,
-                ) ||
-                algorithm_current_step.selected_edges.some(
-                  id => id === edge.id,
-                ),
+          return map((edge, _, edges) => {
+            const nodeRadius = 25
+            const curvePower = 20
+
+            /**
+             * Track double edges.
+             */
+            let isDoubleEdge = graphSelectors.isDoubleEdge(
+              graphSelectors.resolveEdgePath(edge, nodes),
+              edges,
             )
-            .map((edge, index, edges) => {
-              const nodeRadius = 25
-              const curvePower = 20
+            if (isDoubleEdge && !exist.includes(edge.ui.connects.from)) {
+              exist.push(edge.ui.connects.from)
+              exist.push(edge.ui.connects.to)
+            }
 
-              /**
-               * Track double edges.
-               */
-              let secondExist = edges.some(
-                arr => arr.from.id === edge.to.id && arr.to.id === edge.from.id,
-              )
-              if (secondExist && !exist.includes(edge.from.id)) {
-                exist.push(edge.from.id)
-                exist.push(edge.to.id)
-              }
-
-              /**
-               * Paint the edge based on its type.
-               */
-              return edge.to.id !== edge.from.id ? (
-                <EdgeNotLoop
-                  key={index}
-                  algorithm_current_step={algorithm_current_step}
-                  edge={edge}
-                  curvePower={curvePower}
-                  editorActionType={editorActionType}
-                  nodeRadius={nodeRadius}
-                  secondExist={secondExist}
-                  selectEdge={selectEdge}
-                  selectedEdgesId={selectedEdgesId}
-                  selectedNodesId={selectedNodesId}
-                  unselectEdge={unselectEdge}
-                  unselectNode={unselectNode}
-                />
-              ) : (
-                <EdgeLoop
-                  key={index}
-                  algorithm_current_step={algorithm_current_step}
-                  edge={edge}
-                  editorActionType={editorActionType}
-                  scaleStage={scaleStage}
-                  selectEdge={selectEdge}
-                  selectedEdgesId={selectedEdgesId}
-                  selectedNodesId={selectedNodesId}
-                  unselectEdge={unselectEdge}
-                  unselectNode={unselectNode}
-                />
-              )
-            })
+            /**
+             * Paint the edge based on its type.
+             */
+            return edge.ui.connects.to !== edge.ui.connects.from ? (
+              <EdgeNotLoop
+                key={edge.id}
+                algorithm_current_step={algorithm_current_step}
+                currentEditorAction={currentEditorAction}
+                curvePower={curvePower}
+                isDoubleEdge={isDoubleEdge}
+                nodeRadius={nodeRadius}
+                selectEdge={selectEdge}
+                thisResolvedEdge={graphSelectors.resolveEdgePath(edge, nodes)}
+                unselectAll={unselectAll}
+              />
+            ) : (
+              <EdgeLoop
+                key={edge.id}
+                algorithm_current_step={algorithm_current_step}
+                currentEditorAction={currentEditorAction}
+                node={nodes[edge.ui.connects.from]}
+                selectEdge={selectEdge}
+                stageScale={stage.scale}
+                thisEdge={edge}
+                unselectAll={unselectAll}
+              />
+            )
+          })(values(edges))
         })()}
 
         {/**
          * Show shadow circle when grid is on.
          * Determine the snap position of the node.
-         */}
-        <Circle
-          dash={[20, 2]}
-          fill={editorComponentsTheme.shadowNode.fill.color}
-          height={35}
-          id="shadowCircle"
-          opacity={0.6}
-          stroke={editorComponentsTheme.shadowNode.stroke.color}
-          strokeWidth={3}
-          visible={false}
-          width={35}
-          x={0}
-          y={0}
-        />
+         */
+        shadowCircle && (
+          <Circle
+            dash={[20, 2]}
+            fill={editorComponentsTheme.shadowNode.fill.color}
+            height={35}
+            id="shadowCircle"
+            opacity={0.6}
+            stroke={editorComponentsTheme.shadowNode.stroke.color}
+            strokeWidth={3}
+            width={35}
+            x={0}
+            y={0}
+          />
+        )}
 
         {/**
          * Paint nodes on screen.
          */
-        Object.values(nodes)
-          .filter(
-            node =>
-              !algorithm_is_final_step ||
-              algorithm_current_step.highlighted_nodes.some(
-                id => id === node.id,
-              ) ||
-              algorithm_current_step.selected_nodes.some(id => id === node.id),
-          )
-          .map((node, index) => (
-            <Node
-              key={index}
-              algorithm_current_step={algorithm_current_step}
-              createEdge={createEdge}
-              createShape={createShape}
-              setTempArrowVisibility={setTempArrowVisibility}
-              editorActionType={editorActionType}
-              grid={grid}
-              initialNode={initialNode}
-              nodes={nodes}
-              selectNode={selectNode}
-              selectedEdgesId={selectedEdgesId}
-              selectedNodesId={selectedNodesId}
-              thisNode={node}
-              unselectEdge={unselectEdge}
-              unselectNode={unselectNode}
-              updateNodePositionEnd={updateNodePositionEnd}
-              updateNodePositionStart={updateNodePositionStart}
-            />
-          ))}
+        map(node => (
+          <Node
+            key={node.id}
+            algorithm_current_step={algorithm_current_step}
+            createEdge={createEdge}
+            currentEditorAction={currentEditorAction}
+            gridVisible={gridVisible}
+            selectNode={selectNode}
+            selectedNode={selectedNode}
+            setShadowCircleVisibility={setShadowCircleVisibility}
+            setTempArrowVisibility={setTempArrowVisibility}
+            thisNode={node}
+            unselectAll={unselectAll}
+            unselectNode={unselectNode}
+            updateNodePositionEnd={updateNodePositionEnd}
+            updateNodePositionStart={updateNodePositionStart}
+          />
+        ))(values(nodes))}
       </Layer>
     </Stage>
   )

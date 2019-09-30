@@ -190,14 +190,14 @@ test('handle unselect node', () => {
   })
 })
 
-test('handle update node position', () => {
+test('handle update node position - start tracking', () => {
   const initialReducerState = {
     edges: {},
     nodes: {
       node,
     },
   }
-  const afterUpdatingNodePosition = reducer(initialReducerState, {
+  const afterUpdatingNodePositionStart = reducer(initialReducerState, {
     payload: {
       id: 'node',
       pos: {
@@ -205,7 +205,7 @@ test('handle update node position', () => {
         y: 100,
       },
     },
-    type: types.UPDATE_NODE_POSITION,
+    type: types.UPDATE_NODE_POSITION_START,
   })
 
   expect(initialReducerState).toEqual({
@@ -214,7 +214,48 @@ test('handle update node position', () => {
       node,
     },
   })
-  expect(afterUpdatingNodePosition).toEqual({
+  expect(afterUpdatingNodePositionStart).toEqual({
+    edges: {},
+    nodes: {
+      node: {
+        ...node,
+        ui: {
+          ...node.ui,
+          pos: {
+            x: 100,
+            y: 100,
+          },
+        },
+      },
+    },
+  })
+})
+
+test('handle update node position - end tracking', () => {
+  const initialReducerState = {
+    edges: {},
+    nodes: {
+      node,
+    },
+  }
+  const afterUpdatingNodePositionEnd = reducer(initialReducerState, {
+    payload: {
+      id: 'node',
+      pos: {
+        x: 100,
+        y: 100,
+      },
+    },
+    type: types.UPDATE_NODE_POSITION_END,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {},
+    nodes: {
+      node,
+    },
+  })
+  expect(afterUpdatingNodePositionEnd).toEqual({
     edges: {},
     nodes: {
       node: {

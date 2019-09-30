@@ -15,7 +15,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeftSharp'
 import ChevronRightIcon from '@material-ui/icons/ChevronRightSharp'
 import BrushIcon from '@material-ui/icons/BrushSharp'
 import DeviceHubIcon from '@material-ui/icons/DeviceHubSharp'
-import Divider from '@material-ui/core/Divider'
 import GridOffIcon from '@material-ui/icons/GridOffSharp'
 import GridOnIcon from '@material-ui/icons/GridOnSharp'
 import IconButton from '@material-ui/core/IconButton'
@@ -37,7 +36,8 @@ import 'react-toastify/dist/ReactToastify.css'
  * Import ducks.
  */
 import { operations as algorithmOperations } from './duck'
-import { operations as editorOperations } from '../Editor/duck'
+import { operations as editorOperations } from '../Editor/ducks/editor'
+import { operations as graphOperations } from '../Editor/ducks/graph'
 import { operations as profileOperations } from '../AppBar/duck'
 
 /**
@@ -65,22 +65,27 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  currentStageScale: state.editor.present.scaleStage,
-  cursorPosition: state.editor.present.cursor,
-  editorActionType: state.editor.present.editorActionType,
-  futureExist: state.editor.future.length,
+  currentEditorAction: state.editor.currentEditorAction,
+  cursor: state.editor.cursor,
+  futureExist: state.graph.future.length,
   isSignIn: state.user.isSignIn,
   nextAlgorithmEntryExist:
     state.algorithm.steps[state.algorithm.currentIndex + 1] !== undefined,
-  pastExist: state.editor.past.length,
+  pastExist: state.graph.past.length,
   previousAlgorithmEntryExist:
     state.algorithm.steps[state.algorithm.currentIndex - 1] !== undefined,
   selectedProjectId: state.user.selectedProjectId,
+  stageScale: state.editor.stage.scale,
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    { ...algorithmOperations, ...editorOperations, ...profileOperations },
+    {
+      ...algorithmOperations,
+      ...editorOperations,
+      ...graphOperations,
+      ...profileOperations,
+    },
     dispatch,
   )
 
@@ -88,26 +93,26 @@ const mapDispatchToProps = dispatch =>
  * Component.
  */
 const EditorBar = ({
-  changeEditorActionType,
-  currentStageScale,
-  cursorPosition,
-  editorActionType,
+  currentEditorAction,
+  cursor,
   firstIteration,
   futureExist,
-  grid,
+  gridVisible,
   lastIteration,
   nextAlgorithmEntryExist,
   nextIteration,
   pastExist,
   previousAlgorithmEntryExist,
   previousIteration,
-  redoEditorHistory,
-  scaleStageBy,
+  redoGraphHistory,
+  stageScale,
   startPlaying,
   stopPlaying,
   toggleGrid,
-  undoEditorHistory,
-  updateStagePosition,
+  undoGraphHistory,
+  unselectAll,
+  updateCurrentEditorAction,
+  updateStage,
 }) => {
   const classes = useStyles()
 
@@ -115,40 +120,42 @@ const EditorBar = ({
     const scaleBy = 1.1
 
     const mousePointTo = {
-      x: cursorPosition.x / currentStageScale / currentStageScale,
-      y: cursorPosition.y / currentStageScale / currentStageScale,
+      x: cursor.x / stageScale / stageScale,
+      y: cursor.y / stageScale / stageScale,
     }
 
-    let newScale = currentStageScale / scaleBy
-
-    scaleStageBy(newScale)
+    let newScale = stageScale / scaleBy
 
     const newPos = {
       x: -(mousePointTo.x / newScale) * newScale,
       y: -(mousePointTo.y / newScale) * newScale,
     }
 
-    updateStagePosition(newPos)
+    updateStage({
+      pos: newPos,
+      scale: newScale,
+    })
   }
 
   const zoomIn = () => {
     const scaleBy = 1.1
 
     const mousePointTo = {
-      x: cursorPosition.x / currentStageScale / currentStageScale,
-      y: cursorPosition.y / currentStageScale / currentStageScale,
+      x: cursor.x / stageScale / stageScale,
+      y: cursor.y / stageScale / stageScale,
     }
 
-    let newScale = currentStageScale * scaleBy
-
-    scaleStageBy(newScale)
+    let newScale = stageScale * scaleBy
 
     const newPos = {
       x: -(mousePointTo.x / newScale) * newScale,
       y: -(mousePointTo.y / newScale) * newScale,
     }
 
-    updateStagePosition(newPos)
+    updateStage({
+      pos: newPos,
+      scale: newScale,
+    })
   }
 
   return (
@@ -170,8 +177,8 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={classes.button}
-                disabled={!pastExist || editorActionType === 'isPlaying'}
-                onClick={undoEditorHistory}
+                disabled={!pastExist || currentEditorAction === 'isPlaying'}
+                onClick={undoGraphHistory}
               >
                 <UndoIcon />
               </IconButton>
@@ -182,15 +189,13 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={classes.button}
-                disabled={!futureExist || editorActionType === 'isPlaying'}
-                onClick={redoEditorHistory}
+                disabled={!futureExist || currentEditorAction === 'isPlaying'}
+                onClick={redoGraphHistory}
               >
                 <RedoIcon />
               </IconButton>
             </div>
           </Tooltip>
-
-          <Divider orientation="vertical" />
 
           <Tooltip title="Zoom in">
             <div>
@@ -211,23 +216,24 @@ const EditorBar = ({
           <Tooltip title="Toggle grid">
             <div>
               <IconButton className={classes.button} onClick={toggleGrid}>
-                {grid ? <GridOnIcon /> : <GridOffIcon />}
+                {gridVisible ? <GridOnIcon /> : <GridOffIcon />}
               </IconButton>
             </div>
           </Tooltip>
 
-          <Divider orientation="vertical" />
-
-          <Tooltip title="Select mode">
+          <Tooltip title="Select node">
             <div>
               <IconButton
                 className={
-                  editorActionType === 'select'
+                  currentEditorAction === 'select'
                     ? classes.buttonActive
                     : classes.button
                 }
-                disabled={editorActionType === 'isPlaying'}
-                onClick={() => changeEditorActionType('select')}
+                disabled={currentEditorAction === 'isPlaying'}
+                onClick={() => {
+                  unselectAll()
+                  updateCurrentEditorAction('select')
+                }}
               >
                 <BrushIcon />
               </IconButton>
@@ -238,12 +244,15 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={
-                  editorActionType === 'node'
+                  currentEditorAction === 'node'
                     ? classes.buttonActive
                     : classes.button
                 }
-                disabled={editorActionType === 'isPlaying'}
-                onClick={() => changeEditorActionType('node')}
+                disabled={currentEditorAction === 'isPlaying'}
+                onClick={() => {
+                  unselectAll()
+                  updateCurrentEditorAction('node')
+                }}
               >
                 <CategoryIcon />
               </IconButton>
@@ -254,31 +263,33 @@ const EditorBar = ({
             <div>
               <IconButton
                 className={
-                  editorActionType === 'edge'
+                  currentEditorAction === 'edge'
                     ? classes.buttonActive
                     : classes.button
                 }
-                disabled={editorActionType === 'isPlaying'}
-                onClick={() => changeEditorActionType('edge')}
+                disabled={currentEditorAction === 'isPlaying'}
+                onClick={() => {
+                  unselectAll()
+                  updateCurrentEditorAction('edge')
+                }}
               >
                 <DeviceHubIcon />
               </IconButton>
             </div>
           </Tooltip>
 
-          <Divider orientation="vertical" />
-
           <Tooltip title="Play">
             <div>
               <IconButton
                 className={classes.button}
                 onClick={() => {
-                  editorActionType === 'isPlaying'
+                  unselectAll()
+                  currentEditorAction === 'isPlaying'
                     ? stopPlaying()
                     : startPlaying()
                 }}
               >
-                {editorActionType === 'isPlaying' ? (
+                {currentEditorAction === 'isPlaying' ? (
                   <StopIcon />
                 ) : (
                   <PlayArrowIcon />
@@ -292,7 +303,7 @@ const EditorBar = ({
               <IconButton
                 className={classes.button}
                 disabled={
-                  editorActionType !== 'isPlaying' ||
+                  currentEditorAction !== 'isPlaying' ||
                   !previousAlgorithmEntryExist
                 }
                 onClick={() => firstIteration()}
@@ -307,7 +318,7 @@ const EditorBar = ({
               <IconButton
                 className={classes.button}
                 disabled={
-                  editorActionType !== 'isPlaying' ||
+                  currentEditorAction !== 'isPlaying' ||
                   !previousAlgorithmEntryExist
                 }
                 onClick={() => previousIteration()}
@@ -321,7 +332,8 @@ const EditorBar = ({
             <div>
               <IconButton
                 disabled={
-                  editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
+                  currentEditorAction !== 'isPlaying' ||
+                  !nextAlgorithmEntryExist
                 }
                 onClick={() => nextIteration()}
               >
@@ -335,7 +347,8 @@ const EditorBar = ({
               <IconButton
                 className={classes.button}
                 disabled={
-                  editorActionType !== 'isPlaying' || !nextAlgorithmEntryExist
+                  currentEditorAction !== 'isPlaying' ||
+                  !nextAlgorithmEntryExist
                 }
                 onClick={() => lastIteration()}
               >

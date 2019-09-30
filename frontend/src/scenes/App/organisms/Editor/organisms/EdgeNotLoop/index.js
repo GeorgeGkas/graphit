@@ -20,44 +20,33 @@ import buildEdge from './services/buildEdge'
  */
 const EdgeNotLoop = ({
   algorithm_current_step,
-  edge,
+  currentEditorAction,
   curvePower,
-  editorActionType,
+  isDoubleEdge,
   nodeRadius,
-  secondExist,
   selectEdge,
-  selectedEdgesId,
-  selectedNodesId,
-  unselectEdge,
-  unselectNode,
+  thisResolvedEdge,
+  unselectAll,
 }) => {
   let points = buildEdge({
     curvePower,
-    edge,
+    isDoubleEdge,
     nodeRadius,
-    secondExist,
+    resolvedEdge: thisResolvedEdge,
   })
 
   return (
     <Group
       onClick={e => {
-        if (editorActionType === 'select') {
-          for (const ID of selectedNodesId) {
-            unselectNode(ID)
-          }
-
-          for (const ID of selectedEdgesId) {
-            unselectEdge(ID)
-          }
-
-          selectEdge(edge.id)
+        if (currentEditorAction === 'select') {
+          unselectAll()
+          selectEdge(thisResolvedEdge.id)
         }
         e.cancelBubble = true
       }}
     >
-      {selectedEdgesId.includes(edge.id) ? (
+      {thisResolvedEdge.ui.selected ? (
         <Arrow
-          key={edge.id + '_selected'}
           fill={editorComponentsTheme.edge.selected.color}
           opacity={0.7}
           pointerLength={15}
@@ -70,40 +59,47 @@ const EdgeNotLoop = ({
       ) : null}
 
       <Arrow
-        key={edge.id}
         fill={
-          algorithm_current_step.highlighted_edges.some(id => id === edge.id)
+          algorithm_current_step.highlighted_edges.some(
+            id => id === thisResolvedEdge.id,
+          )
             ? algorithmComponentsTheme.edge.highlighted.color
-            : algorithm_current_step.selected_edges.some(id => id === edge.id)
+            : algorithm_current_step.selected_edges.some(
+                id => id === thisResolvedEdge.id,
+              )
             ? algorithmComponentsTheme.edge.selected.color
-            : editorActionType === 'isPlaying'
+            : currentEditorAction === 'isPlaying'
             ? algorithmComponentsTheme.edge.neutral.color
             : editorComponentsTheme.edge.neutral.color
         }
         hitStrokeWidth={25}
-        id={edge.id}
+        id={thisResolvedEdge.id}
         pointerLength={15}
         pointerWidth={10}
         points={points}
         stroke={
-          algorithm_current_step.highlighted_edges.some(id => id === edge.id)
+          algorithm_current_step.highlighted_edges.some(
+            id => id === thisResolvedEdge.id,
+          )
             ? algorithmComponentsTheme.edge.highlighted.color
-            : algorithm_current_step.selected_edges.some(id => id === edge.id)
+            : algorithm_current_step.selected_edges.some(
+                id => id === thisResolvedEdge.id,
+              )
             ? algorithmComponentsTheme.edge.selected.color
-            : editorActionType === 'isPlaying'
+            : currentEditorAction === 'isPlaying'
             ? algorithmComponentsTheme.edge.neutral.color
             : editorComponentsTheme.edge.neutral.color
         }
         strokeWidth={1}
         tension={0.8}
         onMouseOut={e => {
-          if (editorActionType === 'select') {
+          if (currentEditorAction === 'select') {
             e.target.stroke(editorComponentsTheme.edge.neutral.color)
             e.target.fill(editorComponentsTheme.edge.neutral.color)
           }
         }}
         onMouseOver={e => {
-          if (editorActionType === 'select') {
+          if (currentEditorAction === 'select') {
             e.target.stroke(editorComponentsTheme.edge.hovered.color)
             e.target.fill(editorComponentsTheme.edge.hovered.color)
           }
@@ -117,7 +113,7 @@ const EdgeNotLoop = ({
         height={2 * 24}
         stroke={editorComponentsTheme.stage.fill.color}
         strokeWidth={7}
-        text={edge.weight}
+        text={String(thisResolvedEdge.properties.weight)}
         verticalAlign="middle"
         width={2 * 24}
         x={points[2] - 24}
@@ -128,7 +124,7 @@ const EdgeNotLoop = ({
         fontFamily="Roboto"
         fontSize={15}
         height={2 * 24}
-        text={edge.weight}
+        text={String(thisResolvedEdge.properties.weight)}
         verticalAlign="middle"
         width={2 * 24}
         x={points[2] - 24}

@@ -20,12 +20,20 @@ const unselectNode = id => ({
   type: types.UNSELECT_NODE,
 })
 
-const updateNodePosition = (id, pos) => ({
+const updateNodePositionStart = (id, pos) => ({
   payload: {
     id,
     pos,
   },
-  type: types.UPDATE_NODE_POSITION,
+  type: types.UPDATE_NODE_POSITION_START,
+})
+
+const updateNodePositionEnd = (id, pos) => ({
+  payload: {
+    id,
+    pos,
+  },
+  type: types.UPDATE_NODE_POSITION_END,
 })
 
 const updateNodeProperties = (id, properties) => ({
@@ -95,6 +103,7 @@ export {
   unselectEdge,
   unselectNode,
   updateEdgeProperties,
-  updateNodePosition,
+  updateNodePositionEnd,
+  updateNodePositionStart,
   updateNodeProperties,
 }

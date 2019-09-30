@@ -57,7 +57,7 @@ test('unselect a node', () => {
   expect(actions.unselectNode(payload)).toEqual(expectedAction)
 })
 
-test('update node position', () => {
+test('update node position - start tracking', () => {
   const id = 'test'
   const pos = {}
   const expectedAction = {
@@ -65,10 +65,24 @@ test('update node position', () => {
       id,
       pos,
     },
-    type: types.UPDATE_NODE_POSITION,
+    type: types.UPDATE_NODE_POSITION_START,
   }
 
-  expect(actions.updateNodePosition(id, pos)).toEqual(expectedAction)
+  expect(actions.updateNodePositionStart(id, pos)).toEqual(expectedAction)
+})
+
+test('update node position - end tracking', () => {
+  const id = 'test'
+  const pos = {}
+  const expectedAction = {
+    payload: {
+      id,
+      pos,
+    },
+    type: types.UPDATE_NODE_POSITION_END,
+  }
+
+  expect(actions.updateNodePositionEnd(id, pos)).toEqual(expectedAction)
 })
 
 test('update node properties', () => {

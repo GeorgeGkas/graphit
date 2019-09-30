@@ -13,8 +13,8 @@ import * as types from './types'
  *    }
  *    ui: {
  *       pos: {
- *         x: string
- *         y: string
+ *         x: number
+ *         y: number
  *       }
  *       selected: false
  *    }
@@ -53,7 +53,8 @@ const reducer = (state = initialState, action) => {
       return set(`nodes[${action.payload}].ui.selected`, true, state)
     case types.UNSELECT_NODE:
       return set(`nodes[${action.payload}].ui.selected`, false, state)
-    case types.UPDATE_NODE_POSITION:
+    case types.UPDATE_NODE_POSITION_END:
+    case types.UPDATE_NODE_POSITION_START:
       return set(
         `nodes[${action.payload.id}].ui.pos`,
         action.payload.pos,

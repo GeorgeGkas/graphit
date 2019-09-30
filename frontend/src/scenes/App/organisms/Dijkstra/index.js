@@ -59,7 +59,7 @@ const mapStateToProps = state => ({
   highlighted:
     state.algorithm.steps[state.algorithm.currentIndex].highlighted_nodes,
   isFinal: state.algorithm.isFinal,
-  nodes: state.editor.present.nodes,
+  nodes: state.graph.present.nodes,
   selected: state.algorithm.steps[state.algorithm.currentIndex].selected_nodes,
   unvisited: state.algorithm.steps[state.algorithm.currentIndex].unvisited,
 })
@@ -93,14 +93,14 @@ class Dijkstra extends React.Component {
             Distances from start node
           </Typography>
 
-          {Object.entries(distances).map(([name, distance]) => (
+          {Object.entries(distances).map(([id, distance]) => (
             <DistanceEntry
               distance={distance}
               isHighlighted={
                 !isFinal &&
                 highlighted.includes(
                   Object.values(nodes)
-                    .filter(node => node.name === name)
+                    .filter(node => node.id === id)
                     .pop().id,
                 )
               }
@@ -108,11 +108,15 @@ class Dijkstra extends React.Component {
                 !isFinal &&
                 selected.includes(
                   Object.values(nodes)
-                    .filter(node => node.name === name)
+                    .filter(node => node.id === id)
                     .pop().id,
                 )
               }
-              name={name}
+              name={
+                Object.values(nodes)
+                  .filter(node => node.id === id)
+                  .pop().properties.name
+              }
             />
           ))}
 
@@ -125,9 +129,9 @@ class Dijkstra extends React.Component {
           </Typography>
 
           <div className={classes.unvisitedContent}>
-            {Object.entries(unvisited).map(([name, unvisited]) => (
+            {Object.entries(unvisited).map(([id, unvisited]) => (
               <Box className={classes.unvisitedNode} pr="5px" width={1 / 4}>
-                <span>{name}</span>
+                <span>{nodes[id].properties.name}</span>
                 <span className={classes.isUnvisitedNode}>
                   {!unvisited ? '/' : ''}
                 </span>

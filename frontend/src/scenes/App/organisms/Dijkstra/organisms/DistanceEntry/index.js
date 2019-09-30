@@ -18,7 +18,7 @@ import Highlighted from './atoms/Highlighted'
 import Selected from './atoms/Selected'
 
 /**
- * Connect component to Redux.
+ * Component.
  */
 const DistanceEntry = ({ distance, isHighlighted, isSelected, name }) => (
   <Container style={{ display: 'flex', fontSize: '16px', padding: '15px' }}>

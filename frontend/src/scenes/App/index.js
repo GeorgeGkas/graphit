@@ -2,18 +2,12 @@
  * Import globals.
  */
 import React, { useState } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 /**
  * Import UI framework modules.
  */
 import Slide from '@material-ui/core/Slide'
-
-/**
- * Import ducks.
- */
-import { operations as editorOperations } from './organisms/Editor/duck'
 
 /**
  * Import components.
@@ -28,36 +22,39 @@ import PropertiesEditor from './organisms/PropertiesEditor'
 import { Fade } from '@material-ui/core'
 
 /**
+ * Import ducks.
+ */
+import { selectors as graphSelectors } from './organisms/Editor/ducks/graph'
+
+/**
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  editorActionType: state.editor.present.editorActionType,
-  selectedEdges: state.editor.present.selectedEdges,
-  selectedNodes: state.editor.present.selectedNodes,
+  currentEditorAction: state.editor.currentEditorAction,
+  selectedEdge: graphSelectors.getSelected(state.graph.present.edges),
+  selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
 })
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(editorOperations, dispatch)
+const mapDispatchToProps = null
 
 /**
  * Component.
  */
-const App = ({ editorActionType, selectedEdges, selectedNodes }) => {
-  const [grid, makeGridVisible] = useState(false)
-  const [dashboard, makeDashboardVisible] = useState(false)
+const App = ({ currentEditorAction, selectedEdge, selectedNode }) => {
+  const [gridVisible, makeGridVisible] = useState(false)
+  const [dashboardVisible, makeDashboardVisible] = useState(false)
 
-  const toggleGrid = () => makeGridVisible(!grid)
-  const toggleDashboard = () => makeDashboardVisible(!dashboard)
+  const toggleGrid = () => makeGridVisible(!gridVisible)
+  const toggleDashboard = () => makeDashboardVisible(!dashboardVisible)
 
   const shouldRenderPropertiesEditor =
-    editorActionType === 'select' &&
-    (selectedEdges.length ^ selectedNodes.length) === 1
-
-  const showAlgorithmPanel = editorActionType === 'isPlaying'
+    currentEditorAction === 'select' &&
+    (Boolean(selectedEdge) ^ Boolean(selectedNode)) === 1
+  const showAlgorithmPanel = currentEditorAction === 'isPlaying'
 
   return (
     <React.Fragment>
-      <Fade mountOnEnter unmountOnExit in={dashboard}>
+      <Fade mountOnEnter unmountOnExit in={dashboardVisible}>
         <div
           style={{
             height: '100%',
@@ -77,10 +74,10 @@ const App = ({ editorActionType, selectedEdges, selectedNodes }) => {
 
       <div style={{ position: 'relative' }}>
         <AppBar toggleDashboard={toggleDashboard} />
-        <EditorBar grid={grid} toggleGrid={toggleGrid} />
+        <EditorBar gridVisible={gridVisible} toggleGrid={toggleGrid} />
       </div>
 
-      <Editor grid={grid} />
+      <Editor gridVisible={gridVisible} />
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
     </React.Fragment>

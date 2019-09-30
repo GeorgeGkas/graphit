@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { GoogleLogin } from 'react-google-login'
@@ -19,6 +19,7 @@ import blue from '@material-ui/core/colors/blue'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import ConfirmDialog from '../ConfirmDialog'
 import DashboardIcon from '@material-ui/icons/DashboardSharp'
 import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
@@ -27,7 +28,6 @@ import MenuList from '@material-ui/core/MenuList'
 import MUIAppBar from '@material-ui/core/AppBar'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
-import ShareIcon from '@material-ui/icons/ShareSharp'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
@@ -37,7 +37,8 @@ import { makeStyles } from '@material-ui/core/styles'
  * Import ducks.
  */
 import { operations as algorithmOperations } from '../EditorBar/duck'
-import { operations as editorOperations } from '../Editor/duck'
+import { operations as editorOperations } from '../Editor/ducks/editor'
+import { operations as graphOperations } from '../Editor/ducks/graph'
 import { operations as profileOperations } from './duck'
 
 /**
@@ -103,17 +104,21 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  editorActionType: state.editor.present.editorActionType,
-  futureExist: state.editor.future.length,
+  currentEditorAction: state.editor.currentEditorAction,
+  futureExist: state.graph.future.length,
   isSignIn: state.user.isSignIn,
-  pastExist: state.editor.past.length,
-
+  pastExist: state.graph.past.length,
   profile: state.user.profile,
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    { ...editorOperations, ...algorithmOperations, ...profileOperations },
+    {
+      ...algorithmOperations,
+      ...editorOperations,
+      ...graphOperations,
+      ...profileOperations,
+    },
     dispatch,
   )
 
@@ -122,9 +127,8 @@ const mapDispatchToProps = dispatch =>
  */
 const AppBar = ({
   futureExist,
-  initEditorHistory,
   isSignIn,
-  loadState,
+  loadGraph,
   pastExist,
   profile,
   signIn,
@@ -141,6 +145,11 @@ const AppBar = ({
     variant: 'popover',
   })
 
+  const [loadDialogVisible, makeLoadDialogVisible] = useState(false)
+  const toggleLoadDialog = () => makeLoadDialogVisible(!loadDialogVisible)
+
+  const [selectedProjectToLoad, setSelectedProjectToLoad] = useState({})
+
   return (
     <React.Fragment>
       <input
@@ -151,15 +160,13 @@ const AppBar = ({
         onChange={e => {
           const reader = new FileReader()
           reader.onloadend = () => {
-            if (
-              (!pastExist && !futureExist) ||
-              // eslint-disable-next-line no-restricted-globals
-              confirm(
-                'Are you sure you want to quit as there are unsaved documents?',
-              )
-            ) {
-              initEditorHistory()
-              loadState(JSON.parse(reader.result))
+            setSelectedProjectToLoad(reader.result)
+
+            if (pastExist || futureExist) {
+              toggleLoadDialog()
+            } else {
+              loadGraph(JSON.parse(reader.result))
+              toggleLoadDialog()
             }
           }
           reader.readAsText(e.target.files[0])
@@ -168,16 +175,18 @@ const AppBar = ({
 
       <MUIAppBar className={classes.root} position="static">
         <Toolbar>
-          <Tooltip title="Dashboard">
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              edge="start"
-              onClick={toggleDashboard}
-            >
-              <DashboardIcon />
-            </IconButton>
-          </Tooltip>
+          {isSignIn && (
+            <Tooltip title="Dashboard">
+              <IconButton
+                className={classes.menuButton}
+                color="inherit"
+                edge="start"
+                onClick={toggleDashboard}
+              >
+                <DashboardIcon />
+              </IconButton>
+            </Tooltip>
+          )}
 
           <Typography className={classes.title} variant="h6">
             Editor
@@ -204,16 +213,6 @@ const AppBar = ({
           </Popper>
 
           <div className={classes.grow} />
-
-          <Tooltip title="Share your project">
-            <IconButton
-              className={classes.button}
-              color="inherit"
-              onClick={() => alert('Not implemented.')}
-            >
-              <ShareIcon />
-            </IconButton>
-          </Tooltip>
 
           {isSignIn ? (
             <React.Fragment>
@@ -284,6 +283,19 @@ const AppBar = ({
           )}
         </Toolbar>
       </MUIAppBar>
+
+      <ConfirmDialog
+        confirmAction={() => {
+          loadGraph(JSON.parse(selectedProjectToLoad))
+          toggleLoadDialog()
+        }}
+        confirmDialogVisible={loadDialogVisible}
+        confirmMessage={
+          'All unsaved changes will be deleted if you confirm this action.'
+        }
+        confirmTitle="Load project?"
+        handleClose={toggleLoadDialog}
+      />
     </React.Fragment>
   )
 }

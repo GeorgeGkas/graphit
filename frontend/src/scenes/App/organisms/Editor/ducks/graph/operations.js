@@ -1,11 +1,15 @@
+import forEach from 'lodash/fp/forEach'
 import uuid from 'uuid'
+import filter from 'lodash/fp/filter'
+import values from 'lodash/fp/values'
 import * as actions from './actions'
+import * as selectors from './selectors'
 
 const {
   createEdge: createEdgeAction,
   createNode: createNodeAction,
   deleteEdge,
-  deleteNode,
+  deleteNode: deleteNodeAction,
   initGraphHistory,
   loadGraph: loadGraphAction,
   redoGraphHistory,
@@ -15,7 +19,8 @@ const {
   unselectEdge,
   unselectNode,
   updateEdgeProperties,
-  updateNodePosition,
+  updateNodePositionEnd,
+  updateNodePositionStart,
   updateNodeProperties,
 } = actions
 
@@ -34,19 +39,28 @@ const createNode = (
       }
     : pos
 
-  dispatch(
-    createNodeAction({
-      id: uuid.v4(),
-      properties: {
-        initial: false,
-        name: 's',
-      },
-      ui: {
-        pos: actualPos,
-        selected: false,
-      },
-    }),
+  const node = {
+    id: uuid.v4(),
+    properties: {
+      initial: false,
+      name: 's',
+    },
+    ui: {
+      pos: actualPos,
+      selected: false,
+    },
+  }
+
+  dispatch(createNodeAction(node))
+}
+
+const deleteNode = nodeId => (dispatch, getState) => {
+  const edges = values(getState().graph.present.edges)
+  const filterConnectedEdges = filter(
+    edge => edge.ui.connects.from === nodeId || edge.ui.connects.to === nodeId,
   )
+  forEach(edge => dispatch(deleteEdge(edge.id)))(filterConnectedEdges(edges))
+  dispatch(deleteNodeAction(nodeId))
 }
 
 const createEdge = (fromNodeId, toNodeId) => (dispatch, getState) => {
@@ -81,6 +95,19 @@ const loadGraph = graph => dispatch => {
   dispatch(loadGraphAction(graph))
 }
 
+const unselectAll = () => (dispatch, getState) => {
+  const selectedNode = selectors.getSelected(getState().graph.present.nodes)
+  const selectedEdge = selectors.getSelected(getState().graph.present.edges)
+
+  if (selectedNode) {
+    dispatch(unselectNode(selectedNode.id))
+  }
+
+  if (selectedEdge) {
+    dispatch(unselectEdge(selectedEdge.id))
+  }
+}
+
 export {
   createEdge,
   createNode,
@@ -95,6 +122,8 @@ export {
   unselectEdge,
   unselectNode,
   updateEdgeProperties,
-  updateNodePosition,
+  updateNodePositionEnd,
+  updateNodePositionStart,
   updateNodeProperties,
+  unselectAll,
 }

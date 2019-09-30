@@ -1,7 +1,7 @@
 import * as types from './types'
 
 /**
- *  type CurrentEditorAction = 'select' | 'node' | 'edge'
+ *  type CurrentEditorAction = 'select' | 'node' | 'edge' | 'isPlaying'
  */
 
 export const initialState = {

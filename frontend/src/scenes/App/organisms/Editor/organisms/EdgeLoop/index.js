@@ -15,37 +15,27 @@ import algorithmComponentsTheme from '../../../../../../themes/algorithmComponen
  */
 const EdgeLoop = ({
   algorithm_current_step,
-  edge,
-  editorActionType,
-  scaleStage,
+  currentEditorAction,
+  node,
   selectEdge,
-  selectedEdgesId,
-  selectedNodesId,
-  unselectEdge,
-  unselectNode,
+  stageScale,
+  thisEdge,
+  unselectAll,
 }) => (
   <Group
     onClick={e => {
-      if (editorActionType === 'select') {
-        for (const ID of selectedNodesId) {
-          unselectNode(ID)
-        }
-
-        for (const ID of selectedEdgesId) {
-          unselectEdge(ID)
-        }
-
-        selectEdge(edge.id)
+      if (currentEditorAction === 'select') {
+        unselectAll()
+        selectEdge(thisEdge.id)
       }
       e.cancelBubble = true
     }}
   >
     <Circle
-      key={edge.id}
       dragBoundFunc={pos => {
-        const x = edge.from.x * scaleStage
-        const y = edge.from.y * scaleStage
-        const radius = 20 * scaleStage
+        const x = node.ui.pos.x * stageScale
+        const y = node.ui.pos.y * stageScale
+        const radius = 20 * stageScale
         const scale =
           radius / Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2))
 
@@ -56,30 +46,30 @@ const EdgeLoop = ({
             }
           : pos
       }}
-      draggable={editorActionType === 'select'}
+      draggable={currentEditorAction === 'select'}
       height={35}
       hitStrokeWidth={20}
-      id={edge.id}
+      id={thisEdge.id}
       stroke={
-        algorithm_current_step.highlighted_edges.some(id => id === edge.id)
+        algorithm_current_step.highlighted_edges.some(id => id === thisEdge.id)
           ? algorithmComponentsTheme.edge.highlighted.color
-          : algorithm_current_step.selected_edges.some(id => id === edge.id)
+          : algorithm_current_step.selected_edges.some(id => id === thisEdge.id)
           ? algorithmComponentsTheme.edge.selected.color
-          : editorActionType === 'isPlaying'
+          : currentEditorAction === 'isPlaying'
           ? algorithmComponentsTheme.edge.neutral.color
-          : selectedEdgesId.includes(edge.id)
+          : thisEdge.ui.selected
           ? editorComponentsTheme.edge.selected.color
-          : edge.stroke
+          : editorComponentsTheme.edge.hovered.color
       }
-      strokeWidth={selectedEdgesId.includes(edge.id) ? 5 : 1}
+      strokeWidth={thisEdge.ui.selected ? 5 : 1}
       width={35}
-      x={edge.from.x - 35 / 2 + 5}
-      y={edge.from.y - 35 / 2 + 5}
+      x={node.ui.pos.x - 35 / 2 + 5}
+      y={node.ui.pos.y - 35 / 2 + 5}
       onDragMove={e => {
         e.cancelBubble = true
 
-        const x = edge.from.x - 5
-        const y = edge.from.y - 5
+        const x = node.ui.pos.x - 5
+        const y = node.ui.pos.y - 5
         const radius = 35
         const scale =
           radius /
@@ -98,29 +88,23 @@ const EdgeLoop = ({
 
         e.currentTarget
           .getStage()
-          .find('#' + edge.id + '_text')[0]
+          .find('#' + thisEdge.id + '_text')[0]
           .position(position)
         e.currentTarget
           .getStage()
-          .find('#' + edge.id + '_text_back')[0]
+          .find('#' + thisEdge.id + '_text_back')[0]
           .position(position)
       }}
       onDragStart={e => {
         e.cancelBubble = true
       }}
       onMouseOut={e => {
-        if (
-          editorActionType === 'select' &&
-          !selectedEdgesId.includes(edge.id)
-        ) {
+        if (currentEditorAction === 'select' && !thisEdge.ui.selected) {
           e.target.stroke(editorComponentsTheme.edge.neutral.color)
         }
       }}
       onMouseOver={e => {
-        if (
-          editorActionType === 'select' &&
-          !selectedEdgesId.includes(edge.id)
-        ) {
+        if (currentEditorAction === 'select' && !thisEdge.ui.selected) {
           e.target.stroke(editorComponentsTheme.edge.hovered.color)
         }
       }}
@@ -128,20 +112,20 @@ const EdgeLoop = ({
     <Text
       fontFamily="Roboto"
       fontSize={15}
-      id={edge.id + '_text_back'}
+      id={thisEdge.id + '_text_back'}
       stroke={editorComponentsTheme.stage.fill.color}
       strokeWidth={7}
-      text={edge.weight}
-      x={edge.from.x - 30}
-      y={edge.from.y - 30}
+      text={String(thisEdge.properties.weight)}
+      x={node.ui.pos.x - 30}
+      y={node.ui.pos.y - 30}
     />
     <Text
       fontFamily="Roboto"
       fontSize={15}
-      id={edge.id + '_text'}
-      text={edge.weight}
-      x={edge.from.x - 30}
-      y={edge.from.y - 30}
+      id={thisEdge.id + '_text'}
+      text={String(thisEdge.properties.weight)}
+      x={node.ui.pos.x - 30}
+      y={node.ui.pos.y - 30}
     />
   </Group>
 )

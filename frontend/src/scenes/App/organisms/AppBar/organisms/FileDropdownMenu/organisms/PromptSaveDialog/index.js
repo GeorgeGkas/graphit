@@ -1,8 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
-import { bindActionCreators } from 'redux'
+import React from 'react'
 import { connect } from 'react-redux'
 
 /**
@@ -17,14 +16,6 @@ import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
-
-/**
- * Import ducks.
- */
-import {
-  operations as graphOperations,
-  selectors as graphSelectors,
-} from '../../../Editor/ducks/graph'
 
 /**
  * Construct component styles.
@@ -47,12 +38,9 @@ const useStyles = makeStyles(theme => ({
 /**
  * Connect component to Redux.
  */
-const mapStateToProps = state => ({
-  selectedEdge: graphSelectors.getSelected(state.graph.present.edges),
-})
+const mapStateToProps = null
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(graphOperations, dispatch)
+const mapDispatchToProps = null
 
 /**
  * Transition component, used when toggle NodeEditor.
@@ -64,28 +52,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 /**
  * Component.
  */
-const EdgeEditor = ({
-  editorDialogVisible,
+const PromptSave = ({
   handleClose,
-  selectedEdge,
-  updateEdgeProperties,
+  promptSaveDialogAction,
+  promptSaveDialogVisible,
 }) => {
   const classes = useStyles()
-  const [validEdgeWeight, validateEdgeWeight] = useState(true)
-
-  const submitForm = () => {
-    const newEdgeWeight = document.getElementById('edge_weight_input').value
-    const oldEdgeWeight = selectedEdge.properties.weight
-
-    if (oldEdgeWeight !== newEdgeWeight) {
-      updateEdgeProperties(selectedEdge.id, {
-        weight: Number(newEdgeWeight),
-      })
-    }
-
-    handleClose()
-  }
-
   return (
     <Dialog
       fullWidth
@@ -95,10 +67,15 @@ const EdgeEditor = ({
         },
       }}
       TransitionComponent={Transition}
-      open={editorDialogVisible}
+      open={promptSaveDialogVisible}
+      style={{
+        zIndex: 9999,
+      }}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">Edit Edge</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+        Enter the name of the project
+      </DialogTitle>
       <DialogContent>
         <form
           noValidate
@@ -109,18 +86,12 @@ const EdgeEditor = ({
             <TextField
               autoFocus
               fullWidth
-              defaultValue={selectedEdge.properties.weight}
-              error={!validEdgeWeight}
-              helperText="Use any negative or positive integer."
-              id="edge_weight_input"
-              label="Weight"
+              id="project_name_input"
+              label="Project Name"
               margin="dense"
               type="text"
-              onChange={e =>
-                validateEdgeWeight(/^(-)?(\d)+$/.test(e.target.value))
-              }
               onFocus={() => {
-                document.getElementById('edge_weight_input').select()
+                document.getElementById('project_name_input').select()
               }}
             />
           </FormControl>
@@ -132,10 +103,13 @@ const EdgeEditor = ({
         </Button>
         <Button
           color="primary"
-          disabled={!validEdgeWeight}
-          onClick={submitForm}
+          onClick={() => {
+            promptSaveDialogAction(
+              document.getElementById('project_name_input').value,
+            )
+          }}
         >
-          Apply Changes
+          Confirm
         </Button>
       </DialogActions>
     </Dialog>
@@ -145,4 +119,4 @@ const EdgeEditor = ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EdgeEditor)
+)(PromptSave)
