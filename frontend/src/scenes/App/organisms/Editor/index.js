@@ -1,7 +1,9 @@
 /**
  * Import globals.
  */
-import React from 'react'
+import map from 'lodash/fp/map'
+import values from 'lodash/fp/values'
+import React, { useState } from 'react'
 import { Stage, Layer, Circle, Arrow } from 'react-konva'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -9,7 +11,11 @@ import { connect } from 'react-redux'
 /**
  * Import ducks.
  */
-import { operations } from '../Editor/duck'
+import { operations as editorOperations } from './ducks/editor'
+import {
+  operations as graphOperations,
+  selectors as graphSelectors,
+} from './ducks/graph'
 
 /**
  * Import components.
@@ -26,29 +32,30 @@ import Node from './organisms/Node'
 const mapStateToProps = state => ({
   algorithm_current_step: state.algorithm.steps[state.algorithm.currentIndex],
   algorithm_is_final_step: state.algorithm.isFinal,
-  connectedNodes: state.editor.present.connected,
-  cursor: state.editor.present.cursor,
-  editorActionType: state.editor.present.editorActionType,
-  initialNode: state.editor.present.initialNode,
-  isDrawingTempArrow: state.editor.present.drawTempArrow,
-  isMultiSelect: state.editor.present.isMultiSelect,
-
-  nodes: state.editor.present.nodes,
-  scaleStage: state.editor.present.scaleStage,
-  selectedArrowId: state.editor.present.selectedArrow,
-  selectedNodeId: state.editor.present.selectedNode,
-  stage: state.editor.present.stage,
+  currentEditorAction: state.editor.currentEditorAction,
+  cursor: state.editor.cursor,
+  edges: state.graph.present.edges,
+  nodes: state.graph.present.nodes,
+  selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
+  stage: state.editor.stage,
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators(operations, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      ...editorOperations,
+      ...graphOperations,
+    },
+    dispatch,
+  )
 
 /**
  * Construct appropriate cursor variant.
  */
-const buildCursorStyle = editorActionType =>
-  editorActionType === 'select' || editorActionType === 'isPlaying'
+const buildCursorStyle = currentEditorAction =>
+  currentEditorAction === 'select' || currentEditorAction === 'isPlaying'
     ? 'default'
-    : editorActionType === 'node'
+    : currentEditorAction === 'node'
     ? 'crosshair'
     : 'copy'
 
@@ -58,227 +65,197 @@ const buildCursorStyle = editorActionType =>
 const Editor = ({
   algorithm_current_step,
   algorithm_is_final_step,
-  connectedNodes,
-  createArrow,
+  createEdge,
   createNode,
-  createShape,
+  currentEditorAction,
   cursor,
-  drawTempArrow,
-  editorActionType,
-  grid,
-  initialNode,
-  isDrawingTempArrow,
-  isMultiSelect,
+  edges,
+  gridVisible,
   nodes,
-  scaleStage,
-  selectArrow,
+  selectEdge,
   selectNode,
-  selectedArrowId,
-  selectedNodeId,
+  selectedNode,
   stage,
-  unselectArrow,
+  unselectAll,
   unselectNode,
   updateCursorPosition,
   updateNodePositionEnd,
   updateNodePositionStart,
-}) => (
-  <Stage
-    height={window.innerHeight - 128}
-    scale={{
-      x: scaleStage,
-      y: scaleStage,
-    }}
-    style={{
-      background: editorComponentsTheme.stage.fill.color,
-      cursor: buildCursorStyle(editorActionType),
-    }}
-    width={window.innerWidth}
-    onClick={e => {
-      /**
-       * When user clicks on stage and is in select mode
-       * unselect all selected items.
-       *
-       * When user clicks on stage and is in node mode
-       * create new nodes.
-       */
-      if (editorActionType === 'select') {
-        for (const node of selectedNodeId) {
-          unselectNode(node)
+}) => {
+  const [drawTempArrow, setTempArrowVisibility] = useState(false)
+  const [shadowCircle, setShadowCircleVisibility] = useState(false)
+
+  return (
+    <Stage
+      height={window.innerHeight - 128}
+      scale={{
+        x: stage.scale,
+        y: stage.scale,
+      }}
+      style={{
+        background: editorComponentsTheme.stage.fill.color,
+        cursor: buildCursorStyle(currentEditorAction),
+      }}
+      width={window.innerWidth}
+      onClick={e => {
+        e.cancelBubble = true
+        /**
+         * When user clicks on stage and is in select mode
+         * unselect all selected items.
+         *
+         * When user clicks on stage and is in node mode
+         * create new nodes.
+         */
+        if (
+          currentEditorAction === 'select' ||
+          currentEditorAction === 'edge'
+        ) {
+          setTempArrowVisibility(false)
+          unselectAll()
+        } else if (currentEditorAction === 'node') {
+          createNode(cursor, { grid: gridVisible })
+        }
+      }}
+      onMouseMove={e => {
+        /**
+         * Updates cursor position only in Editor mode.
+         */
+        if (currentEditorAction === 'isPlaying') {
+          return
         }
 
-        for (const arrow of selectedArrowId) {
-          unselectArrow(arrow)
-        }
-      } else if (editorActionType === 'node') {
-        createNode(grid)
-        createShape()
-      }
-      e.cancelBubble = true
-    }}
-    onMouseMove={e => {
-      /**
-       * Updates cursor position only in Editor mode.
-       */
-      if (editorActionType === 'isPlaying') {
-        return
-      }
+        const stage = e.currentTarget.getStage()
 
-      const stage = e.currentTarget.getStage()
-
-      const transform = e.currentTarget
-        .getLayers()[0]
-        .getAbsoluteTransform()
-        .copy()
-      transform.invert()
-      const pos = stage.getPointerPosition()
-      const anchorPos = transform.point(pos)
-      updateCursorPosition(anchorPos)
-    }}
-  >
-    {/**
-     * Build Grid.
-     */
-    grid && <Grid scaleStage={scaleStage} stage={stage} />}
-
-    <Layer>
+        const transform = e.currentTarget
+          .getLayers()[0]
+          .getAbsoluteTransform()
+          .copy()
+        transform.invert()
+        const pos = stage.getPointerPosition()
+        const anchorPos = transform.point(pos)
+        updateCursorPosition(anchorPos)
+      }}
+    >
       {/**
-       * Show temp arrow when user selects a node in Edge mode
-       * and want to connect with other nodes.
+       * Build Grid.
        */
-      isDrawingTempArrow &&
-        editorActionType === 'edge' &&
-        selectedNodeId.map((node, id) => (
+      gridVisible && <Grid stage={stage} />}
+
+      <Layer>
+        {/**
+         * Show temp arrow when user selects a node in Edge mode
+         * and want to connect with other nodes.
+         */
+        drawTempArrow && currentEditorAction === 'edge' && (
           <Arrow
-            key={id}
             dash={[10, 10]}
-            points={[nodes[node].x, nodes[node].y, cursor.x, cursor.y]}
+            points={[
+              selectedNode.ui.pos.x,
+              selectedNode.ui.pos.y,
+              cursor.x,
+              cursor.y,
+            ]}
             stroke={editorComponentsTheme.connectArrow.color}
             strokeWidth={3}
           />
-        ))}
+        )}
 
-      {(() => {
-        /**
-         * Paint edges on screen.
-         */
-        const exist = []
+        {(() => {
+          /**
+           * Paint edges on screen.
+           */
+          const exist = []
 
-        return Object.values(connectedNodes)
-          .filter(
-            arrow =>
-              !algorithm_is_final_step ||
-              algorithm_current_step.highlighted_edges.some(
-                id => id === arrow.id,
-              ) ||
-              algorithm_current_step.selected_edges.some(id => id === arrow.id),
-          )
-          .map((arrow, index, arrows) => {
+          return map((edge, _, edges) => {
             const nodeRadius = 25
             const curvePower = 20
 
             /**
-             * Track double connected nodes.
+             * Track double edges.
              */
-            let secondExist = arrows.some(
-              arr => arr.from.id === arrow.to.id && arr.to.id === arrow.from.id,
+            let isDoubleEdge = graphSelectors.isDoubleEdge(
+              graphSelectors.resolveEdgePath(edge, nodes),
+              edges,
             )
-            if (secondExist && !exist.includes(arrow.from.id)) {
-              exist.push(arrow.from.id)
-              exist.push(arrow.to.id)
+            if (isDoubleEdge && !exist.includes(edge.ui.connects.from)) {
+              exist.push(edge.ui.connects.from)
+              exist.push(edge.ui.connects.to)
             }
 
             /**
              * Paint the edge based on its type.
              */
-            return arrow.to.id !== arrow.from.id ? (
+            return edge.ui.connects.to !== edge.ui.connects.from ? (
               <EdgeNotLoop
-                key={index}
+                key={edge.id}
                 algorithm_current_step={algorithm_current_step}
-                arrow={arrow}
+                currentEditorAction={currentEditorAction}
                 curvePower={curvePower}
-                editorActionType={editorActionType}
-                isMultiSelect={isMultiSelect}
+                isDoubleEdge={isDoubleEdge}
                 nodeRadius={nodeRadius}
-                secondExist={secondExist}
-                selectArrow={selectArrow}
-                selectedArrowId={selectedArrowId}
-                selectedNodeId={selectedNodeId}
-                unselectArrow={unselectArrow}
-                unselectNode={unselectNode}
+                selectEdge={selectEdge}
+                thisResolvedEdge={graphSelectors.resolveEdgePath(edge, nodes)}
+                unselectAll={unselectAll}
               />
             ) : (
               <EdgeLoop
-                key={index}
+                key={edge.id}
                 algorithm_current_step={algorithm_current_step}
-                arrow={arrow}
-                editorActionType={editorActionType}
-                isMultiSelect={isMultiSelect}
-                scaleStage={scaleStage}
-                selectArrow={selectArrow}
-                selectedArrowId={selectedArrowId}
-                selectedNodeId={selectedNodeId}
-                unselectArrow={unselectArrow}
-                unselectNode={unselectNode}
+                currentEditorAction={currentEditorAction}
+                node={nodes[edge.ui.connects.from]}
+                selectEdge={selectEdge}
+                stageScale={stage.scale}
+                thisEdge={edge}
+                unselectAll={unselectAll}
               />
             )
-          })
-      })()}
+          })(values(edges))
+        })()}
 
-      {/**
-       * Show shadow circle when grid is on.
-       * Determine the snap position of the node.
-       */}
-      <Circle
-        dash={[20, 2]}
-        fill={editorComponentsTheme.shadowNode.fill.color}
-        height={35}
-        id="shadowCircle"
-        opacity={0.6}
-        stroke={editorComponentsTheme.shadowNode.stroke.color}
-        strokeWidth={3}
-        visible={false}
-        width={35}
-        x={0}
-        y={0}
-      />
+        {/**
+         * Show shadow circle when grid is on.
+         * Determine the snap position of the node.
+         */
+        shadowCircle && (
+          <Circle
+            dash={[20, 2]}
+            fill={editorComponentsTheme.shadowNode.fill.color}
+            height={35}
+            id="shadowCircle"
+            opacity={0.6}
+            stroke={editorComponentsTheme.shadowNode.stroke.color}
+            strokeWidth={3}
+            width={35}
+            x={0}
+            y={0}
+          />
+        )}
 
-      {/**
-       * Paint nodes on screen.
-       */
-      Object.values(nodes)
-        .filter(
-          node =>
-            !algorithm_is_final_step ||
-            algorithm_current_step.highlighted_nodes.some(
-              id => id === node.id,
-            ) ||
-            algorithm_current_step.selected_nodes.some(id => id === node.id),
-        )
-        .map((node, index) => (
+        {/**
+         * Paint nodes on screen.
+         */
+        map(node => (
           <Node
-            key={index}
+            key={node.id}
             algorithm_current_step={algorithm_current_step}
-            createArrow={createArrow}
-            createShape={createShape}
-            drawTempArrow={drawTempArrow}
-            editorActionType={editorActionType}
-            grid={grid}
-            initialNode={initialNode}
-            isMultiSelect={isMultiSelect}
-            nodes={nodes}
+            createEdge={createEdge}
+            currentEditorAction={currentEditorAction}
+            gridVisible={gridVisible}
             selectNode={selectNode}
-            selectedArrowId={selectedArrowId}
-            selectedNodeId={selectedNodeId}
+            selectedNode={selectedNode}
+            setShadowCircleVisibility={setShadowCircleVisibility}
+            setTempArrowVisibility={setTempArrowVisibility}
             thisNode={node}
-            unselectArrow={unselectArrow}
+            unselectAll={unselectAll}
             unselectNode={unselectNode}
             updateNodePositionEnd={updateNodePositionEnd}
             updateNodePositionStart={updateNodePositionStart}
           />
-        ))}
-    </Layer>
-  </Stage>
-)
+        ))(values(nodes))}
+      </Layer>
+    </Stage>
+  )
+}
 
 export default connect(
   mapStateToProps,

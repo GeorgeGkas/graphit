@@ -20,12 +20,13 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as editorOperations } from '../Editor/duck'
+import { operations as graphOperations } from '../Editor/ducks/graph'
 import { operations as profileOperations } from '../AppBar/duck'
 
 /**
  * Import components.
  */
+import ConfirmDialog from '../ConfirmDialog'
 import close from './images/close.svg'
 import CloseButton from './atoms/CloseButton'
 
@@ -62,6 +63,8 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
+  futureExist: state.graph.future.length,
+  pastExist: state.graph.past.length,
   profile: state.user.profile,
   selectedProjectId: state.user.selectedProjectId,
 })
@@ -69,7 +72,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      ...editorOperations,
+      ...graphOperations,
       ...profileOperations,
     },
     dispatch,
@@ -80,8 +83,8 @@ const mapDispatchToProps = dispatch =>
  */
 const Dashboard = ({
   futureExist,
-  initEditorHistory,
-  loadState,
+  initGraphHistory,
+  loadGraph,
   pastExist,
   profile,
   selectProject,
@@ -90,6 +93,15 @@ const Dashboard = ({
 }) => {
   const classes = useStyles()
   const [projectList, setProjectList] = useState([])
+
+  const [loadDialogVisible, makeLoadDialogVisible] = useState(false)
+  const toggleLoadDialog = () => makeLoadDialogVisible(!loadDialogVisible)
+
+  const [selectedProjectToLoad, setSelectedProjectToLoad] = useState('')
+  const [selectedProjectToDelete, setSelectedProjectToDelete] = useState('')
+
+  const [deleteDialogVisible, makeDeleteDialogVisible] = useState(false)
+  const toggleDeleteDialog = () => makeDeleteDialogVisible(!deleteDialogVisible)
 
   useEffect(() => {
     const getProjectList = async () => {
@@ -104,36 +116,27 @@ const Dashboard = ({
     getProjectList()
   }, [profile])
 
-  const loadProject = async projectId => {
+  const loadSelectedProject = async () => {
     try {
-      const project = await fetchProject(projectId)
-      if (
-        (!pastExist && !futureExist) ||
-        // eslint-disable-next-line no-restricted-globals
-        confirm('Are you sure you want to quit as there are unsaved documents?')
-      ) {
-        initEditorHistory()
-        loadState(project)
-        selectProject(projectId)
-        toggleDashboard()
-      }
+      const project = await fetchProject(selectedProjectToLoad)
+      selectProject(selectedProjectToLoad)
+      loadGraph(project)
     } catch (e) {
       toast.error(e.message)
     }
   }
 
-  const deleteProject = async projectId => {
+  const deleteSelectedProject = async () => {
     try {
-      // eslint-disable-next-line no-restricted-globals
-      if (!confirm('Are you sure you want to delete this project?')) return
+      await fetchDeleteProject(selectedProjectToDelete)
 
-      await fetchDeleteProject(projectId)
-
-      setProjectList(projectList.filter(project => project._id !== projectId))
+      setProjectList(
+        projectList.filter(project => project._id !== selectedProjectToDelete),
+      )
       toast.success('Successfully deleted the project.')
 
-      if (selectedProjectId === projectId) {
-        initEditorHistory()
+      if (selectedProjectId === selectedProjectToDelete) {
+        initGraphHistory()
         selectProject('')
       }
     } catch (e) {
@@ -142,107 +145,150 @@ const Dashboard = ({
   }
 
   return (
-    <Paper className={classes.paper}>
-      <Box display="flex" style={{ borderBottom: '1px solid #ddd' }}>
-        <Box p="15px" style={{ textAlign: 'center' }} width={1 / 10}>
-          <img
-            alt=""
-            height={42}
-            src={profile.imageUrl}
-            style={{ borderRadius: '50%' }}
-            width={42}
-          />
+    <React.Fragment>
+      <Paper className={classes.paper}>
+        <Box display="flex" style={{ borderBottom: '1px solid #ddd' }}>
+          <Box p="15px" style={{ textAlign: 'center' }} width={1 / 10}>
+            <img
+              alt=""
+              height={42}
+              src={profile.imageUrl}
+              style={{ borderRadius: '50%' }}
+              width={42}
+            />
+          </Box>
+          <Box p="15px" style={{ lineHeight: '42px' }} width={8 / 10}>
+            {profile.name}
+          </Box>
+          <Box width={1 / 10}>
+            <CloseButton onClick={toggleDashboard}>
+              <img alt="" src={close} />
+            </CloseButton>
+          </Box>
         </Box>
-        <Box p="15px" style={{ lineHeight: '42px' }} width={8 / 10}>
-          {profile.name}
-        </Box>
-        <Box width={1 / 10}>
-          <CloseButton onClick={toggleDashboard}>
-            <img alt="" src={close} />
-          </CloseButton>
-        </Box>
-      </Box>
 
-      <MUIDataTable
-        className={classes.table}
-        columns={[
-          {
-            label: 'Name',
-            name: 'name',
-            options: {
-              searchable: true,
+        <MUIDataTable
+          className={classes.table}
+          columns={[
+            {
+              label: 'Name',
+              name: 'name',
+              options: {
+                searchable: true,
+              },
             },
-          },
-          {
-            label: 'Algorithm',
-            name: 'algorithm',
-            options: {
-              searchable: false,
+            {
+              label: 'Algorithm',
+              name: 'algorithm',
+              options: {
+                searchable: false,
+              },
             },
-          },
-          {
-            label: 'Last modified',
-            name: 'modified',
-            options: {
-              searchable: false,
+            {
+              label: 'Last modified',
+              name: 'modified',
+              options: {
+                searchable: false,
+              },
             },
-          },
-          {
-            name: '_id',
-            options: {
-              display: 'false',
-              searchable: false,
-              sort: false,
+            {
+              name: '_id',
+              options: {
+                display: 'false',
+                searchable: false,
+                sort: false,
+              },
             },
-          },
-          {
-            name: '',
-            options: {
-              customBodyRender: value => (
-                <IconButton onClick={() => loadProject(value)}>
-                  <RemoveRedEyeIcon />
+            {
+              name: '',
+              options: {
+                customBodyRender: value => {
+                  setSelectedProjectToLoad(value)
+                  return (
+                    <IconButton
+                      onClick={() => {
+                        if (futureExist || pastExist) {
+                          toggleLoadDialog()
+                        } else {
+                          loadSelectedProject()
+                          toggleDashboard()
+                        }
+                      }}
+                    >
+                      <RemoveRedEyeIcon />
+                    </IconButton>
+                  )
+                },
+                searchable: false,
+                sort: false,
+              },
+            },
+          ]}
+          data={projectList.map(project => ({
+            '': project._id,
+            _id: project._id,
+            algorithm: project.algorithm,
+            modified: new Date(Date.parse(project.updatedAt)).toDateString(),
+            name: project.name,
+          }))}
+          options={{
+            customToolbarSelect: (selectedRows, displayData) => {
+              return (
+                <IconButton
+                  className={classes.delete}
+                  onClick={() => {
+                    setSelectedProjectToDelete(
+                      displayData[selectedRows.data[0].dataIndex].data[3],
+                    )
+                    toggleDeleteDialog()
+                  }}
+                >
+                  <DeleteIcon />
                 </IconButton>
-              ),
-              searchable: false,
-              sort: false,
+              )
             },
-          },
-        ]}
-        data={projectList.map(project => ({
-          '': project._id,
-          _id: project._id,
-          algorithm: project.algorithm,
-          modified: new Date(Date.parse(project.updatedAt)).toDateString(),
-          name: project.name,
-        }))}
-        options={{
-          customToolbarSelect: (selectedRows, displayData) => {
-            const id = displayData[selectedRows.data[0].dataIndex].data[3]
-            return (
-              <IconButton
-                className={classes.delete}
-                onClick={() => deleteProject(id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            )
-          },
-          download: false,
-          elevation: 0,
-          filter: false,
-          print: false,
-          responsive: 'scrollMaxHeight',
-          search: true,
-          searchPlaceholder: 'Search by project name',
-          selectableRows: 'single',
-          selectableRowsHeader: false,
+            download: false,
+            elevation: 0,
+            filter: false,
+            print: false,
+            responsive: 'scrollMaxHeight',
+            search: true,
+            searchPlaceholder: 'Search by project name',
+            selectableRows: 'single',
+            selectableRowsHeader: false,
 
-          sort: true,
-          viewColumns: false,
+            sort: true,
+            viewColumns: false,
+          }}
+          title="Projects"
+        />
+      </Paper>
+
+      <ConfirmDialog
+        confirmAction={() => {
+          loadSelectedProject()
+          toggleLoadDialog()
+          toggleDashboard()
         }}
-        title="Projects"
+        confirmDialogVisible={loadDialogVisible}
+        confirmMessage={
+          'All unsaved changes will be deleted if you confirm this action.'
+        }
+        confirmTitle="Load project?"
+        handleClose={toggleLoadDialog}
       />
-    </Paper>
+
+      <ConfirmDialog
+        confirmAction={() => {
+          deleteSelectedProject()
+          toggleDeleteDialog()
+        }}
+        confirmDialogVisible={deleteDialogVisible}
+        confirmMessage={'This action cannot be undone.'}
+        confirmTitle="Delete project?"
+        handleClose={toggleDeleteDialog}
+      />
+    </React.Fragment>
   )
 }
 

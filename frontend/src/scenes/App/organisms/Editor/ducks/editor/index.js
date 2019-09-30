@@ -1,4 +1,4 @@
-import reducer, { initialState } from './reducers'
+import reducer, { initialState } from './reducer'
 
 import * as operations from './operations'
 import * as types from './types'

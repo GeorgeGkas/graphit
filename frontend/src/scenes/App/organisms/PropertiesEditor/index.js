@@ -17,7 +17,10 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as editorOperations } from '../../organisms/Editor/duck'
+import {
+  operations as graphOperations,
+  selectors as graphSelectors,
+} from '../../organisms/Editor/ducks/graph'
 
 /**
  * Import components.
@@ -47,55 +50,52 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  allSelectedEdges: state.editor.present.selectedArrow,
-  allSelectedNodes: state.editor.present.selectedNode,
-  currentStageScale: state.editor.present.scaleStage,
-  edges: state.editor.present.connected,
-  selectedEdge:
-    state.editor.present.connected[state.editor.present.selectedArrow[0]],
-  selectedNode:
-    state.editor.present.nodes[state.editor.present.selectedNode[0]],
+  edges: state.graph.present.edges,
+  nodes: state.graph.present.nodes,
+  selectedEdge: graphSelectors.getSelected(state.graph.present.edges),
+  selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
+  stageScale: state.editor.stage.scale,
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ ...editorOperations }, dispatch)
+  bindActionCreators({ ...graphOperations }, dispatch)
 
 /**
  * Component.
  */
 const PropertiesEditor = ({
-  allSelectedEdges,
-  allSelectedNodes,
-  currentStageScale,
-  deleteArrow: deleteEdge,
+  deleteEdge,
   deleteNode,
-  deleteShape,
   edges,
+  nodes,
   selectedEdge,
   selectedNode,
+  stageScale,
 }) => {
   const classes = useStyles()
   const [editorDialogVisible, makeEditorDialogVisible] = useState(false)
 
   const toggleEditorDialog = () => makeEditorDialogVisible(!editorDialogVisible)
 
-  const deleteShapes = () => {
-    deleteShape()
-
-    for (const node of allSelectedNodes) {
-      deleteNode(node)
-    }
-    for (const arrow of allSelectedEdges) {
-      deleteEdge(arrow)
+  const deleteShape = () => {
+    if (selectedEdge) {
+      deleteEdge(selectedEdge.id)
+    } else if (selectedNode) {
+      deleteNode(selectedNode.id)
+    } else {
+      /**
+       * Should not be reached!
+       */
+      throw new Error('Properties editor does not match any selected shape.')
     }
   }
 
   return (
     <Wrapper
-      currentStageScale={currentStageScale}
-      edges={Object.values(edges)}
-      selectedEdge={selectedEdge}
+      currentStageScale={stageScale}
+      edges={edges}
       selectedNode={selectedNode}
+      selectedResolvedEdge={graphSelectors.resolveEdgePath(selectedEdge, nodes)}
     >
       <Button
         className={classes.editButton}
@@ -113,7 +113,7 @@ const PropertiesEditor = ({
         color="secondary"
         size="small"
         variant="contained"
-        onClick={deleteShapes}
+        onClick={deleteShape}
       >
         <DeleteIcon />
       </IconButton>

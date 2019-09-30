@@ -12,19 +12,19 @@ import editorComponentsTheme from '../../../../../../themes/editorComponents.the
 /**
  * Build X axis.
  */
-const buildX = ({ padding, scaleStage, stage }) => {
+const buildX = ({ padding, stage }) => {
   const gridX = []
 
-  for (let i = 0; i < (window.innerWidth * (1 / scaleStage)) / padding; ++i) {
+  for (let i = 0; i < (window.innerWidth * (1 / stage.scale)) / padding; ++i) {
     const points = [
       Math.round(i * padding) + 0.5,
       0 -
-        window.innerHeight * scaleStage -
-        window.innerHeight * Math.abs(stage.y),
+        window.innerHeight * stage.scale -
+        window.innerHeight * Math.abs(stage.pos.y),
       Math.round(i * padding) + 0.5,
       window.innerHeight +
-        window.innerHeight * scaleStage +
-        window.innerHeight * Math.abs(stage.y),
+        window.innerHeight * stage.scale +
+        window.innerHeight * Math.abs(stage.pos.y),
     ]
 
     gridX.push(
@@ -43,18 +43,18 @@ const buildX = ({ padding, scaleStage, stage }) => {
 /**
  * Build Y axis.
  */
-const buildY = ({ padding, scaleStage, stage }) => {
+const buildY = ({ padding, stage }) => {
   const gridY = []
 
-  for (let i = 0; i < (window.innerHeight * (1 / scaleStage)) / padding; ++i) {
+  for (let i = 0; i < (window.innerHeight * (1 / stage.scale)) / padding; ++i) {
     const points = [
       0 -
-        window.innerWidth * scaleStage -
-        window.innerWidth * Math.abs(stage.x),
+        window.innerWidth * stage.scale -
+        window.innerWidth * Math.abs(stage.pos.x),
       Math.round(i * padding) + 0.5,
       window.innerWidth +
-        window.innerWidth * scaleStage +
-        window.innerWidth * Math.abs(stage.x),
+        window.innerWidth * stage.scale +
+        window.innerWidth * Math.abs(stage.pos.x),
       Math.round(i * padding),
     ]
 
@@ -74,21 +74,20 @@ const buildY = ({ padding, scaleStage, stage }) => {
 /**
  * Component.
  */
-const Grid = ({ scaleStage, stage }) => {
+const Grid = ({ stage }) => {
   const padding = 35
 
   const gridX = buildX({
     padding,
-
-    scaleStage,
     stage,
   })
 
   const gridY = buildY({
     padding,
-    scaleStage,
     stage,
   })
+
+  console.log(gridY)
 
   const grid = [...gridX, ...gridY]
 

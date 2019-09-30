@@ -1,12 +1,6 @@
 import { toast } from 'react-toastify'
 
-export default function cloudSave(graph, selectProject) {
-  let projectName = prompt('Project name')
-
-  if (!projectName || !projectName.trim()) {
-    return
-  }
-
+export default function cloudSave(graph, selectProject, projectName) {
   const bodyBlob = new Blob(
     [
       JSON.stringify(

@@ -3,54 +3,43 @@
  * Import all your Duck Reducers to this file.
  */
 
+import set from 'lodash/fp/set'
 import undoable, { includeAction } from 'redux-undo'
+import mapValues from 'lodash/fp/mapValues'
 import { combineReducers } from 'redux'
 import algorithm from '../scenes/App/organisms/EditorBar/duck'
-import editor, {
-  types as editorTypes,
-} from '../scenes/App/organisms/Editor/duck'
-import editorComponentsTheme from '../themes/editorComponents.theme'
+import editor from '../scenes/App/organisms/Editor/ducks/editor'
+import graph, {
+  types as graphTypes,
+} from '../scenes/App/organisms/Editor/ducks/graph'
 import user from '../scenes/App/organisms/AppBar/duck'
 
 export default () =>
   combineReducers({
     algorithm,
-    editor: undoable(editor, {
+    editor,
+    graph: undoable(graph, {
       filter: includeAction([
-        editorTypes.UPDATE_NODE_POSITION_END,
-        editorTypes.CREATE_SHAPE,
-        editorTypes.DELETE_SHAPE,
-        editor.UPDATE_NODE_NAME,
-        editor.UPDATE_ARROW_WEIGHT,
+        graphTypes.CREATE_EDGE,
+        graphTypes.CREATE_NODE,
+        graphTypes.DELETE_EDGE,
+        graphTypes.DELETE_NODE,
+        graphTypes.UPDATE_EDGE_PROPERTIES,
+        graphTypes.UPDATE_NODE_POSITION_END,
+        graphTypes.UPDATE_NODE_PROPERTIES,
       ]),
-      filterStateProps: currenState => {
+      filterStateProps: currentState => {
+        const unselectAll = mapValues(set('ui.selected', false))
+
         return {
-          connected: Object.values(currenState.connected)
-            .map(arrow => ({
-              ...arrow,
-              stroke: editorComponentsTheme.edge.neutral.color,
-            }))
-            .reduce((obj, arrow) => ({ ...obj, [arrow.id]: arrow }), {}),
-          cursor: currenState.cursor,
-          drawTempArrow: false,
-          editorActionType: 'select',
-          isMultiSelect: false,
-          nodes: Object.values(currenState.nodes)
-            .map(node => ({
-              ...node,
-              fill: editorComponentsTheme.node.neutral.color,
-            }))
-            .reduce((obj, node) => ({ ...obj, [node.id]: node }), {}),
-          scaleStage: currenState.scaleStage,
-          selectedArrow: [],
-          selectedNode: [],
-          stage: currenState.stage,
+          edges: unselectAll(currentState.edges),
+          nodes: unselectAll(currentState.nodes),
         }
       },
-      initTypes: [editorTypes.INIT_EDITOR_HISTORY],
+      initTypes: [graphTypes.INIT_GRAPH_HISTORY],
       limit: 100,
-      redoType: editorTypes.REDO_EDITOR_HISTORY,
-      undoType: editorTypes.UNDO_EDITOR_HISTORY,
+      redoType: graphTypes.REDO_GRAPH_HISTORY,
+      undoType: graphTypes.UNDO_GRAPH_HISTORY,
     }),
     user,
   })
