@@ -2,6 +2,7 @@
  * Import globals.
  */
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { GoogleLogin } from 'react-google-login'
@@ -19,7 +20,6 @@ import blue from '@material-ui/core/colors/blue'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import ConfirmDialog from '../ConfirmDialog'
 import DashboardIcon from '@material-ui/icons/DashboardSharp'
 import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
@@ -36,14 +36,13 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as algorithmOperations } from '../EditorBar/duck'
-import { operations as editorOperations } from '../Editor/ducks/editor'
 import { operations as graphOperations } from '../Editor/ducks/graph'
 import { operations as profileOperations } from './duck'
 
 /**
  * Import components.
  */
+import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 
 /**
@@ -114,8 +113,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      ...algorithmOperations,
-      ...editorOperations,
       ...graphOperations,
       ...profileOperations,
     },
@@ -133,7 +130,6 @@ const AppBar = ({
   profile,
   signIn,
   signOut,
-  toggleDashboard,
 }) => {
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
@@ -180,8 +176,9 @@ const AppBar = ({
               <IconButton
                 className={classes.menuButton}
                 color="inherit"
+                component={Link}
                 edge="start"
-                onClick={toggleDashboard}
+                to="/dashboard"
               >
                 <DashboardIcon />
               </IconButton>

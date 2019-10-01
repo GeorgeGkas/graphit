@@ -28,8 +28,8 @@ import { operations as profileOperations } from '../../duck'
 /**
  * Import components.
  */
-import ConfirmDialog from '../../../ConfirmDialog'
-import Notification from '../../../Notification'
+import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
+import Notification from '../../../../../../organisms/Notification'
 import PromptSaveDialog from './organisms/PromptSaveDialog'
 
 /**

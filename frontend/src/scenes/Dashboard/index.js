@@ -2,9 +2,11 @@
  * Import globals.
  */
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
+import { useHistory } from 'react-router'
 
 /**
  * Import UI framework modules.
@@ -20,16 +22,16 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as graphOperations } from '../Editor/ducks/graph'
-import { operations as profileOperations } from '../AppBar/duck'
+import { operations as graphOperations } from '../App/organisms/Editor/ducks/graph'
+import { operations as profileOperations } from '../App/organisms/AppBar/duck'
 
 /**
  * Import components.
  */
-import ConfirmDialog from '../ConfirmDialog'
+import ConfirmDialog from '../../organisms/ConfirmDialog'
 import close from './images/close.svg'
 import CloseButton from './atoms/CloseButton'
-import Notification from '../Notification'
+import Notification from '../../organisms/Notification'
 
 /**
  * Import services.
@@ -48,12 +50,10 @@ const useStyles = makeStyles(theme => ({
   paper: {
     borderRadius: 0,
     height: '100vh',
-
     left: '50%',
     marginLeft: '-32.5%',
     position: 'absolute',
     width: '65%',
-    zIndex: 99999,
   },
   table: {
     height: '70vh',
@@ -90,8 +90,8 @@ const Dashboard = ({
   profile,
   selectProject,
   selectedProjectId,
-  toggleDashboard,
 }) => {
+  const history = useHistory()
   const classes = useStyles()
   const [projectList, setProjectList] = useState([])
 
@@ -162,7 +162,7 @@ const Dashboard = ({
             {profile.name}
           </Box>
           <Box width={1 / 10}>
-            <CloseButton onClick={toggleDashboard}>
+            <CloseButton component={Link} to="/app">
               <img alt="" src={close} />
             </CloseButton>
           </Box>
@@ -212,7 +212,7 @@ const Dashboard = ({
                           toggleLoadDialog()
                         } else {
                           loadSelectedProject()
-                          toggleDashboard()
+                          history.push('/app')
                         }
                       }}
                     >
@@ -269,7 +269,7 @@ const Dashboard = ({
         confirmAction={() => {
           loadSelectedProject()
           toggleLoadDialog()
-          toggleDashboard()
+          history.push('/app')
         }}
         confirmDialogVisible={loadDialogVisible}
         confirmMessage={

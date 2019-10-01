@@ -1,6 +1,7 @@
+import Button from '@material-ui/core/Button'
 import styled from 'styled-components'
 
-const CloseButton = styled.button`
+const CloseButton = styled(Button)`
   background: 0;
   border: 0;
   cursor: pointer;

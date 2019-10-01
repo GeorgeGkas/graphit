@@ -2,24 +2,20 @@
  * Import globals.
  */
 import React, { useState } from 'react'
-import { ToastContainer } from 'react-toastify'
 import { connect } from 'react-redux'
 
 /**
  * Import UI framework modules.
  */
 import Slide from '@material-ui/core/Slide'
-import Fade from '@material-ui/core/Fade'
 
 /**
  * Import components.
  */
 import AppBar from './organisms/AppBar'
-import Dashboard from './organisms/Dashboard'
 import Dijkstra from './organisms/Dijkstra'
 import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
-import Overlay from '../../atoms/Overlay'
 import PropertiesEditor from './organisms/PropertiesEditor'
 
 /**
@@ -43,10 +39,8 @@ const mapDispatchToProps = null
  */
 const App = ({ currentEditorAction, selectedEdge, selectedNode }) => {
   const [gridVisible, makeGridVisible] = useState(false)
-  const [dashboardVisible, makeDashboardVisible] = useState(false)
 
   const toggleGrid = () => makeGridVisible(!gridVisible)
-  const toggleDashboard = () => makeDashboardVisible(!dashboardVisible)
 
   const shouldRenderPropertiesEditor =
     currentEditorAction === 'select' &&
@@ -55,40 +49,18 @@ const App = ({ currentEditorAction, selectedEdge, selectedNode }) => {
 
   return (
     <React.Fragment>
-      <Fade mountOnEnter unmountOnExit in={dashboardVisible}>
-        <div
-          style={{
-            height: '100%',
-            position: 'absolute',
-            width: '100%',
-            zIndex: 9999,
-          }}
-        >
-          <Dashboard toggleDashboard={toggleDashboard} />
-          <Overlay />
-        </div>
-      </Fade>
-
       <Slide direction="left" in={showAlgorithmPanel}>
         <Dijkstra />
       </Slide>
 
       <div style={{ position: 'relative' }}>
-        <AppBar toggleDashboard={toggleDashboard} />
+        <AppBar />
         <EditorBar gridVisible={gridVisible} toggleGrid={toggleGrid} />
       </div>
 
       <Editor gridVisible={gridVisible} />
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
-
-      <ToastContainer
-        closeOnClick
-        hideProgressBar
-        autoClose={false}
-        closeButton={false}
-        pauseOnHover={false}
-      />
     </React.Fragment>
   )
 }

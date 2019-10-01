@@ -16,7 +16,7 @@ import { toast } from 'react-toastify'
 import * as actions from './actions'
 import { operations as editorOperations } from '../../Editor/ducks/editor'
 
-import Notification from '../../Notification'
+import Notification from '../../../../../organisms/Notification'
 
 const {
   firstIteration: firstIterationAction,
