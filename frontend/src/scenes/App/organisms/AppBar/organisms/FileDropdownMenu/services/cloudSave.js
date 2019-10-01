@@ -1,6 +1,4 @@
-import { toast } from 'react-toastify'
-
-export default function cloudSave(graph, selectProject, projectName) {
+export default async function cloudSave(graph, selectProject, projectName) {
   const bodyBlob = new Blob(
     [
       JSON.stringify(
@@ -27,14 +25,18 @@ export default function cloudSave(graph, selectProject, projectName) {
     mode: 'cors',
   }
 
-  fetch('/api/v1/projects', requestOptions).then(res => {
-    if (res.ok) {
-      res.json().then(id => {
-        selectProject(id)
-        toast.success('Project saved successfully')
-      })
-    } else {
-      toast.error('Could not save project')
+  try {
+    const res = await fetch('/api/v1/projects', requestOptions)
+
+    if (!res.ok) {
+      return false
     }
-  })
+
+    const data = await res.json()
+
+    selectProject(data)
+    return true
+  } catch (e) {
+    return false
+  }
 }

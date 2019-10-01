@@ -29,6 +29,7 @@ import { operations as profileOperations } from '../AppBar/duck'
 import ConfirmDialog from '../ConfirmDialog'
 import close from './images/close.svg'
 import CloseButton from './atoms/CloseButton'
+import Notification from '../Notification'
 
 /**
  * Import services.
@@ -109,7 +110,7 @@ const Dashboard = ({
         const list = await fetchProjectList(profile.id)
         setProjectList(list)
       } catch (e) {
-        toast.error(e.message)
+        toast(<Notification message={e.message} />)
       }
     }
 
@@ -122,7 +123,7 @@ const Dashboard = ({
       selectProject(selectedProjectToLoad)
       loadGraph(project)
     } catch (e) {
-      toast.error(e.message)
+      toast(<Notification message={e.message} />)
     }
   }
 
@@ -133,14 +134,14 @@ const Dashboard = ({
       setProjectList(
         projectList.filter(project => project._id !== selectedProjectToDelete),
       )
-      toast.success('Successfully deleted the project.')
+      toast(<Notification message="Project deleted successfully" />)
 
       if (selectedProjectId === selectedProjectToDelete) {
         initGraphHistory()
         selectProject('')
       }
     } catch (e) {
-      toast.error(e.message)
+      toast(<Notification message={e.message} />)
     }
   }
 

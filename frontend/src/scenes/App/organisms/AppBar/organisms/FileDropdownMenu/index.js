@@ -4,6 +4,7 @@
 import React, { useState } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
 
 /**
  * Import UI framework modules.
@@ -28,6 +29,7 @@ import { operations as profileOperations } from '../../duck'
  * Import components.
  */
 import ConfirmDialog from '../../../ConfirmDialog'
+import Notification from '../../../Notification'
 import PromptSaveDialog from './organisms/PromptSaveDialog'
 
 /**
@@ -122,9 +124,20 @@ const FileDropdownMenu = ({
                 <MenuItem
                   button
                   disabled={currentEditorAction === 'isPlaying'}
-                  onClick={() => {
+                  onClick={async () => {
                     if (selectedProjectId) {
-                      cloudUpdate(selectedProjectId, graph)
+                      const ok = await cloudUpdate(selectedProjectId, graph)
+                      fileDropdownMenu.close()
+
+                      if (ok) {
+                        toast(
+                          <Notification message="Project updated successfully" />,
+                        )
+                      } else {
+                        toast(
+                          <Notification message="Could not update project" />,
+                        )
+                      }
                     } else {
                       togglePromptSaveDialog()
                     }
@@ -154,8 +167,8 @@ const FileDropdownMenu = ({
         confirmAction={() => {
           initGraphHistory()
           selectProject('')
-          fileDropdownMenu.close()
           toggleOverwriteDialog()
+          fileDropdownMenu.close()
         }}
         confirmDialogVisible={overwriteDialogVisible}
         confirmMessage={
@@ -167,8 +180,14 @@ const FileDropdownMenu = ({
 
       <PromptSaveDialog
         handleClose={togglePromptSaveDialog}
-        promptSaveDialogAction={projectName => {
-          cloudSave(graph, selectProject, projectName)
+        promptSaveDialogAction={async projectName => {
+          const ok = await cloudSave(graph, selectProject, projectName)
+
+          if (ok) {
+            toast(<Notification message="Project saved successfully" />)
+          } else {
+            toast(<Notification message="Could not save project" />)
+          }
         }}
         promptSaveDialogVisible={promptSaveDialogVisible}
       />

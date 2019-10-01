@@ -2,12 +2,14 @@
  * Import globals.
  */
 import React, { useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { connect } from 'react-redux'
 
 /**
  * Import UI framework modules.
  */
 import Slide from '@material-ui/core/Slide'
+import Fade from '@material-ui/core/Fade'
 
 /**
  * Import components.
@@ -19,7 +21,6 @@ import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
 import Overlay from '../../atoms/Overlay'
 import PropertiesEditor from './organisms/PropertiesEditor'
-import { Fade } from '@material-ui/core'
 
 /**
  * Import ducks.
@@ -80,6 +81,14 @@ const App = ({ currentEditorAction, selectedEdge, selectedNode }) => {
       <Editor gridVisible={gridVisible} />
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
+
+      <ToastContainer
+        closeOnClick
+        hideProgressBar
+        autoClose={false}
+        closeButton={false}
+        pauseOnHover={false}
+      />
     </React.Fragment>
   )
 }

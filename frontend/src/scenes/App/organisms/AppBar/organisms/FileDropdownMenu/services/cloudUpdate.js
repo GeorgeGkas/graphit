@@ -1,6 +1,4 @@
-import { toast } from 'react-toastify'
-
-export default function cloudUpdate(projectId, graph) {
+export default async function cloudUpdate(projectId, graph) {
   const bodyBlob = new Blob(
     [
       JSON.stringify(
@@ -25,11 +23,15 @@ export default function cloudUpdate(projectId, graph) {
     mode: 'cors',
   }
 
-  fetch(`/api/v1/projects/${projectId}`, requestOptions).then(res => {
-    if (res.ok) {
-      toast.success('Project updated successfully')
-    } else {
-      toast.error('Could not update project')
+  try {
+    const res = await fetch(`/api/v1/projects/${projectId}`, requestOptions)
+
+    if (!res.ok) {
+      return false
     }
-  })
+
+    return true
+  } catch (e) {
+    return false
+  }
 }

@@ -1,3 +1,5 @@
+import React from 'react'
+
 import concat from 'lodash/fp/concat'
 import find from 'lodash/fp/find'
 import filter from 'lodash/fp/filter'
@@ -13,6 +15,8 @@ import values from 'lodash/fp/values'
 import { toast } from 'react-toastify'
 import * as actions from './actions'
 import { operations as editorOperations } from '../../Editor/ducks/editor'
+
+import Notification from '../../Notification'
 
 const {
   firstIteration: firstIterationAction,
@@ -181,7 +185,7 @@ const startPlaying = () => (dispatch, getState) => {
     getState().graph.present.nodes,
   )
   if (!initial) {
-    toast.error('Please set an initial node')
+    toast(<Notification message="Please set an initial node" />)
     return
   }
 
@@ -192,7 +196,7 @@ const startPlaying = () => (dispatch, getState) => {
   const resolvedGraph = resolveGraph(getState().graph.present, initial)
   const nodes = values(resolvedGraph.nodes)
   if (uniqBy('properties.name', nodes).length !== nodes.length) {
-    toast.error('Duplicate node names are prohibited')
+    toast(<Notification message="Duplicate node names are prohibited" />)
     return
   }
 

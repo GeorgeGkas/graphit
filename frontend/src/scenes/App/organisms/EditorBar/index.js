@@ -29,8 +29,6 @@ import UndoIcon from '@material-ui/icons/UndoSharp'
 import ZoomInIcon from '@material-ui/icons/ZoomInSharp'
 import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
 import { makeStyles } from '@material-ui/core/styles'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 /**
  * Import ducks.
@@ -50,10 +48,6 @@ const useStyles = makeStyles(theme => ({
   buttonActive: {
     color: blue['500'],
     margin: theme.spacing(1),
-  },
-  notificationContainer: {
-    marginRight: 0,
-    top: '135px',
   },
   root: {
     background: '#fff',
@@ -160,17 +154,6 @@ const EditorBar = ({
 
   return (
     <React.Fragment>
-      <ToastContainer
-        closeOnClick
-        draggable
-        hideProgressBar
-        autoClose={4000}
-        className={classes.notificationContainer}
-        closeButton={false}
-        pauseOnHover={false}
-        position={toast.POSITION.TOP_RIGHT}
-      />
-
       <AppBar className={classes.root} position="static">
         <Toolbar>
           <Tooltip title="Undo">
