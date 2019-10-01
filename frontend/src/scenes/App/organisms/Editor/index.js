@@ -166,14 +166,14 @@ const Editor = ({
            */
           const exist = []
 
-          return map((edge, _, edges) => {
+          return map(edge => {
             const nodeRadius = 25
             const curvePower = 20
 
             /**
              * Track double edges.
              */
-            let isDoubleEdge = graphSelectors.isDoubleEdge(
+            const isDoubleEdge = graphSelectors.isDoubleEdge(
               graphSelectors.resolveEdgePath(edge, nodes),
               edges,
             )
