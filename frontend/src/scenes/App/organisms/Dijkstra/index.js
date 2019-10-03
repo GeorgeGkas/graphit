@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 /**
  * Import UI framework modules.
@@ -144,10 +145,13 @@ class Dijkstra extends React.Component {
   }
 }
 
-const Connected = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(Dijkstra))
+const Connected = compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(Dijkstra)
 
 export default React.forwardRef((props, ref) => (
   <Connected {...props} forwardedRef={ref} />
