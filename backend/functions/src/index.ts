@@ -16,13 +16,14 @@ const server = setupServer()
  * Add Firestore to Express.
  * Allow for use directly from express.Request object .
  */
-connect(db, server)
+connect(
+  db,
+  server,
+)
 
 /**
  * Register the Express server as firebase function.
  */
 const api = register(server)
 
-export {
-  api
-}
+export { api }

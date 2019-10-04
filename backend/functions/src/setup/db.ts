@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin'
 import serviceAccountKey from '../config/serviceAccountKey'
 
-export function setup () {
+export function setup() {
   admin.initializeApp({
     // @ts-ignore serviceAccountKey object does not match the
     //            appropriate parameter.
@@ -9,11 +9,11 @@ export function setup () {
 
     /**
      * ~~! DO NOT EDIT !~~
-     * 
+     *
      * The value is replaced by the corresponding
      * .env file from /config folder in build time.
      */
-    databaseURL: "$FIREBASE_DATABASE_URL$"
+    databaseURL: '$FIREBASE_DATABASE_URL$',
   })
 
   return admin.firestore()

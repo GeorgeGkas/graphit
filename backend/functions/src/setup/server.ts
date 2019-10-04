@@ -14,7 +14,7 @@ export function setup() {
    * Protect from well-known vulnerabilities.
    */
   server.use(helmet())
-  server.use(helmet.hidePoweredBy({ setTo: 'Sanctum Sanctorum' })); 
+  server.use(helmet.hidePoweredBy({ setTo: 'Sanctum Sanctorum' }))
 
   /**
    * Set up CORS.

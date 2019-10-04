@@ -1,6 +1,6 @@
 /**
  * ~~! DO NOT EDIT !~~
- * 
+ *
  * The values are replaced by the corresponding
  * .env file from /config folder in build time.
  */

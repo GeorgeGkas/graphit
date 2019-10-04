@@ -11,9 +11,16 @@ router.route('/').get(async (req: express.AugmentedRequest, res) => {
   const author = req.author!
 
   try {
-    const { docs } = await req.app.get('db').collection('projects').where('author', '==', author.uid).orderBy('createdAt', 'desc').get()
+    const { docs } = await req.app
+      .get('db')
+      .collection('projects')
+      .where('author', '==', author.uid)
+      .orderBy('createdAt', 'desc')
+      .get()
     const ids = map(pick(['id']))(docs)
-    const projects = map(pick(['algorithm', 'createdAt', 'name']))(invokeMap('data', docs))
+    const projects = map(pick(['algorithm', 'createdAt', 'name']))(
+      invokeMap('data', docs),
+    )
     const result = values(merge(ids, projects))
 
     return res.status(200).json({ data: result })
@@ -29,7 +36,10 @@ router.route('/').post(async (req: express.AugmentedRequest, res) => {
   const project = req.body
 
   try {
-    const docRef = await req.app.get('db').collection('projects').add(project)
+    const docRef = await req.app
+      .get('db')
+      .collection('projects')
+      .add(project)
     return res.status(201).json({ data: docRef.id })
   } catch (e) {
     return res.status(500).send({ message: `Could not create project.` })
@@ -43,7 +53,12 @@ router.route('/:id').get(async (req: express.AugmentedRequest, res) => {
   const documentId = req.params.id
 
   try {
-    const { docs } = await req.app.get('db').collection('projects').where(firebase.firestore.FieldPath.documentId(), '==', documentId).limit(1).get()
+    const { docs } = await req.app
+      .get('db')
+      .collection('projects')
+      .where(firebase.firestore.FieldPath.documentId(), '==', documentId)
+      .limit(1)
+      .get()
     const doc = docs.pop()
 
     if (!doc!.exists) {
@@ -65,7 +80,10 @@ router.route('/:id').patch(async (req: express.AugmentedRequest, res) => {
   const newDocument = req.body
 
   try {
-    const docRef = req.app.get('db').collection('projects').doc(documentId)
+    const docRef = req.app
+      .get('db')
+      .collection('projects')
+      .doc(documentId)
 
     if (!(await docRef.get()).exists) {
       return res.status(404).send({ message: `Could not find project.` })
@@ -85,7 +103,10 @@ router.route('/:id').delete(async (req: express.AugmentedRequest, res) => {
   const documentId = req.params.id
 
   try {
-    const docRef = req.app.get('db').collection('projects').doc(documentId)
+    const docRef = req.app
+      .get('db')
+      .collection('projects')
+      .doc(documentId)
 
     if (!(await docRef.get()).exists) {
       return res.status(404).send({ message: `Could not find project.` })

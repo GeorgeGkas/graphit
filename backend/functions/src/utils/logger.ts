@@ -29,10 +29,7 @@ let logger: winston.Logger
 logger = winston.createLogger({
   format: loggerFormat,
   level: 'silly',
-  transports: [
-    new winston.transports.Console(),
-    new LoggingWinston()
-  ],
+  transports: [new winston.transports.Console(), new LoggingWinston()],
 })
 
 export default logger
