@@ -96,6 +96,7 @@ class Dijkstra extends React.Component {
 
           {Object.entries(distances).map(([id, distance]) => (
             <DistanceEntry
+              key={id}
               distance={distance}
               isHighlighted={
                 !isFinal &&
@@ -131,7 +132,12 @@ class Dijkstra extends React.Component {
 
           <div className={classes.unvisitedContent}>
             {Object.entries(unvisited).map(([id, unvisited]) => (
-              <Box className={classes.unvisitedNode} pr="5px" width={1 / 4}>
+              <Box
+                key={id}
+                className={classes.unvisitedNode}
+                pr="5px"
+                width={1 / 4}
+              >
                 <span>{nodes[id].properties.name}</span>
                 <span className={classes.isUnvisitedNode}>
                   {!unvisited ? '/' : ''}
