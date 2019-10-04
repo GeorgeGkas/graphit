@@ -159,9 +159,13 @@ const resolveGraph = (graph, initial) => {
     if (!includes(v.id, keys(resolvedGraph.nodes))) {
       resolvedGraph.nodes[v.id] = v
 
-      const outerEdges = filter(matchesProperty('ui.connects.from', v.id))(
-        values(graph.edges),
+      const outerEdges = reduce((edges, edge) => ({
+        ...edges,
+        [edge.id]: edge,
+      }))({})(
+        filter(matchesProperty('ui.connects.from', v.id))(values(graph.edges)),
       )
+
       const neighbors = map(edge => graph.nodes[edge.ui.connects.to])(
         outerEdges,
       )
