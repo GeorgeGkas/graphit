@@ -49,16 +49,16 @@ const App = ({ currentEditorAction, selectedEdge, selectedNode }) => {
 
   return (
     <React.Fragment>
-      <Slide direction="left" in={showAlgorithmPanel}>
-        <Dijkstra />
-      </Slide>
-
       <div style={{ position: 'relative' }}>
         <AppBar />
         <EditorBar gridVisible={gridVisible} toggleGrid={toggleGrid} />
       </div>
 
       <Editor gridVisible={gridVisible} />
+
+      <Slide direction="left" in={showAlgorithmPanel}>
+        <Dijkstra />
+      </Slide>
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
     </React.Fragment>
