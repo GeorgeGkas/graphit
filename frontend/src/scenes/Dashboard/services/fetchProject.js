@@ -1,17 +1,18 @@
-export default async function fetchProject(projectId) {
-  const requestOptions = {
-    cache: 'default',
-    credentials: 'same-origin',
-    method: 'GET',
-    mode: 'cors',
-  }
+import axios from 'axios'
 
-  const response = await fetch(`/api/v1/projects/${projectId}`, requestOptions)
+export default async function fetchProject(id, token) {
+  try {
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_ENDPOINT}/v1/projects/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
 
-  if (!response.ok) {
-    throw new Error('Could not fetch project.')
-  } else {
-    let project = await response.json()
-    return project
+    return res
+  } catch (e) {
+    return e
   }
 }

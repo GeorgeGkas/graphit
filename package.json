@@ -1,12 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "install": "cd frontend && yarn && cd ../backend && yarn && cd ..",
-    "build": "cd frontend && yarn build && cd ../backend && yarn build && cd ..",
-    "start": "cd backend && yarn start",
     "cm": "git-cz",
     "test": "cd frontend && yarn test && cd ..",
-    "lint": "cd backend && yarn lint && cd .."
+    "lint": "cd backend/functions && yarn lint && cd .."
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",

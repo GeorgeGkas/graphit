@@ -1,0 +1,15 @@
+## Compiled JavaScript files
+**/*.js
+**/*.js.map
+
+# Not build scripts
+!replace-config.js
+
+# Typescript declaration files
+typings/
+types
+
+# Build info
+tsconfig.tsbuildinfo
+
+node_modules/

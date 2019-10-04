@@ -1,20 +1,18 @@
-export default async function fetchProjectList(profileId) {
-  const requestOptions = {
-    cache: 'default',
-    credentials: 'same-origin',
-    method: 'GET',
-    mode: 'cors',
-  }
+import axios from 'axios'
 
-  const response = await fetch(
-    `/api/v1/authors/${profileId}/projects`,
-    requestOptions,
-  )
+export default async function fetchProjectList(token) {
+  try {
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_ENDPOINT}/v1/projects/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
 
-  if (!response.ok) {
-    throw new Error('Gould not fetch project list.')
-  } else {
-    const projectList = await response.json()
-    return projectList
+    return res
+  } catch (e) {
+    return e
   }
 }

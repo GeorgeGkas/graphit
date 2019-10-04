@@ -1,42 +1,19 @@
-export default async function cloudSave(graph, selectProject, projectName) {
-  const bodyBlob = new Blob(
-    [
-      JSON.stringify(
-        {
-          algorithm: 'Dijkstra',
-          content: JSON.stringify(graph),
-          name: projectName.trim(),
-        },
-        null,
-        2,
-      ),
-    ],
-    {
-      type: 'application/json',
-    },
-  )
+import axios from 'axios'
 
-  const requestOptions = {
-    body: bodyBlob,
-    cache: 'default',
-    credentials: 'same-origin',
-    method: 'POST',
-
-    mode: 'cors',
-  }
-
+export default async function cloudSave(data, token) {
   try {
-    const res = await fetch('/api/v1/projects', requestOptions)
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_ENDPOINT}/v1/projects`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
 
-    if (!res.ok) {
-      return false
-    }
-
-    const data = await res.json()
-
-    selectProject(data)
-    return true
+    return res
   } catch (e) {
-    return false
+    return e
   }
 }

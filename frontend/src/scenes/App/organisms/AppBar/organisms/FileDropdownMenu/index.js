@@ -75,6 +75,7 @@ const FileDropdownMenu = ({
   initGraphHistory,
   isSignIn,
   pastExist,
+  profile,
   selectProject,
   selectedProjectId,
 }) => {
@@ -126,10 +127,19 @@ const FileDropdownMenu = ({
                   disabled={currentEditorAction === 'isPlaying'}
                   onClick={async () => {
                     if (selectedProjectId) {
-                      const ok = await cloudUpdate(selectedProjectId, graph)
-                      fileDropdownMenu.close()
+                      const data = {
+                        graph: JSON.stringify(graph),
+                      }
 
-                      if (ok) {
+                      fileDropdownMenu.close()
+                      toast(<Notification message="Updating project..." />)
+                      const res = await cloudUpdate(
+                        selectedProjectId,
+                        data,
+                        profile.token,
+                      )
+
+                      if (res.status === 204) {
                         toast(
                           <Notification message="Project updated successfully" />,
                         )
@@ -181,10 +191,20 @@ const FileDropdownMenu = ({
       <PromptSaveDialog
         handleClose={togglePromptSaveDialog}
         promptSaveDialogAction={async projectName => {
-          const ok = await cloudSave(graph, selectProject, projectName)
+          const data = {
+            algorithm: 'Dijkstra',
+            author: profile.id,
+            createdAt: new Date().toISOString(),
+            graph: JSON.stringify(graph),
+            name: projectName,
+          }
 
-          if (ok) {
+          toast(<Notification message="Saving project..." />)
+          const res = await cloudSave(data, profile.token)
+
+          if (res.status === 201) {
             toast(<Notification message="Project saved successfully" />)
+            selectProject(res.data.data)
           } else {
             toast(<Notification message="Could not save project" />)
           }

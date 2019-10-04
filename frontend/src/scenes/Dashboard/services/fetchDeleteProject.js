@@ -1,14 +1,18 @@
-export default async function fetchDeleteProject(projectId) {
-  const requestOptions = {
-    cache: 'default',
-    credentials: 'same-origin',
-    method: 'DELETE',
-    mode: 'cors',
-  }
+import axios from 'axios'
 
-  const response = await fetch(`/api/v1/projects/${projectId}`, requestOptions)
+export default async function fetchDeleteProject(id, token) {
+  try {
+    const res = await axios.delete(
+      `${process.env.REACT_APP_API_ENDPOINT}/v1/projects/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
 
-  if (!response.ok) {
-    throw new Error('Could not delete project')
+    return res
+  } catch (e) {
+    return e
   }
 }

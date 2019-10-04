@@ -6,13 +6,13 @@ export const initialState = {
     email: '',
     id: '',
     imageUrl: '',
-
     name: '',
+    token: '',
   },
   selectedProjectId: null,
 }
 
-const update = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_IN:
       return {
@@ -32,4 +32,4 @@ const update = (state = initialState, action) => {
   }
 }
 
-export default update
+export default reducer

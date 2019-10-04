@@ -1,0 +1,42 @@
+{
+  "name": "functions",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "rimraf tsconfig.tsbuildinfo && tsc --project tsconfig.json && yarn replace-config",
+    "replace-config": "node -r ../../index.js replace-config.js",
+    "serve": "yarn build && firebase serve --only functions",
+    "shell": "yarn build && firebase functions:shell",
+    "start": "yarn shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@google-cloud/logging-winston": "^2.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.0.0",
+    "firebase-functions": "^3.1.0",
+    "helmet": "^3.21.1",
+    "lodash": "^4.17.15",
+    "morgan": "^1.9.1",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/helmet": "^0.0.44",
+    "@types/lodash": "^4.14.141",
+    "@types/long": "^4.0.0",
+    "@types/morgan": "^1.7.37",
+    "@types/winston": "^2.4.4",
+    "rimraf": "^3.0.0",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.6.3"
+  },
+  "private": true
+}

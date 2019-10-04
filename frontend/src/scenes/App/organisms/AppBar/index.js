@@ -5,8 +5,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { GoogleLogin } from 'react-google-login'
-import { GoogleLogout } from 'react-google-login'
 import {
   usePopupState,
   bindToggle,
@@ -44,6 +42,8 @@ import { operations as profileOperations } from './duck'
  */
 import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
+import GoogleSignIn from './organisms/GoogleSignIn'
+import SignOutComponent from './organisms/SignOut'
 
 /**
  * Construct component styles.
@@ -240,23 +240,12 @@ const AppBar = ({
                         onClickAway={profileDropdownMenu.close}
                       >
                         <MenuList>
-                          <GoogleLogout
-                            buttonText="Logout"
-                            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                            render={renderProps => (
-                              <MenuItem
-                                onClick={() => {
-                                  renderProps.onClick()
-                                }}
-                              >
-                                Sign out
-                              </MenuItem>
+                          <SignOutComponent
+                            render={doSignOut => (
+                              <MenuItem onClick={doSignOut}>Sign out</MenuItem>
                             )}
-                            onFailure={console.log}
-                            onLogoutSuccess={() => {
-                              profileDropdownMenu.close()
-                              signOut()
-                            }}
+                            onFailure={console.error}
+                            onSuccess={profileDropdownMenu.close}
                           />
                         </MenuList>
                       </ClickAwayListener>
@@ -266,16 +255,11 @@ const AppBar = ({
               </Popper>
             </React.Fragment>
           ) : (
-            <GoogleLogin
-              isSignedIn
+            <GoogleSignIn
               buttonText="Sign In"
               className={classes.signin}
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-              cookiePolicy={'single_host_origin'}
-              onFailure={console.log}
-              onSuccess={googleResponse => {
-                signIn(googleResponse.accessToken)
-              }}
+              onFailure={console.error}
+              onSuccess={_ => _}
             />
           )}
         </Toolbar>

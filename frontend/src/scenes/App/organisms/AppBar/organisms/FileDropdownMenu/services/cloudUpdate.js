@@ -1,37 +1,19 @@
-export default async function cloudUpdate(projectId, graph) {
-  const bodyBlob = new Blob(
-    [
-      JSON.stringify(
-        {
-          content: JSON.stringify(graph),
-        },
-        null,
-        2,
-      ),
-    ],
-    {
-      type: 'application/json',
-    },
-  )
+import axios from 'axios'
 
-  const requestOptions = {
-    body: bodyBlob,
-    cache: 'default',
-    credentials: 'same-origin',
-    method: 'PATCH',
-
-    mode: 'cors',
-  }
-
+export default async function cloudUpdate(id, data, token) {
   try {
-    const res = await fetch(`/api/v1/projects/${projectId}`, requestOptions)
+    const res = await axios.patch(
+      `${process.env.REACT_APP_API_ENDPOINT}/v1/projects/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
 
-    if (!res.ok) {
-      return false
-    }
-
-    return true
+    return res
   } catch (e) {
-    return false
+    return e
   }
 }

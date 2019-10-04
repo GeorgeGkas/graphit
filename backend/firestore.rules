@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /projects/{projectid} {
+      // Only the authenticated user who authored the project can read or write.
+      allow create, read, update, delete: if request.auth.uid == resource.data.author;
+    }
+  }
+}

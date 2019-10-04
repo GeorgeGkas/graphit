@@ -16,18 +16,13 @@ git clone --recursive https://github.com/GeorgeGkas/dijkstra-visualizer.git
 
 We provide separate development and production configuration options using `.env` files. Before build and/or run the app, navigate to `config` folder and set the appropriate configuration variables.
 
-## Build & Run
+## Front End (React)
 
-1. Install Node.js dependencies (using `yarn`).
-2. Build the project using `yarn build`.
-3. Start the project with `yarn start`.
+The front-end was built with React. Navigate to `frontend` directory for more info.
 
-This repository contains both the front-end, built with **React**, and the back-end, built with **Express** and **MongoDB**. Refer to each folder respectively for more details about the source code.
+## Back End (Firebase)
 
-## Development
-
-- To run the React app navigate to `frontend` and execute `yarn start`.
-- To run the Express server navigate to `backend` and execute `yarn dev`.
+The back-end was built with firebase SDK. Navigate to `backend` directory for more info.
 
 ## License
 

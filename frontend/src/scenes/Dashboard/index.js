@@ -106,11 +106,15 @@ const Dashboard = ({
 
   useEffect(() => {
     const getProjectList = async () => {
-      try {
-        const list = await fetchProjectList(profile.id)
+      toast(<Notification message="Fetching projects..." />)
+      const res = await fetchProjectList(profile.token)
+
+      if (res.status === 200) {
+        toast(<Notification message="Projects fetched successfully" />)
+        const list = res.data.data
         setProjectList(list)
-      } catch (e) {
-        toast(<Notification message={e.message} />)
+      } else {
+        toast(<Notification message="Could not fetch project list" />)
       }
     }
 
@@ -118,30 +122,36 @@ const Dashboard = ({
   }, [profile])
 
   const loadSelectedProject = async () => {
-    try {
-      const project = await fetchProject(selectedProjectToLoad)
+    toast(<Notification message="Fetching project..." />)
+    const res = await fetchProject(selectedProjectToLoad, profile.token)
+
+    if (res.status === 200) {
+      toast(<Notification message="Project fetched successfully" />)
+      const project = JSON.parse(res.data.data.graph)
       selectProject(selectedProjectToLoad)
       loadGraph(project)
-    } catch (e) {
-      toast(<Notification message={e.message} />)
+      history.push('/app')
+    } else {
+      toast(<Notification message="Could not fetch project" />)
     }
   }
 
   const deleteSelectedProject = async () => {
-    try {
-      await fetchDeleteProject(selectedProjectToDelete)
+    toast(<Notification message="Deleting project..." />)
+    const res = await fetchDeleteProject(selectedProjectToDelete, profile.token)
 
-      setProjectList(
-        projectList.filter(project => project._id !== selectedProjectToDelete),
-      )
+    if (res.status === 204) {
       toast(<Notification message="Project deleted successfully" />)
+      setProjectList(
+        projectList.filter(project => project.id !== selectedProjectToDelete),
+      )
 
       if (selectedProjectId === selectedProjectToDelete) {
         initGraphHistory()
         selectProject('')
       }
-    } catch (e) {
-      toast(<Notification message={e.message} />)
+    } else {
+      toast(<Notification message="Could not delete project" />)
     }
   }
 
@@ -186,14 +196,14 @@ const Dashboard = ({
               },
             },
             {
-              label: 'Last modified',
-              name: 'modified',
+              label: 'Created',
+              name: 'created',
               options: {
                 searchable: false,
               },
             },
             {
-              name: '_id',
+              name: 'id',
               options: {
                 display: 'false',
                 searchable: false,
@@ -212,7 +222,6 @@ const Dashboard = ({
                           toggleLoadDialog()
                         } else {
                           loadSelectedProject()
-                          history.push('/app')
                         }
                       }}
                     >
@@ -226,10 +235,10 @@ const Dashboard = ({
             },
           ]}
           data={projectList.map(project => ({
-            '': project._id,
-            _id: project._id,
+            '': project.id,
             algorithm: project.algorithm,
-            modified: new Date(Date.parse(project.updatedAt)).toDateString(),
+            created: new Date(Date.parse(project.createdAt)).toDateString(),
+            id: project.id,
             name: project.name,
           }))}
           options={{
