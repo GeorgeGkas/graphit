@@ -1,4 +1,4 @@
-[submodule "frontend/third-party/redux-undo"]
-	path = frontend/third-party/redux-undo
+[submodule "client/third-party/redux-undo"]
+	path = client/third-party/redux-undo
 	url = https://github.com/GeorgeGkas/redux-undo.git
 	branch = filter-state-properties

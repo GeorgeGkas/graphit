@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "cm": "git-cz",
-    "test": "cd frontend && yarn test && cd ..",
-    "lint": "cd backend/functions && yarn lint && cd .."
+    "test": "npm --prefix \"client\" run test",
+    "lint": "npm --prefix \"functions\" run lint"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
