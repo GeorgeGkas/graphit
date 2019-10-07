@@ -9,7 +9,7 @@ import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom'
 /**
  * Import ducks.
  */
-import { operations as profileOperations } from './scenes/App/organisms/AppBar/duck'
+import { operations as userOperations } from './ducks/user'
 import { compose } from 'redux'
 
 /**
@@ -27,7 +27,7 @@ import { withFirebase } from './organisms/Firebase'
 const mapStateToProps = null
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(profileOperations, dispatch)
+  bindActionCreators(userOperations, dispatch)
 
 const Router = ({ firebase, signIn, signOut }) => {
   useEffect(() => {
@@ -67,3 +67,8 @@ export default compose(
     mapDispatchToProps,
   ),
 )(Router)
+
+/**
+ * - Move ducks.
+ * - use redux-persist on profile state.
+ */

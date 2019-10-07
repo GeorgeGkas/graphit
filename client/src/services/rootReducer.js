@@ -12,7 +12,7 @@ import editor from '../scenes/App/organisms/Editor/ducks/editor'
 import graph, {
   types as graphTypes,
 } from '../scenes/App/organisms/Editor/ducks/graph'
-import user from '../scenes/App/organisms/AppBar/duck'
+import user from '../ducks/user'
 
 export default () =>
   combineReducers({

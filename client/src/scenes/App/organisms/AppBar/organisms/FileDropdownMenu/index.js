@@ -23,7 +23,7 @@ import Paper from '@material-ui/core/Paper'
 import { operations as algorithmOperations } from '../../../EditorBar/duck'
 import { operations as editorOperations } from '../../../Editor/ducks/editor'
 import { operations as graphOperations } from '../../../Editor/ducks/graph'
-import { operations as profileOperations } from '../../duck'
+import { operations as userOperations } from '../../../../../../ducks/user'
 
 /**
  * Import components.
@@ -58,7 +58,7 @@ const mapDispatchToProps = dispatch =>
       ...editorOperations,
       ...algorithmOperations,
       ...graphOperations,
-      ...profileOperations,
+      ...userOperations,
     },
     dispatch,
   )

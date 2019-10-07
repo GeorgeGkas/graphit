@@ -35,7 +35,7 @@ import { makeStyles } from '@material-ui/core/styles'
  * Import ducks.
  */
 import { operations as graphOperations } from '../Editor/ducks/graph'
-import { operations as profileOperations } from './duck'
+import { operations as userOperations } from '../../../../ducks/user'
 
 /**
  * Import components.
@@ -114,7 +114,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       ...graphOperations,
-      ...profileOperations,
+      ...userOperations,
     },
     dispatch,
   )
