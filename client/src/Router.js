@@ -67,8 +67,3 @@ export default compose(
     mapDispatchToProps,
   ),
 )(Router)
-
-/**
- * - Move ducks.
- * - use redux-persist on profile state.
- */

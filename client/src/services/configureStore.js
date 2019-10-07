@@ -5,6 +5,7 @@
  */
 
 import { createStore, applyMiddleware, compose } from 'redux'
+import { persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 import createRootReducer from './rootReducer'
 import * as rootOperations from './rootOperations'
@@ -58,6 +59,11 @@ export default (initialState = {}) => {
   const store = createStore(rootReducer, initialState, enhancer)
 
   /**
+   * Add user info to persist state.
+   */
+  const persistor = persistStore(store)
+
+  /**
    * Enable Webpack hot module replacement for reducers
    */
   if (module.hot) {
@@ -67,5 +73,5 @@ export default (initialState = {}) => {
     )
   }
 
-  return store
+  return { persistor, store }
 }
