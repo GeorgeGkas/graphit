@@ -26,7 +26,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   operations as graphOperations,
   selectors as graphSelectors,
-} from '../../../Editor/ducks/graph'
+} from '../../../../ducks/graph'
 
 /**
  * Construct component styles.

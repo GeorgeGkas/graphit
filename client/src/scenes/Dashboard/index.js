@@ -3,47 +3,47 @@
  */
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
-import { toast } from 'react-toastify'
 import { useHistory } from 'react-router'
 
 /**
  * Import UI framework modules.
  */
 import Box from '@material-ui/core/Box'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import DeleteIcon from '@material-ui/icons/DeleteSharp'
 import IconButton from '@material-ui/core/IconButton'
 import MUIDataTable from 'mui-datatables'
 import Paper from '@material-ui/core/Paper'
 import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEyeSharp'
+import Tooltip from '@material-ui/core/Tooltip'
 import { makeStyles } from '@material-ui/core/styles'
 
 /**
  * Import ducks.
  */
-import { operations as graphOperations } from '../App/organisms/Editor/ducks/graph'
-import { operations as userOperations } from '../../ducks/user'
+import { operations as projectsOperations } from '../../ducks/projects'
 
 /**
  * Import components.
  */
-import ConfirmDialog from '../../organisms/ConfirmDialog'
 import close from './images/close.svg'
 import CloseButton from './atoms/CloseButton'
-import Notification from '../../organisms/Notification'
 
 /**
  * Import services.
  */
-import fetchDeleteProject from './services/fetchDeleteProject'
-import fetchProject from './services/fetchProject'
-import fetchProjectList from './services/fetchProjectList'
+import { withAuthentication } from '../../providers/Auth'
 
 /**
  * Construct component styles.
  */
 const useStyles = makeStyles(theme => ({
+  buttonLoading: {
+    position: 'absolute',
+    zIndex: 1,
+  },
   delete: {
     marginRight: theme.spacing(3),
   },
@@ -64,245 +64,195 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  futureExist: state.graph.future.length,
-  pastExist: state.graph.past.length,
-  profile: state.user.profile,
-  selectedProjectId: state.user.selectedProjectId,
+  projects: state.projects,
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      ...graphOperations,
-      ...userOperations,
-    },
-    dispatch,
-  )
+  bindActionCreators(projectsOperations, dispatch)
 
 /**
  * Component.
  */
 const Dashboard = ({
-  futureExist,
-  initGraphHistory,
-  loadGraph,
-  pastExist,
-  profile,
-  selectProject,
-  selectedProjectId,
+  auth,
+  deleteProjectById,
+  getProjectById,
+  projects,
+  requestProjectList,
 }) => {
   const history = useHistory()
   const classes = useStyles()
-  const [projectList, setProjectList] = useState([])
-
-  const [loadDialogVisible, makeLoadDialogVisible] = useState(false)
-  const toggleLoadDialog = () => makeLoadDialogVisible(!loadDialogVisible)
-
-  const [selectedProjectToLoad, setSelectedProjectToLoad] = useState('')
-  const [selectedProjectToDelete, setSelectedProjectToDelete] = useState('')
-
-  const [deleteDialogVisible, makeDeleteDialogVisible] = useState(false)
-  const toggleDeleteDialog = () => makeDeleteDialogVisible(!deleteDialogVisible)
+  const [currentProjectIdAction, setCurrentProjectIdAction] = useState(
+    projects.selectedProjectId,
+  )
+  const [getProjectListLoading, setGetProjectListLoadingState] = useState(true)
+  const [selectProjectLoading, setSelectProjectLoadingState] = useState(false)
+  const [deleteProjectLoading, setDeleteProjectLoadingState] = useState(false)
 
   useEffect(() => {
-    const getProjectList = async () => {
-      toast(<Notification message="Fetching projects..." />)
-      const res = await fetchProjectList(profile.token)
+    ;(async () => {
+      await requestProjectList()
+      setGetProjectListLoadingState(false)
+    })()
+  }, [])
 
-      if (res.status === 200) {
-        toast(<Notification message="Projects fetched successfully" />)
-        const list = res.data.data
-        setProjectList(list)
-      } else {
-        toast(<Notification message="Could not fetch project list" />)
-      }
-    }
-
-    getProjectList()
-  }, [profile])
-
-  const loadSelectedProject = async () => {
-    toast(<Notification message="Fetching project..." />)
-    const res = await fetchProject(selectedProjectToLoad, profile.token)
-
-    if (res.status === 200) {
-      toast(<Notification message="Project fetched successfully" />)
-      const project = JSON.parse(res.data.data.graph)
-      selectProject(selectedProjectToLoad)
-      loadGraph(project)
-      history.push('/app')
-    } else {
-      toast(<Notification message="Could not fetch project" />)
-    }
+  const loadSelectedProject = async id => {
+    setSelectProjectLoadingState(true)
+    await getProjectById(id)
+    setSelectProjectLoadingState(false)
+    history.push('/app')
   }
 
-  const deleteSelectedProject = async () => {
-    toast(<Notification message="Deleting project..." />)
-    const res = await fetchDeleteProject(selectedProjectToDelete, profile.token)
-
-    if (res.status === 204) {
-      toast(<Notification message="Project deleted successfully" />)
-      setProjectList(
-        projectList.filter(project => project.id !== selectedProjectToDelete),
-      )
-
-      if (selectedProjectId === selectedProjectToDelete) {
-        initGraphHistory()
-        selectProject('')
-      }
-    } else {
-      toast(<Notification message="Could not delete project" />)
-    }
+  const deleteSelectedProject = async id => {
+    setDeleteProjectLoadingState(true)
+    await deleteProjectById(id)
+    setDeleteProjectLoadingState(false)
   }
 
   return (
-    <React.Fragment>
-      <Paper className={classes.paper}>
-        <Box display="flex" style={{ borderBottom: '1px solid #ddd' }}>
-          <Box p="15px" style={{ textAlign: 'center' }} width={1 / 10}>
-            <img
-              alt=""
-              height={42}
-              src={profile.imageUrl}
-              style={{ borderRadius: '50%' }}
-              width={42}
-            />
-          </Box>
-          <Box p="15px" style={{ lineHeight: '42px' }} width={8 / 10}>
-            {profile.name}
-          </Box>
-          <Box width={1 / 10}>
-            <CloseButton component={Link} to="/app">
-              <img alt="" src={close} />
-            </CloseButton>
-          </Box>
+    <Paper className={classes.paper}>
+      <Box display="flex" style={{ borderBottom: '1px solid #ddd' }}>
+        <Box p="15px" style={{ textAlign: 'center' }} width={1 / 10}>
+          <img
+            alt=""
+            height={42}
+            src={auth.authUser.imageUrl}
+            style={{ borderRadius: '50%' }}
+            width={42}
+          />
         </Box>
+        <Box p="15px" style={{ lineHeight: '42px' }} width={8 / 10}>
+          {auth.authUser.name}
+        </Box>
+        <Box width={1 / 10}>
+          <CloseButton component={Link} to="/app">
+            <img alt="" src={close} />
+          </CloseButton>
+        </Box>
+      </Box>
 
-        <MUIDataTable
-          className={classes.table}
-          columns={[
-            {
-              label: 'Name',
-              name: 'name',
-              options: {
-                searchable: true,
-              },
+      <MUIDataTable
+        className={classes.table}
+        columns={[
+          {
+            label: 'Name',
+            name: 'name',
+            options: {
+              searchable: true,
             },
-            {
-              label: 'Algorithm',
-              name: 'algorithm',
-              options: {
-                searchable: false,
-              },
+          },
+          {
+            label: 'Algorithm',
+            name: 'algorithm',
+            options: {
+              searchable: false,
             },
-            {
-              label: 'Created',
-              name: 'created',
-              options: {
-                searchable: false,
-              },
+          },
+          {
+            label: 'Created',
+            name: 'created',
+            options: {
+              searchable: false,
             },
-            {
-              name: 'id',
-              options: {
-                display: 'false',
-                searchable: false,
-                sort: false,
-              },
+          },
+          {
+            name: 'id',
+            options: {
+              display: 'false',
+              searchable: false,
+              sort: false,
             },
-            {
-              name: '',
-              options: {
-                customBodyRender: value => {
-                  setSelectedProjectToLoad(value)
-                  return (
-                    <IconButton
-                      onClick={() => {
-                        if (futureExist || pastExist) {
-                          toggleLoadDialog()
-                        } else {
-                          loadSelectedProject()
-                        }
-                      }}
-                    >
-                      <RemoveRedEyeIcon />
-                    </IconButton>
-                  )
-                },
-                searchable: false,
-                sort: false,
-              },
-            },
-          ]}
-          data={projectList.map(project => ({
-            '': project.id,
-            algorithm: project.algorithm,
-            created: new Date(Date.parse(project.createdAt)).toDateString(),
-            id: project.id,
-            name: project.name,
-          }))}
-          options={{
-            customToolbarSelect: (selectedRows, displayData) => {
-              return (
-                <IconButton
-                  className={classes.delete}
-                  onClick={() => {
-                    setSelectedProjectToDelete(
-                      displayData[selectedRows.data[0].dataIndex].data[3],
-                    )
-                    toggleDeleteDialog()
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              )
-            },
-            download: false,
-            elevation: 0,
-            filter: false,
-            print: false,
-            responsive: 'scrollMaxHeight',
-            search: true,
-            searchPlaceholder: 'Search by project name',
-            selectableRows: 'single',
-            selectableRowsHeader: false,
+          },
+          {
+            name: '',
+            options: {
+              customBodyRender: value => {
+                return (
+                  <React.Fragment>
+                    <Tooltip title="View">
+                      <IconButton
+                        disabled={selectProjectLoading || deleteProjectLoading}
+                        onClick={() => {
+                          setCurrentProjectIdAction(value)
+                          loadSelectedProject(value)
+                        }}
+                      >
+                        <RemoveRedEyeIcon />
+                        {selectProjectLoading &&
+                        currentProjectIdAction === value ? (
+                          <CircularProgress
+                            className={classes.buttonLoading}
+                            color="secondary"
+                          />
+                        ) : null}
+                      </IconButton>
+                    </Tooltip>
 
-            sort: true,
-            viewColumns: false,
-          }}
-          title="Projects"
-        />
-      </Paper>
-
-      <ConfirmDialog
-        confirmAction={() => {
-          loadSelectedProject()
-          toggleLoadDialog()
-          history.push('/app')
+                    <Tooltip title="Delete">
+                      <IconButton
+                        disabled={selectProjectLoading || deleteProjectLoading}
+                        onClick={() => {
+                          setCurrentProjectIdAction(value)
+                          deleteSelectedProject(value)
+                        }}
+                      >
+                        <DeleteIcon />
+                        {deleteProjectLoading &&
+                        currentProjectIdAction === value ? (
+                          <CircularProgress
+                            className={classes.buttonLoading}
+                            color="secondary"
+                          />
+                        ) : null}
+                      </IconButton>
+                    </Tooltip>
+                  </React.Fragment>
+                )
+              },
+              searchable: false,
+              sort: false,
+            },
+          },
+        ]}
+        data={projects.projectList.map(project => ({
+          '': project.id,
+          algorithm: project.algorithm,
+          created: new Date(Date.parse(project.createdAt)).toDateString(),
+          id: project.id,
+          name: project.name,
+        }))}
+        options={{
+          download: false,
+          elevation: 0,
+          filter: false,
+          print: false,
+          responsive: 'scrollMaxHeight',
+          search: true,
+          searchPlaceholder: 'Search by project name',
+          selectableRows: 'none',
+          selectableRowsHeader: false,
+          sort: true,
+          textLabels: {
+            body: {
+              noMatch: getProjectListLoading ? (
+                <CircularProgress color="secondary" />
+              ) : (
+                'No projects exist'
+              ),
+            },
+          },
+          viewColumns: false,
         }}
-        confirmDialogVisible={loadDialogVisible}
-        confirmMessage={
-          'All unsaved changes will be deleted if you confirm this action.'
-        }
-        confirmTitle="Load project?"
-        handleClose={toggleLoadDialog}
+        title="Projects"
       />
-
-      <ConfirmDialog
-        confirmAction={() => {
-          deleteSelectedProject()
-          toggleDeleteDialog()
-        }}
-        confirmDialogVisible={deleteDialogVisible}
-        confirmMessage={'This action cannot be undone.'}
-        confirmTitle="Delete project?"
-        handleClose={toggleDeleteDialog}
-      />
-    </React.Fragment>
+    </Paper>
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withAuthentication,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Dashboard)

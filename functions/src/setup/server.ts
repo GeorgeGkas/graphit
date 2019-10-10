@@ -1,3 +1,4 @@
+import * as cookieParser from 'cookie-parser'
 import * as cors from 'cors'
 import * as express from 'express'
 import { firestore } from 'firebase-admin'
@@ -20,9 +21,15 @@ export function setup() {
    * Set up CORS.
    */
   const corsOption = {
+    credentials: true,
     origin: true,
   }
   server.use(cors(corsOption))
+
+  /**
+   * Handle session cookies.
+   */
+  server.use(cookieParser())
 
   /**
    * Handle JSON payload on requests.
@@ -51,7 +58,6 @@ export function setup() {
 
 export function connect(db: firestore.Firestore, server: express.Express) {
   server.set('db', db)
-  server.set('X-fyuj', 'my little pony')
 }
 
 export function register(server: express.Express) {

@@ -2,9 +2,8 @@
  * Import globals.
  */
 import React, { useState } from 'react'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
-import { toast } from 'react-toastify'
 
 /**
  * Import UI framework modules.
@@ -20,24 +19,22 @@ import Paper from '@material-ui/core/Paper'
 /**
  * Import ducks.
  */
-import { operations as algorithmOperations } from '../../../EditorBar/duck'
-import { operations as editorOperations } from '../../../Editor/ducks/editor'
-import { operations as graphOperations } from '../../../Editor/ducks/graph'
-import { operations as userOperations } from '../../../../../../ducks/user'
+import { operations as algorithmOperations } from '../../../../ducks/algorithm'
+import { operations as editorOperations } from '../../../../ducks/editor'
+import { operations as graphOperations } from '../../../../ducks/graph'
+import { operations as projectsOperations } from '../../../../../../ducks/projects'
 
 /**
  * Import components.
  */
 import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
-import Notification from '../../../../../../organisms/Notification'
 import PromptSaveDialog from './organisms/PromptSaveDialog'
 
 /**
  * Import services
  */
-import cloudSave from './services/cloudSave'
-import cloudUpdate from './services/cloudUpdate'
 import localDownload from './services/localDownload'
+import { withAuthentication } from '../../../../../../providers/Auth'
 
 /**
  * Connect component to Redux.
@@ -46,10 +43,8 @@ const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   futureExist: state.graph.future.length,
   graph: state.graph.present,
-  isSignIn: state.user.isSignIn,
   pastExist: state.graph.past.length,
-  profile: state.user.profile,
-  selectedProjectId: state.user.selectedProjectId,
+  projects: state.projects,
 })
 
 const mapDispatchToProps = dispatch =>
@@ -58,7 +53,7 @@ const mapDispatchToProps = dispatch =>
       ...editorOperations,
       ...algorithmOperations,
       ...graphOperations,
-      ...userOperations,
+      ...projectsOperations,
     },
     dispatch,
   )
@@ -68,16 +63,17 @@ const mapDispatchToProps = dispatch =>
  */
 const FileDropdownMenu = ({
   TransitionProps,
+  auth,
+  createProject,
   currentEditorAction,
   fileDropdownMenu,
   futureExist,
   graph,
   initGraphHistory,
-  isSignIn,
   pastExist,
-  profile,
-  selectProject,
-  selectedProjectId,
+  projects,
+  selectProjectById,
+  updateProjectById,
 }) => {
   const [overwriteDialogVisible, makeOverwriteDialogVisible] = useState(false)
   const toggleOverwriteDialog = () =>
@@ -101,7 +97,7 @@ const FileDropdownMenu = ({
                     toggleOverwriteDialog()
                   } else {
                     initGraphHistory()
-                    selectProject('')
+                    selectProjectById(null)
                     fileDropdownMenu.close()
                   }
                 }}
@@ -121,33 +117,18 @@ const FileDropdownMenu = ({
                 </ListItem>
               </MenuItem>
 
-              {isSignIn ? (
+              {auth.authUser ? (
                 <MenuItem
                   button
                   disabled={currentEditorAction === 'isPlaying'}
                   onClick={async () => {
-                    if (selectedProjectId) {
+                    if (projects.selectedProjectId) {
                       const data = {
                         graph: JSON.stringify(graph),
                       }
 
                       fileDropdownMenu.close()
-                      toast(<Notification message="Updating project..." />)
-                      const res = await cloudUpdate(
-                        selectedProjectId,
-                        data,
-                        profile.token,
-                      )
-
-                      if (res.status === 204) {
-                        toast(
-                          <Notification message="Project updated successfully" />,
-                        )
-                      } else {
-                        toast(
-                          <Notification message="Could not update project" />,
-                        )
-                      }
+                      await updateProjectById(projects.selectedProjectId, data)
                     } else {
                       togglePromptSaveDialog()
                     }
@@ -176,7 +157,7 @@ const FileDropdownMenu = ({
       <ConfirmDialog
         confirmAction={() => {
           initGraphHistory()
-          selectProject('')
+          selectProjectById(null)
           toggleOverwriteDialog()
           fileDropdownMenu.close()
         }}
@@ -193,21 +174,12 @@ const FileDropdownMenu = ({
         promptSaveDialogAction={async projectName => {
           const data = {
             algorithm: 'Dijkstra',
-            author: profile.id,
+            author: auth.authUser.uid,
             createdAt: new Date().toISOString(),
             graph: JSON.stringify(graph),
             name: projectName,
           }
-
-          toast(<Notification message="Saving project..." />)
-          const res = await cloudSave(data, profile.token)
-
-          if (res.status === 201) {
-            toast(<Notification message="Project saved successfully" />)
-            selectProject(res.data.data)
-          } else {
-            toast(<Notification message="Could not save project" />)
-          }
+          await createProject(data)
         }}
         promptSaveDialogVisible={promptSaveDialogVisible}
       />
@@ -215,7 +187,10 @@ const FileDropdownMenu = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withAuthentication,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(FileDropdownMenu)

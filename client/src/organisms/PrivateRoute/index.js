@@ -1,30 +1,13 @@
-/**
- * Import globals.
- */
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { withAuthentication } from '../../providers/Auth'
 
-/**
- * Connect component to Redux.
- */
-const mapStateToProps = state => ({
-  isSignIn: state.user.isSignIn,
-})
-
-const mapDispatchToProps = null
-
-const PrivateRoute = ({
-  component: Component,
-  fallback,
-  isSignIn,
-  ...rest
-}) => {
+const PrivateRoute = ({ auth, component: Component, fallback, ...rest }) => {
   return (
     <Route
       {...rest}
       render={props =>
-        isSignIn ? (
+        auth.authUser ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -39,7 +22,4 @@ const PrivateRoute = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PrivateRoute)
+export default withAuthentication(PrivateRoute)

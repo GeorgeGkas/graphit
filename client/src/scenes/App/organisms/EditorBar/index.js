@@ -33,10 +33,9 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as algorithmOperations } from './duck'
-import { operations as editorOperations } from '../Editor/ducks/editor'
-import { operations as graphOperations } from '../Editor/ducks/graph'
-import { operations as userOperations } from '../../../../ducks/user'
+import { operations as algorithmOperations } from '../../ducks/algorithm'
+import { operations as editorOperations } from '../../ducks/editor'
+import { operations as graphOperations } from '../../ducks/graph'
 
 /**
  * Construct component styles.
@@ -62,13 +61,11 @@ const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   cursor: state.editor.cursor,
   futureExist: state.graph.future.length,
-  isSignIn: state.user.isSignIn,
   nextAlgorithmEntryExist:
     state.algorithm.steps[state.algorithm.currentIndex + 1] !== undefined,
   pastExist: state.graph.past.length,
   previousAlgorithmEntryExist:
     state.algorithm.steps[state.algorithm.currentIndex - 1] !== undefined,
-  selectedProjectId: state.user.selectedProjectId,
   stageScale: state.editor.stage.scale,
 })
 
@@ -78,7 +75,6 @@ const mapDispatchToProps = dispatch =>
       ...algorithmOperations,
       ...editorOperations,
       ...graphOperations,
-      ...userOperations,
     },
     dispatch,
   )

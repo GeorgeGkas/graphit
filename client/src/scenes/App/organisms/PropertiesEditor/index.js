@@ -20,7 +20,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   operations as graphOperations,
   selectors as graphSelectors,
-} from '../../organisms/Editor/ducks/graph'
+} from '../../ducks/graph'
 
 /**
  * Import components.

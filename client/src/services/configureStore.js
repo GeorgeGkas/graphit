@@ -4,13 +4,19 @@
  * See ./rootReducer.js if you want to apply Redux reducers.
  */
 
+import axios from 'axios'
+import axiosMiddleware from 'redux-axios-middleware'
 import { createStore, applyMiddleware, compose } from 'redux'
-import { persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 import createRootReducer from './rootReducer'
 import * as rootOperations from './rootOperations'
 
 const rootReducer = createRootReducer()
+
+const client = axios.create({
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
+  withCredentials: true,
+})
 
 export default (initialState = {}) => {
   /**
@@ -23,6 +29,11 @@ export default (initialState = {}) => {
    * Thunk Middleware.
    */
   middleware.push(thunk)
+
+  /**
+   * Axios middleware
+   */
+  middleware.push(axiosMiddleware(client))
 
   /**
    * Redux DevTools Configuration
@@ -59,11 +70,6 @@ export default (initialState = {}) => {
   const store = createStore(rootReducer, initialState, enhancer)
 
   /**
-   * Add user info to persist state.
-   */
-  const persistor = persistStore(store)
-
-  /**
    * Enable Webpack hot module replacement for reducers
    */
   if (module.hot) {
@@ -73,5 +79,5 @@ export default (initialState = {}) => {
     )
   }
 
-  return { persistor, store }
+  return { store }
 }

@@ -46,7 +46,7 @@ const Notification = ({ message }) => {
         horizontal: 'right',
         vertical: 'bottom',
       }}
-      autoHideDuration={4000}
+      autoHideDuration={10000}
       message={<span>{message}</span>}
       open={notificationVisible}
       style={{

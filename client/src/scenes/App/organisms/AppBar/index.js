@@ -3,7 +3,7 @@
  */
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 import {
   usePopupState,
@@ -34,8 +34,7 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as graphOperations } from '../Editor/ducks/graph'
-import { operations as userOperations } from '../../../../ducks/user'
+import { operations as graphOperations } from '../../ducks/graph'
 
 /**
  * Import components.
@@ -44,6 +43,11 @@ import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 import GoogleSignIn from './organisms/GoogleSignIn'
 import SignOutComponent from './organisms/SignOut'
+
+/**
+ * Import services.
+ */
+import { withAuthentication } from '../../../../providers/Auth'
 
 /**
  * Construct component styles.
@@ -105,32 +109,16 @@ const useStyles = makeStyles(theme => ({
 const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   futureExist: state.graph.future.length,
-  isSignIn: state.user.isSignIn,
   pastExist: state.graph.past.length,
-  profile: state.user.profile,
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      ...graphOperations,
-      ...userOperations,
-    },
-    dispatch,
-  )
+  bindActionCreators(graphOperations, dispatch)
 
 /**
  * Component.
  */
-const AppBar = ({
-  futureExist,
-  isSignIn,
-  loadGraph,
-  pastExist,
-  profile,
-  signIn,
-  signOut,
-}) => {
+const AppBar = ({ auth, futureExist, loadGraph, pastExist }) => {
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
     popupId: 'fileDropdownMenu',
@@ -171,7 +159,7 @@ const AppBar = ({
 
       <MUIAppBar className={classes.root} position="static">
         <Toolbar>
-          {isSignIn && (
+          {auth.authUser && (
             <Tooltip title="Dashboard">
               <IconButton
                 className={classes.menuButton}
@@ -211,7 +199,7 @@ const AppBar = ({
 
           <div className={classes.grow} />
 
-          {isSignIn ? (
+          {auth.authUser ? (
             <React.Fragment>
               <IconButton
                 className={classes.avatarMenuButton}
@@ -221,7 +209,7 @@ const AppBar = ({
                 <Avatar
                   alt=""
                   className={classes.avatar}
-                  src={profile.imageUrl}
+                  src={auth.authUser.imageUrl}
                 />
               </IconButton>
               <Popper
@@ -281,7 +269,10 @@ const AppBar = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withAuthentication,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(AppBar)

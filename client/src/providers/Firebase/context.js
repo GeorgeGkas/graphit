@@ -1,4 +1,5 @@
 import React from 'react'
+import Firebase from './class'
 
 /**
  * Doing it this way, we can be assured that Firebase is only instantiated once and that it
@@ -8,10 +9,16 @@ import React from 'react'
  */
 const FirebaseContext = React.createContext(null)
 
+const FirebaseProvider = props => (
+  <FirebaseContext.Provider value={new Firebase()}>
+    {props.children}
+  </FirebaseContext.Provider>
+)
+
 const withFirebase = Component => props => (
   <FirebaseContext.Consumer>
     {firebase => <Component {...props} firebase={firebase} />}
   </FirebaseContext.Consumer>
 )
 
-export { FirebaseContext as default, withFirebase }
+export { FirebaseProvider as default, withFirebase }

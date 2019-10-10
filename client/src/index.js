@@ -2,20 +2,20 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
 import { ToastContainer } from 'react-toastify'
+import AuthProvider from './providers/Auth'
 import * as serviceWorker from './services/serviceWorker'
-import Firebase, { FirebaseContext } from './organisms/Firebase'
+import FirebaseProvider from './providers/Firebase'
 import GlobalStyle from './styles.global'
 import configureReduxStore from './services/configureStore'
 import Router from './Router'
 
-const { persistor, store } = configureReduxStore()
+const { store } = configureReduxStore()
 
 ReactDOM.render(
   <ReduxProvider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <FirebaseContext.Provider value={new Firebase()}>
+    <FirebaseProvider>
+      <AuthProvider>
         <CssBaseline />
         <GlobalStyle />
         <ToastContainer
@@ -26,8 +26,8 @@ ReactDOM.render(
           pauseOnHover={false}
         />
         <Router />
-      </FirebaseContext.Provider>
-    </PersistGate>
+      </AuthProvider>
+    </FirebaseProvider>
   </ReduxProvider>,
   document.getElementById('root'),
 )

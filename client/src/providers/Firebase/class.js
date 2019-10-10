@@ -10,12 +10,18 @@ const config = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 }
 
-/**
- * Singleton class for initializing Firebase app only once.
- */
 export default class Firebase {
   constructor() {
     app.initializeApp(config)
+
+    /**
+     * Use custom SESSION implementation with cookies
+     * to avoid leaking auth token into local storage.
+     *
+     * Check Auth provider for more details.
+     */
+    app.auth().setPersistence(app.auth.Auth.Persistence.NONE)
+
     this.auth = app.auth()
     this.googleProvider = new app.auth.GoogleAuthProvider()
   }

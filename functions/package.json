@@ -2,7 +2,7 @@
   "name": "functions",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
-    "build": "rimraf tsconfig.tsbuildinfo && tsc --project tsconfig.json && yarn replace-config",
+    "build": "rimraf tsconfig.tsbuildinfo && rimraf lib && tsc --project tsconfig.json && yarn replace-config",
     "replace-config": "node -r ../../index.js replace-config.js",
     "serve": "yarn build && firebase serve --only functions",
     "shell": "yarn build && firebase functions:shell",
@@ -16,6 +16,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@google-cloud/logging-winston": "^2.1.0",
+    "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^8.0.0",
@@ -26,6 +27,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.6",
     "@types/helmet": "^0.0.44",
     "@types/lodash": "^4.14.141",

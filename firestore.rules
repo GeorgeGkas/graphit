@@ -2,7 +2,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /projects/{projectid} {
       // Only the authenticated user who authored the project can read or write
-      allow read, write: if request.auth.uid == resource.data.author;
+      allow create, read, update, delete: if request.auth.uid == resource.data.author;
     }
   }
 }

@@ -2,28 +2,22 @@
  * Import globals.
  */
 import React from 'react'
-
-/**
- * Import components.
- */
-import { withFirebase } from '../../../../../../organisms/Firebase'
+import { withAuthentication } from '../../../../../../providers/Auth'
 
 /**
  * Component.
  */
 const SignOut = ({
+  auth,
   buttonText,
   className,
-  firebase,
   onFailure,
   onSuccess,
   render,
 }) => {
-  const doSignOut = async e => {
-    e.preventDefault()
-
+  const doSignOut = () => {
     try {
-      await firebase.signOut()
+      auth.signOut()
       onSuccess()
     } catch (e) {
       onFailure(e)
@@ -41,4 +35,4 @@ const SignOut = ({
   }
 }
 
-export default withFirebase(SignOut)
+export default withAuthentication(SignOut)

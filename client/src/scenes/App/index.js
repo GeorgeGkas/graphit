@@ -21,7 +21,7 @@ import PropertiesEditor from './organisms/PropertiesEditor'
 /**
  * Import ducks.
  */
-import { selectors as graphSelectors } from './organisms/Editor/ducks/graph'
+import { selectors as graphSelectors } from './ducks/graph'
 
 /**
  * Connect component to Redux.

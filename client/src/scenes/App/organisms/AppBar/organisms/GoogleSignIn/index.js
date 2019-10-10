@@ -6,25 +6,23 @@ import React from 'react'
 /**
  * Import components.
  */
-import { withFirebase } from '../../../../../../organisms/Firebase'
+import { withAuthentication } from '../../../../../../providers/Auth'
 
 /**
  * Component.
  */
 const GoogleSignIn = ({
+  auth,
   buttonText,
   className,
-  firebase,
   onFailure,
   onSuccess,
   render,
 }) => {
-  const doGoogleSignIn = async e => {
-    e.preventDefault()
-
+  const doGoogleSignIn = async () => {
     try {
-      const user = await firebase.signIn()
-      onSuccess(user)
+      await auth.signIn()
+      onSuccess()
     } catch (e) {
       onFailure(e)
     }
@@ -41,4 +39,4 @@ const GoogleSignIn = ({
   }
 }
 
-export default withFirebase(GoogleSignIn)
+export default withAuthentication(GoogleSignIn)

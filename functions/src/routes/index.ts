@@ -1,9 +1,13 @@
 import * as express from 'express'
-import { validateUserAuth } from './auth'
-import v1 from './v1'
+import auth from './auth'
+import verifySessionCookie from './auth/verify'
+import projects from './projects'
+import user from './user'
 
 const router = express.Router()
 
-router.use('/v1', validateUserAuth, v1)
+router.use('/auth', auth)
+router.use('/projects', verifySessionCookie, projects)
+router.use('/user', verifySessionCookie, user)
 
 export default router

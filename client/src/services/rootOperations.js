@@ -3,14 +3,14 @@
  * store.
  */
 
-import { operations as algorithmOperations } from '../scenes/App/organisms/EditorBar/duck'
-import { operations as editorOperations } from '../scenes/App/organisms/Editor/ducks/editor'
-import { operations as graphOperations } from '../scenes/App/organisms/Editor/ducks/graph'
-import { operations as userOperations } from '../ducks/user'
+import { operations as algorithmOperations } from '../scenes/App/ducks/algorithm'
+import { operations as editorOperations } from '../scenes/App/ducks/editor'
+import { operations as graphOperations } from '../scenes/App/ducks/graph'
+import { operations as projectsOperations } from '../ducks/projects'
 
 export {
   algorithmOperations,
   editorOperations,
   graphOperations,
-  userOperations,
+  projectsOperations,
 }

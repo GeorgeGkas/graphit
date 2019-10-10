@@ -7,14 +7,10 @@ import set from 'lodash/fp/set'
 import undoable, { includeAction } from 'redux-undo'
 import mapValues from 'lodash/fp/mapValues'
 import { combineReducers } from 'redux'
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-import algorithm from '../scenes/App/organisms/EditorBar/duck'
-import editor from '../scenes/App/organisms/Editor/ducks/editor'
-import graph, {
-  types as graphTypes,
-} from '../scenes/App/organisms/Editor/ducks/graph'
-import user from '../ducks/user'
+import algorithm from '../scenes/App/ducks/algorithm'
+import editor from '../scenes/App/ducks/editor'
+import graph, { types as graphTypes } from '../scenes/App/ducks/graph'
+import projects from '../ducks/projects'
 
 export default () =>
   combineReducers({
@@ -43,12 +39,5 @@ export default () =>
       redoType: graphTypes.REDO_GRAPH_HISTORY,
       undoType: graphTypes.UNDO_GRAPH_HISTORY,
     }),
-    user: persistReducer(
-      {
-        blacklist: ['selectedProjectId'],
-        key: 'user',
-        storage,
-      },
-      user,
-    ),
+    projects,
   })

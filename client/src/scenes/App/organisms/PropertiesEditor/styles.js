@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import buildEdge from '../Editor/organisms/EdgeNotLoop/services/buildEdge'
-import { selectors as graphSelectors } from '../../organisms/Editor/ducks/graph'
+import { selectors as graphSelectors } from '../../ducks/graph'
 
 const getEdgeCenter = ({ edges, selectedResolvedEdge }) => {
   let points = buildEdge({

@@ -11,11 +11,11 @@ import { connect } from 'react-redux'
 /**
  * Import ducks.
  */
-import { operations as editorOperations } from './ducks/editor'
+import { operations as editorOperations } from '../../ducks/editor'
 import {
   operations as graphOperations,
   selectors as graphSelectors,
-} from './ducks/graph'
+} from '../../ducks/graph'
 
 /**
  * Import components.
