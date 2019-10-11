@@ -3,7 +3,7 @@ const SELECT_PROJECT_BY_ID = 'app/projects/SELECT_PROJECT_BY_ID'
 const REQUEST_PROJECT_LIST = 'app/projects/REQUEST_PROJECT_LIST'
 const UPDATE_PROJECT_BY_ID = 'app/projects/UPDATE_PROJECT_BY_ID'
 const DELETE_PROJECT_BY_ID = 'app/projects/DELETE_PROJECT_BY_ID'
-const GET_PROJECT_BY_ID = 'app/projects/SELECT_PROJECT_BY_ID'
+const GET_PROJECT_BY_ID = 'app/projects/GET_PROJECT_BY_ID'
 const CREATE_PROJECT = 'app/projects/CREATE_PROJECT'
 
 export {
