@@ -58,7 +58,6 @@ const useStyles = makeStyles(theme => ({
     margin: 10,
     width: 30,
   },
-
   avatarMenu: {
     borderRadius: 0,
     marginTop: '-30px',
@@ -92,11 +91,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     background: blue['500'],
     display: 'flex',
-  },
-  signin: {
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(1),
-    },
   },
   title: {
     marginRight: theme.spacing(3),
@@ -245,7 +239,6 @@ const AppBar = ({ auth, futureExist, loadGraph, pastExist }) => {
           ) : (
             <GoogleSignIn
               buttonText="Sign In"
-              className={classes.signin}
               onFailure={console.error}
               onSuccess={_ => _}
             />
