@@ -6,12 +6,14 @@ export default async function get(
   res: express.Response,
 ) {
   const documentId = req.params.id
+  const author = req.author!
 
   try {
     const { docs } = await req.app
       .get('db')
       .collection('projects')
       .where(firebase.firestore.FieldPath.documentId(), '==', documentId)
+      .where('author', '==', author.uid)
       .limit(1)
       .get()
     const doc = docs.pop()
