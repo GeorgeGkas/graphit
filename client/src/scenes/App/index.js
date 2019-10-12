@@ -1,8 +1,10 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 /**
  * Import UI framework modules.
@@ -16,12 +18,15 @@ import AppBar from './organisms/AppBar'
 import Dijkstra from './organisms/Dijkstra'
 import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
+import Notification from '../../organisms/Notification'
 import PropertiesEditor from './organisms/PropertiesEditor'
 
 /**
  * Import ducks.
  */
 import { selectors as graphSelectors } from './ducks/graph'
+import { operations as projectsOperations } from '../../ducks/projects'
+import { toast } from 'react-toastify'
 
 /**
  * Connect component to Redux.
@@ -32,13 +37,30 @@ const mapStateToProps = state => ({
   selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
 })
 
-const mapDispatchToProps = null
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(projectsOperations, dispatch)
 
 /**
  * Component.
  */
-const App = ({ currentEditorAction, selectedEdge, selectedNode }) => {
+const App = ({
+  currentEditorAction,
+  getProjectById,
+  selectedEdge,
+  selectedNode,
+}) => {
   const [gridVisible, makeGridVisible] = useState(false)
+  const { id } = useParams()
+
+  useEffect(() => {
+    ;(async () => {
+      if (id) {
+        toast.dismiss()
+        toast(<Notification message="Fetching project..." />)
+        await getProjectById(id)
+      }
+    })()
+  }, [])
 
   const toggleGrid = () => makeGridVisible(!gridVisible)
 

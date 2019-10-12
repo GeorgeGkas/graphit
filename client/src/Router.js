@@ -39,6 +39,7 @@ const Router = () => {
     <CheckAuthLoadingScreen>
       <BrowserRouter>
         <Switch>
+          <Route exact component={App} path="/app/:id" />
           <Route component={App} path="/app" />
           <Redirect exact from="/" to="/app" />
           <PrivateRoute

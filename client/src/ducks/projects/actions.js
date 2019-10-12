@@ -102,6 +102,8 @@ const getProjectById = id => ({
           graphOperations.loadGraph(JSON.parse(response.data.data.graph)),
         )
         dispatch(selectProjectById(id))
+        toast.dismiss()
+        toast(<Notification message="Project fetched successfully" />)
       },
     },
     request: {
