@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles'
  * Import components.
  */
 import GoogleIcon from './atoms/GoogleIcon'
-import { withAuthentication } from '../../../../../../providers/Auth'
+import { withAuthentication } from '../../../../providers/Auth'
 
 const useStyles = makeStyles(() => ({
   signin: {

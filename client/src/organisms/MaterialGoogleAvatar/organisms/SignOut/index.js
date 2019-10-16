@@ -2,7 +2,7 @@
  * Import globals.
  */
 import React from 'react'
-import { withAuthentication } from '../../../../../../providers/Auth'
+import { withAuthentication } from '../../../../providers/Auth'
 
 /**
  * Component.

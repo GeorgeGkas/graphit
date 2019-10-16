@@ -15,16 +15,10 @@ import {
  * Import UI framework modules.
  */
 import blue from '@material-ui/core/colors/blue'
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import DashboardIcon from '@material-ui/icons/DashboardSharp'
-import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
-import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
 import MUIAppBar from '@material-ui/core/AppBar'
-import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -41,8 +35,7 @@ import { operations as graphOperations } from '../../ducks/graph'
  */
 import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
-import GoogleSignIn from './organisms/GoogleSignIn'
-import SignOutComponent from './organisms/SignOut'
+import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 
 /**
  * Import services.
@@ -53,18 +46,6 @@ import { withAuthentication } from '../../../../providers/Auth'
  * Construct component styles.
  */
 const useStyles = makeStyles(theme => ({
-  avatar: {
-    height: 30,
-    margin: 10,
-    width: 30,
-  },
-  avatarMenu: {
-    borderRadius: 0,
-    marginTop: '-30px',
-  },
-  avatarMenuButton: {
-    padding: 0,
-  },
   button: {
     margin: theme.spacing(1),
   },
@@ -125,10 +106,6 @@ const AppBar = ({
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
     popupId: 'fileDropdownMenu',
-    variant: 'popover',
-  })
-  const profileDropdownMenu = usePopupState({
-    popupId: 'profileDropdownMenu',
     variant: 'popover',
   })
 
@@ -215,56 +192,7 @@ const AppBar = ({
 
           <div className={classes.grow} />
 
-          {auth.authUser ? (
-            <React.Fragment>
-              <IconButton
-                className={classes.avatarMenuButton}
-                color="inherit"
-                {...bindToggle(profileDropdownMenu)}
-              >
-                <Avatar
-                  alt=""
-                  className={classes.avatar}
-                  src={auth.authUser.imageUrl}
-                />
-              </IconButton>
-              <Popper
-                {...bindPopover(profileDropdownMenu)}
-                transition
-                style={{ zIndex: 9999 }}
-              >
-                {({ TransitionProps }) => (
-                  <Fade
-                    {...TransitionProps}
-                    className={classes.avatarMenu}
-                    timeout={360}
-                  >
-                    <Paper id="menu-list-grow">
-                      <ClickAwayListener
-                        onClickAway={profileDropdownMenu.close}
-                      >
-                        <MenuList>
-                          <SignOutComponent
-                            render={doSignOut => (
-                              <MenuItem onClick={doSignOut}>Sign out</MenuItem>
-                            )}
-                            onFailure={console.error}
-                            onSuccess={profileDropdownMenu.close}
-                          />
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Fade>
-                )}
-              </Popper>
-            </React.Fragment>
-          ) : (
-            <GoogleSignIn
-              buttonText="Sign In"
-              onFailure={console.error}
-              onSuccess={_ => _}
-            />
-          )}
+          <MaterialGoogleAvatar auth={auth} />
         </Toolbar>
       </MUIAppBar>
 
