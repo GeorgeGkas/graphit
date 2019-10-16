@@ -87,8 +87,6 @@ const Grid = ({ stage }) => {
     stage,
   })
 
-  console.log(gridY)
-
   const grid = [...gridX, ...gridY]
 
   return <Layer>{grid}</Layer>
