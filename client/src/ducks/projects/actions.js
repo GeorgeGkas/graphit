@@ -122,7 +122,18 @@ const createProject = data => ({
         toast.dismiss()
         toast(<Notification message="Could not create project" />)
       },
-      onSuccess({ dispatch, response }) {
+      onSuccess({ dispatch, getState, response }) {
+        dispatch(
+          setProjectList([
+            {
+              algorithm: data.algorithm,
+              createdAt: data.createdAt,
+              id: response.data.data,
+              name: data.name,
+            },
+            ...getState().projects.projectList,
+          ]),
+        )
         dispatch(selectProjectById(response.data.data))
         toast.dismiss()
         toast(<Notification message="Project created successfully" />)

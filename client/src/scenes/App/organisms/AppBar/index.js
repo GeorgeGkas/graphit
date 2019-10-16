@@ -104,6 +104,8 @@ const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   futureExist: state.graph.future.length,
   pastExist: state.graph.past.length,
+  projectList: state.projects.projectList,
+  selectedProjectId: state.projects.selectedProjectId,
 })
 
 const mapDispatchToProps = dispatch =>
@@ -112,7 +114,14 @@ const mapDispatchToProps = dispatch =>
 /**
  * Component.
  */
-const AppBar = ({ auth, futureExist, loadGraph, pastExist }) => {
+const AppBar = ({
+  auth,
+  futureExist,
+  loadGraph,
+  pastExist,
+  projectList,
+  selectedProjectId,
+}) => {
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
     popupId: 'fileDropdownMenu',
@@ -167,9 +176,22 @@ const AppBar = ({ auth, futureExist, loadGraph, pastExist }) => {
             </Tooltip>
           )}
 
-          <Typography className={classes.title} variant="h6">
-            Editor
-          </Typography>
+          <div className={classes.title}>
+            <Typography variant="h6">
+              {selectedProjectId
+                ? projectList
+                    .filter(project => project.id === selectedProjectId)
+                    .pop().name
+                : 'Editor'}
+            </Typography>
+            <Typography gutterBottom display="block" variant="caption">
+              {selectedProjectId
+                ? projectList
+                    .filter(project => project.id === selectedProjectId)
+                    .pop().algorithm
+                : null}
+            </Typography>
+          </div>
 
           <Button
             className={classes.buttonApp}
