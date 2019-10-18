@@ -45,8 +45,8 @@ const mapDispatchToProps = dispatch =>
  */
 const App = ({
   currentEditorAction,
+  getProjectById,
   requestProjectList,
-  selectProjectById,
   selectedEdge,
   selectedNode,
 }) => {
@@ -59,10 +59,7 @@ const App = ({
         toast.dismiss()
         toast(<Notification message="Fetching project..." />)
         await requestProjectList()
-        toast.dismiss()
-        toast(<Notification message="Project fetched successfully" />)
-
-        selectProjectById(id)
+        await getProjectById(id)
       }
     })()
   }, [])
