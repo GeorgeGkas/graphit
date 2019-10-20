@@ -24,12 +24,14 @@ const App = loadable(
     fallback: <div>Fetching page...</div>,
   },
 )
+
 const Dashboard = loadable(
   () => import(/* webpackChunkName: "Dashboard" */ './scenes/Dashboard'),
   {
     fallback: <div>Fetching page...</div>,
   },
 )
+
 const Page404 = loadable(() =>
   import(/* webpackChunkName: "Page404" */ './scenes/Page404'),
 )

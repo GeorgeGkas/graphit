@@ -79,6 +79,9 @@ const deleteProjectById = id => ({
           dispatch(graphOperations.initGraphHistory())
           dispatch(selectProjectById(null))
         }
+
+        toast.dismiss()
+        toast(<Notification message="Project deleted successfully" />)
       },
     },
     request: {
