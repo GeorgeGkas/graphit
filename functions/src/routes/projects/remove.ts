@@ -1,4 +1,5 @@
 import * as express from 'express'
+import logger from '../../utils/logger'
 
 export default async function remove(
   req: express.AugmentedRequest,
@@ -19,6 +20,7 @@ export default async function remove(
     await docRef.delete()
     return res.sendStatus(204)
   } catch (e) {
+    logger.error(e)
     return res.status(500).send({ message: `Could not delete project.` })
   }
 }

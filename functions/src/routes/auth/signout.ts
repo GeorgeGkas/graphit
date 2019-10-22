@@ -1,5 +1,6 @@
 import * as express from 'express'
 import * as admin from 'firebase-admin'
+import logger from '../../utils/logger'
 
 export default async function signout(
   req: express.Request,
@@ -22,6 +23,7 @@ export default async function signout(
 
     return res.sendStatus(204)
   } catch (e) {
+    logger.error(e)
     return res.sendStatus(204)
   }
 }

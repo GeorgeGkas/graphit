@@ -1,5 +1,6 @@
 import * as express from 'express'
 import * as firebase from 'firebase-admin'
+import logger from '../../utils/logger'
 
 export default async function get(
   req: express.AugmentedRequest,
@@ -25,6 +26,7 @@ export default async function get(
     const project = doc!.data()
     return res.status(200).json({ data: project })
   } catch (e) {
+    logger.error(e)
     return res.status(500).send({ message: `Could not get project.` })
   }
 }

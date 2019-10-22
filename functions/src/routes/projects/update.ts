@@ -1,4 +1,5 @@
 import * as express from 'express'
+import logger from '../../utils/logger'
 
 export default async function update(
   req: express.AugmentedRequest,
@@ -20,6 +21,7 @@ export default async function update(
     await docRef.update(newDocument)
     return res.sendStatus(204)
   } catch (e) {
+    logger.error(e)
     return res.status(500).send({ message: `Could not update project.` })
   }
 }

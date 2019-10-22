@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { invokeMap, map, merge, pick, values } from 'lodash/fp'
+import logger from '../../utils/logger'
 
 export default async function getAll(
   req: express.AugmentedRequest,
@@ -22,6 +23,7 @@ export default async function getAll(
 
     return res.status(200).json({ data: result })
   } catch (e) {
+    logger.error(e)
     return res.status(500).send({ message: `Could not get project list.` })
   }
 }

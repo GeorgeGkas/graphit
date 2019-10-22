@@ -1,5 +1,6 @@
 import * as express from 'express'
 import * as admin from 'firebase-admin'
+import logger from '../../utils/logger'
 
 export default async function signin(
   req: express.Request,
@@ -27,6 +28,7 @@ export default async function signin(
 
     return res.sendStatus(200)
   } catch (e) {
+    logger.notice(e)
     return res.sendStatus(401)
   }
 }
