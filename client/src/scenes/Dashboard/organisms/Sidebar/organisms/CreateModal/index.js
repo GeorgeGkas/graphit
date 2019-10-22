@@ -218,16 +218,10 @@ const CreateModal = ({
                 name: projectName,
               }
 
-              const response = await axios.post(
-                '/projects',
-                {
-                  data,
-                },
-                {
-                  baseURL: process.env.REACT_APP_API_ENDPOINT,
-                  withCredentials: true,
-                },
-              )
+              const response = await axios.post('/projects', data, {
+                baseURL: process.env.REACT_APP_API_ENDPOINT,
+                withCredentials: true,
+              })
 
               setProjectList([
                 {
@@ -263,6 +257,17 @@ const CreateModal = ({
                   <Typography gutterBottom variant="body1">
                     Hooray!!!
                   </Typography>
+                  <Typography gutterBottom variant="caption">
+                    Close this window and select the newly create project from
+                    project list
+                  </Typography>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={handleClose}
+                  >
+                    Close
+                  </Button>
                 </Grid>
               )
             }}
