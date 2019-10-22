@@ -146,6 +146,7 @@ const AppBar = ({
                 color="inherit"
                 component={Link}
                 edge="start"
+                target="_blank"
                 to="/dashboard"
               >
                 <DashboardIcon />
