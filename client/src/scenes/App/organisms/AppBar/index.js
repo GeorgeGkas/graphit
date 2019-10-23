@@ -121,7 +121,6 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
               toggleLoadDialog()
             } else {
               loadGraph(JSON.parse(reader.result))
-              toggleLoadDialog()
             }
           }
           reader.readAsText(e.target.files[0])
