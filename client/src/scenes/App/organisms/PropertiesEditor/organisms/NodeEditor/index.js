@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -73,8 +73,8 @@ const NodeEditor = ({
   updateNodeProperties,
 }) => {
   const classes = useStyles()
-  const [validNodeName, validateNodeName] = useState(true)
-  const [nodeIsInitial, setInitialState] = useState(
+  const [validNodeName, validateNodeName] = React.useState(true)
+  const [nodeIsInitial, setInitialState] = React.useState(
     selectedNode.properties.initial,
   )
   const toggleInitialState = () => setInitialState(!nodeIsInitial)

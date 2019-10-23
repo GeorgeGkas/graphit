@@ -53,7 +53,7 @@ const MaterialGoogleAvatar = ({ auth }) => {
 
   if (auth.authUser) {
     return (
-      <React.Fragment>
+      <>
         <IconButton
           className={classes.avatarMenuButton}
           color="inherit"
@@ -92,7 +92,7 @@ const MaterialGoogleAvatar = ({ auth }) => {
             </Fade>
           )}
         </Popper>
-      </React.Fragment>
+      </>
     )
   } else {
     return (

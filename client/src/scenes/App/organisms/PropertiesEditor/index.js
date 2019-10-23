@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -73,7 +73,7 @@ const PropertiesEditor = ({
   stageScale,
 }) => {
   const classes = useStyles()
-  const [editorDialogVisible, makeEditorDialogVisible] = useState(false)
+  const [editorDialogVisible, makeEditorDialogVisible] = React.useState(false)
 
   const toggleEditorDialog = () => makeEditorDialogVisible(!editorDialogVisible)
 

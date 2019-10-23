@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 /**
  * Import UI framework modules.
@@ -15,10 +15,10 @@ import Snackbar from '@material-ui/core/Snackbar'
  * Component.
  */
 const Notification = ({ message }) => {
-  const [notificationVisible, makeNotificationVisible] = useState(false)
+  const [notificationVisible, makeNotificationVisible] = React.useState(false)
   const toggleNotification = () => makeNotificationVisible(!notificationVisible)
 
-  useEffect(() => {
+  React.useEffect(() => {
     const timer = setTimeout(() => {
       makeNotificationVisible(!notificationVisible)
     }, 600)

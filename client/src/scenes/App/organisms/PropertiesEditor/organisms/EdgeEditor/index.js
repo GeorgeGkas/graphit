@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -71,7 +71,7 @@ const EdgeEditor = ({
   updateEdgeProperties,
 }) => {
   const classes = useStyles()
-  const [validEdgeWeight, validateEdgeWeight] = useState(true)
+  const [validEdgeWeight, validateEdgeWeight] = React.useState(true)
 
   const submitForm = () => {
     const newEdgeWeight = document.getElementById('edge_weight_input').value

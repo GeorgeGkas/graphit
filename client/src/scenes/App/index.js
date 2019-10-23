@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -49,10 +49,10 @@ const App = ({
   selectedEdge,
   selectedNode,
 }) => {
-  const [gridVisible, makeGridVisible] = useState(false)
+  const [gridVisible, makeGridVisible] = React.useState(false)
   const { id } = useParams()
 
-  useEffect(() => {
+  React.useEffect(() => {
     ;(async () => {
       if (id) {
         toast.dismiss()
@@ -70,7 +70,7 @@ const App = ({
   const showAlgorithmPanel = currentEditorAction === 'isPlaying'
 
   return (
-    <React.Fragment>
+    <>
       <div style={{ position: 'relative' }}>
         <AppBar />
         <EditorBar gridVisible={gridVisible} toggleGrid={toggleGrid} />
@@ -83,7 +83,7 @@ const App = ({
       </Slide>
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
-    </React.Fragment>
+    </>
   )
 }
 

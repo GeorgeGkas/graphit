@@ -48,7 +48,7 @@ const AppBar = ({ auth }) => {
   const classes = useStyles()
 
   return (
-    <React.Fragment>
+    <>
       <MUIAppBar className={classes.root} position="static">
         <Toolbar>
           <div className={classes.title}>
@@ -60,7 +60,7 @@ const AppBar = ({ auth }) => {
           <MaterialGoogleAvatar auth={auth} />
         </Toolbar>
       </MUIAppBar>
-    </React.Fragment>
+    </>
   )
 }
 

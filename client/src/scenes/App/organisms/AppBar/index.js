@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
@@ -100,13 +100,13 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
     variant: 'popover',
   })
 
-  const [loadDialogVisible, makeLoadDialogVisible] = useState(false)
+  const [loadDialogVisible, makeLoadDialogVisible] = React.useState(false)
   const toggleLoadDialog = () => makeLoadDialogVisible(!loadDialogVisible)
 
-  const [selectedProjectToLoad, setSelectedProjectToLoad] = useState({})
+  const [selectedProjectToLoad, setSelectedProjectToLoad] = React.useState({})
 
   return (
-    <React.Fragment>
+    <>
       <input
         accept=".json"
         className={classes.fileInput}
@@ -191,7 +191,7 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
         confirmTitle="Load project?"
         handleClose={toggleLoadDialog}
       />
-    </React.Fragment>
+    </>
   )
 }
 

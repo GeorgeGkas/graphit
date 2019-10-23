@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -75,16 +75,20 @@ const FileDropdownMenu = ({
   pastExist,
   updateProjectById,
 }) => {
-  const [overwriteDialogVisible, makeOverwriteDialogVisible] = useState(false)
+  const [overwriteDialogVisible, makeOverwriteDialogVisible] = React.useState(
+    false,
+  )
   const toggleOverwriteDialog = () =>
     makeOverwriteDialogVisible(!overwriteDialogVisible)
 
-  const [promptSaveDialogVisible, makePromptSaveDialogVisible] = useState(false)
+  const [promptSaveDialogVisible, makePromptSaveDialogVisible] = React.useState(
+    false,
+  )
   const togglePromptSaveDialog = () =>
     makePromptSaveDialogVisible(!promptSaveDialogVisible)
 
   return (
-    <React.Fragment>
+    <>
       <Fade {...TransitionProps} timeout={360}>
         <Paper square id="menu-list-grow">
           <ClickAwayListener onClickAway={fileDropdownMenu.close}>
@@ -192,7 +196,7 @@ const FileDropdownMenu = ({
         }}
         promptSaveDialogVisible={promptSaveDialogVisible}
       />
-    </React.Fragment>
+    </>
   )
 }
 

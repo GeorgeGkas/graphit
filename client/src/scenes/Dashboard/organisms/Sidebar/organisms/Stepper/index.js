@@ -141,7 +141,7 @@ const CustomStepper = ({
         {activeStep === steps.length ? (
           finalReactComponent
         ) : (
-          <React.Fragment>
+          <>
             <div className={classes.content}>{getActiveStepContent()}</div>
             <div className={classes.footer}>
               <Button
@@ -172,7 +172,7 @@ const CustomStepper = ({
                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
               </Button>
             </div>
-          </React.Fragment>
+          </>
         )}
       </div>
     </div>

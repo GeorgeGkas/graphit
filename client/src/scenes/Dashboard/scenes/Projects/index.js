@@ -1,7 +1,7 @@
 /**
  * Import globals.
  */
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -86,11 +86,17 @@ const mapDispatchToProps = dispatch =>
  */
 const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
   const classes = useStyles()
-  const [currentProjectIdAction, setCurrentProjectIdAction] = useState(null)
-  const [getProjectListLoading, setGetProjectListLoadingState] = useState(true)
-  const [deleteProjectLoading, setDeleteProjectLoadingState] = useState(false)
+  const [currentProjectIdAction, setCurrentProjectIdAction] = React.useState(
+    null,
+  )
+  const [getProjectListLoading, setGetProjectListLoadingState] = React.useState(
+    true,
+  )
+  const [deleteProjectLoading, setDeleteProjectLoadingState] = React.useState(
+    false,
+  )
 
-  useEffect(() => {
+  React.useEffect(() => {
     ;(async () => {
       await requestProjectList()
       setGetProjectListLoadingState(false)
@@ -142,7 +148,7 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
             options: {
               customBodyRender: value => {
                 return (
-                  <React.Fragment>
+                  <>
                     <Tooltip title="View">
                       <IconButton
                         disabled={deleteProjectLoading}
@@ -178,7 +184,7 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
                         ) : null}
                       </IconButton>
                     </Tooltip>
-                  </React.Fragment>
+                  </>
                 )
               },
               searchable: false,

@@ -20,7 +20,7 @@ import Sidebar from './organisms/Sidebar'
  */
 const Dashboard = () => {
   return (
-    <React.Fragment>
+    <>
       <AppBar />
       <Grid container>
         <Grid item lg={2} md={3} xs={4}>
@@ -30,7 +30,7 @@ const Dashboard = () => {
           <Router />
         </Grid>
       </Grid>
-    </React.Fragment>
+    </>
   )
 }
 

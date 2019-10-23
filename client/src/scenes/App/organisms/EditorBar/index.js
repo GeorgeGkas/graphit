@@ -149,7 +149,7 @@ const EditorBar = ({
   }
 
   return (
-    <React.Fragment>
+    <>
       <AppBar className={classes.root} position="static">
         <Toolbar>
           <Tooltip title="Undo">
@@ -337,7 +337,7 @@ const EditorBar = ({
           </Tooltip>
         </Toolbar>
       </AppBar>
-    </React.Fragment>
+    </>
   )
 }
 

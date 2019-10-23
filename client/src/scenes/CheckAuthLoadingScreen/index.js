@@ -14,7 +14,7 @@ const CheckAuthLoadingScreen = ({ auth, ...props }) => {
   }, [])
 
   return !authUserInitialFetching ? (
-    <React.Fragment>{props.children}</React.Fragment>
+    <>{props.children}</>
   ) : (
     <div>Checking user authentication...</div>
   )
