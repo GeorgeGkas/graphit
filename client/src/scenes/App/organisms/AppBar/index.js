@@ -84,6 +84,7 @@ const useStyles = makeStyles(theme => ({
 const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   futureExist: state.graph.future.length,
+  graphMetadata: state.graph.present.metadata,
   pastExist: state.graph.past.length,
   projectList: state.projects.projectList,
   selectedProjectId: state.projects.selectedProjectId,
@@ -98,9 +99,9 @@ const mapDispatchToProps = dispatch =>
 const AppBar = ({
   auth,
   futureExist,
+  graphMetadata,
   loadGraph,
   pastExist,
-  projectList,
   selectedProjectId,
 }) => {
   const classes = useStyles()
@@ -156,18 +157,10 @@ const AppBar = ({
 
           <div className={classes.title}>
             <Typography variant="h6">
-              {selectedProjectId
-                ? projectList
-                    .filter(project => project.id === selectedProjectId)
-                    .pop().name
-                : 'Editor'}
+              {selectedProjectId ? graphMetadata.name : 'Editor'}
             </Typography>
             <Typography gutterBottom display="block" variant="caption">
-              {selectedProjectId
-                ? projectList
-                    .filter(project => project.id === selectedProjectId)
-                    .pop().algorithm
-                : null}
+              {selectedProjectId ? graphMetadata.algorithm : null}
             </Typography>
           </div>
 

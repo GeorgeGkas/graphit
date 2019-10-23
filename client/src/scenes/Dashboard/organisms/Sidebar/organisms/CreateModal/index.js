@@ -98,7 +98,7 @@ const CreateModal = ({
 }) => {
   const classes = useStyles()
   const [uploadedGraph, setUploadedGraph] = React.useState(
-    '{"edges":{}, "nodes": {}}',
+    '{"edges":{}, "metadata": {}, "nodes": {}}',
   )
   const [uploadedGraphFilename, setUploadedGraphFilename] = React.useState(null)
   const [projectName, setProjectName] = React.useState(null)
@@ -210,12 +210,18 @@ const CreateModal = ({
               },
             ]}
             onComplete={async () => {
+              const graph = JSON.parse(uploadedGraph)
+              const createdAt = new Date().toISOString()
               const data = {
-                algorithm: 'Dijkstra',
                 author: auth.authUser.uid,
-                createdAt: new Date().toISOString(),
-                graph: uploadedGraph,
-                name: projectName,
+                graph: JSON.stringify({
+                  ...graph,
+                  metadata: {
+                    algorithm: 'Dijkstra',
+                    createdAt,
+                    name: projectName,
+                  },
+                }),
               }
 
               const response = await axios.post('/projects', data, {
@@ -225,10 +231,10 @@ const CreateModal = ({
 
               setProjectList([
                 {
-                  algorithm: data.algorithm,
-                  createdAt: data.createdAt,
+                  algorithm: 'Dijkstra',
+                  createdAt,
                   id: response.data.data,
-                  name: data.name,
+                  name: projectName,
                 },
                 ...projectList,
               ])

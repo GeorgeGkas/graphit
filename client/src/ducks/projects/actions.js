@@ -126,13 +126,23 @@ const createProject = data => ({
         toast(<Notification message="Could not create project" />)
       },
       onSuccess({ dispatch, getState, response }) {
+        const graph = JSON.parse(data.graph)
+
+        dispatch(
+          graphOperations.updateMetadata({
+            algorithm: graph.metadata.algorithm,
+            createdAt: graph.metadata.createdAt,
+            name: graph.metadata.name,
+          }),
+        )
+
         dispatch(
           setProjectList([
             {
-              algorithm: data.algorithm,
-              createdAt: data.createdAt,
+              algorithm: graph.metadata.algorithm,
+              createdAt: graph.metadata.createdAt,
               id: response.data.data,
-              name: data.name,
+              name: graph.metadata.name,
             },
             ...getState().projects.projectList,
           ]),

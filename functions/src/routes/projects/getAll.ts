@@ -13,12 +13,17 @@ export default async function getAll(
       .get('db')
       .collection('projects')
       .where('author', '==', author.uid)
-      .orderBy('createdAt', 'desc')
       .get()
+
     const ids = map(pick(['id']))(docs)
+
     const projects = map(pick(['algorithm', 'createdAt', 'name']))(
-      invokeMap('data', docs),
+      map(
+        (data: { author: string; graph: string }) =>
+          JSON.parse(data.graph).metadata,
+      )(invokeMap('data', docs)),
     )
+
     const result = values(merge(ids, projects))
 
     return res.status(200).json({ data: result })

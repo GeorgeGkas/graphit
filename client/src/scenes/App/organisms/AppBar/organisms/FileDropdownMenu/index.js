@@ -173,11 +173,15 @@ const FileDropdownMenu = ({
         handleClose={togglePromptSaveDialog}
         promptSaveDialogAction={async projectName => {
           const data = {
-            algorithm: 'Dijkstra',
             author: auth.authUser.uid,
-            createdAt: new Date().toISOString(),
-            graph: JSON.stringify(graph),
-            name: projectName,
+            graph: JSON.stringify({
+              ...graph,
+              metadata: {
+                algorithm: 'Dijkstra',
+                createdAt: new Date().toISOString(),
+                name: projectName,
+              },
+            }),
           }
           await createProject(data)
         }}

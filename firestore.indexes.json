@@ -7,10 +7,6 @@
         {
           "fieldPath": "author",
           "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
         }
       ]
     }
