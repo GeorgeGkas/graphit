@@ -30,9 +30,16 @@ const edge = {
   },
 }
 
+const metadata = {
+  algorithm: '',
+  createdAt: '',
+  name: '',
+}
+
 test('return initial state', () => {
   expect(initialState).toEqual({
     edges: {},
+    metadata,
     nodes: {},
   })
   expect(reducer(undefined, {})).toEqual(initialState)
@@ -65,6 +72,11 @@ test('load graph', () => {
       edges: {
         edge,
       },
+      metadata: {
+        algorithm: 'dijkstra',
+        createdAt: 'today',
+        name: 'My project',
+      },
       nodes: {
         node,
       },
@@ -76,6 +88,11 @@ test('load graph', () => {
   expect(afterLoadingGraph).toEqual({
     edges: {
       edge,
+    },
+    metadata: {
+      algorithm: 'dijkstra',
+      createdAt: 'today',
+      name: 'My project',
     },
     nodes: {
       node,
@@ -93,6 +110,7 @@ test('handle create node', () => {
   expect(initialReducerState).toEqual(initialState)
   expect(afterInsertingNode).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -102,6 +120,7 @@ test('handle create node', () => {
 test('handle delete node', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -113,6 +132,7 @@ test('handle delete node', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -123,6 +143,7 @@ test('handle delete node', () => {
 test('handle select node', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -134,12 +155,14 @@ test('handle select node', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterSelectingNode).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -155,6 +178,7 @@ test('handle select node', () => {
 test('handle unselect node', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -172,6 +196,7 @@ test('handle unselect node', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -184,6 +209,7 @@ test('handle unselect node', () => {
   })
   expect(afterUnselectingNode).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -193,6 +219,7 @@ test('handle unselect node', () => {
 test('handle update node position - start tracking', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -210,12 +237,14 @@ test('handle update node position - start tracking', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterUpdatingNodePositionStart).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -234,6 +263,7 @@ test('handle update node position - start tracking', () => {
 test('handle update node position - end tracking', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -251,12 +281,14 @@ test('handle update node position - end tracking', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterUpdatingNodePositionEnd).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -275,6 +307,7 @@ test('handle update node position - end tracking', () => {
 test('handle update node initial', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -291,12 +324,14 @@ test('handle update node initial', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterUpdatingNodeInitial).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -312,6 +347,7 @@ test('handle update node initial', () => {
 test('handle update node name', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -328,12 +364,14 @@ test('handle update node name', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterUpdatingNodeInitial).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -349,6 +387,7 @@ test('handle update node name', () => {
 test('handle update node initial and name', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -366,12 +405,14 @@ test('handle update node initial and name', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterUpdatingNodeInitial).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node: {
         ...node,
@@ -387,6 +428,7 @@ test('handle update node initial and name', () => {
 test('handle update node  with empty properties param', () => {
   const initialReducerState = {
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -401,12 +443,14 @@ test('handle update node  with empty properties param', () => {
 
   expect(initialReducerState).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
   })
   expect(afterUpdatingNodeInitial).toEqual({
     edges: {},
+    metadata,
     nodes: {
       node,
     },
@@ -425,6 +469,7 @@ test('handle create edge', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   })
 })
@@ -434,6 +479,7 @@ test('handle delete edge', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   }
   const afterDeletingEdge = reducer(initialReducerState, {
@@ -445,6 +491,7 @@ test('handle delete edge', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   })
   expect(afterDeletingEdge).toEqual(initialState)
@@ -455,6 +502,7 @@ test('handle select edge', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   }
   const afterSelectingEdge = reducer(initialReducerState, {
@@ -466,6 +514,7 @@ test('handle select edge', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   })
   expect(afterSelectingEdge).toEqual({
@@ -478,6 +527,7 @@ test('handle select edge', () => {
         },
       },
     },
+    metadata,
     nodes: {},
   })
 })
@@ -493,6 +543,7 @@ test('handle unselect edge', () => {
         },
       },
     },
+    metadata,
     nodes: {},
   }
   const afterUnselectingEdge = reducer(initialReducerState, {
@@ -510,12 +561,14 @@ test('handle unselect edge', () => {
         },
       },
     },
+    metadata,
     nodes: {},
   })
   expect(afterUnselectingEdge).toEqual({
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   })
 })
@@ -525,6 +578,7 @@ test('handle update edge weight', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   }
   const afterUpdatingEdgeWeight = reducer(initialReducerState, {
@@ -541,6 +595,7 @@ test('handle update edge weight', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   })
   expect(afterUpdatingEdgeWeight).toEqual({
@@ -553,6 +608,7 @@ test('handle update edge weight', () => {
         },
       },
     },
+    metadata,
     nodes: {},
   })
 })
@@ -562,6 +618,7 @@ test('handle update edge  with empty properties param', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   }
   const afterUpdatingEdgeEmpty = reducer(initialReducerState, {
@@ -576,11 +633,114 @@ test('handle update edge  with empty properties param', () => {
     edges: {
       edge,
     },
+    metadata,
     nodes: {},
   })
   expect(afterUpdatingEdgeEmpty).toEqual({
     edges: {
       edge,
+    },
+    metadata,
+    nodes: {},
+  })
+})
+
+test('handle update metadata - name', () => {
+  const initialReducerState = { ...initialState }
+  const afterUpdatingEdgeEmpty = reducer(initialReducerState, {
+    payload: {
+      name: 'newName',
+    },
+    type: types.UPDATE_METADATA,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {},
+    metadata,
+    nodes: {},
+  })
+  expect(afterUpdatingEdgeEmpty).toEqual({
+    edges: {},
+    metadata: {
+      algorithm: '',
+      createdAt: '',
+      name: 'newName',
+    },
+    nodes: {},
+  })
+})
+
+test('handle update metadata - algorithm', () => {
+  const initialReducerState = { ...initialState }
+  const afterUpdatingEdgeEmpty = reducer(initialReducerState, {
+    payload: {
+      algorithm: 'dijkstra',
+    },
+    type: types.UPDATE_METADATA,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {},
+    metadata,
+    nodes: {},
+  })
+  expect(afterUpdatingEdgeEmpty).toEqual({
+    edges: {},
+    metadata: {
+      algorithm: 'dijkstra',
+      createdAt: '',
+      name: '',
+    },
+    nodes: {},
+  })
+})
+
+test('handle update metadata - createdAt', () => {
+  const initialReducerState = { ...initialState }
+  const afterUpdatingEdgeEmpty = reducer(initialReducerState, {
+    payload: {
+      createdAt: 'today',
+    },
+    type: types.UPDATE_METADATA,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {},
+    metadata,
+    nodes: {},
+  })
+  expect(afterUpdatingEdgeEmpty).toEqual({
+    edges: {},
+    metadata: {
+      algorithm: '',
+      createdAt: 'today',
+      name: '',
+    },
+    nodes: {},
+  })
+})
+
+test('handle update metadata - multiple properties update', () => {
+  const initialReducerState = { ...initialState }
+  const afterUpdatingEdgeEmpty = reducer(initialReducerState, {
+    payload: {
+      algorithm: 'dijkstra',
+      createdAt: 'today',
+    },
+    type: types.UPDATE_METADATA,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {},
+    metadata,
+    nodes: {},
+  })
+  expect(afterUpdatingEdgeEmpty).toEqual({
+    edges: {},
+    metadata: {
+      algorithm: 'dijkstra',
+      createdAt: 'today',
+      name: '',
     },
     nodes: {},
   })

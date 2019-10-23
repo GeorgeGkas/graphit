@@ -179,3 +179,15 @@ test('redo graph history', () => {
 
   expect(actions.redoGraphHistory(payload)).toEqual(expectedAction)
 })
+
+test('update graph metadata', () => {
+  const meta = {
+    name: 'hello project',
+  }
+  const expectedAction = {
+    payload: meta,
+    type: types.UPDATE_METADATA,
+  }
+
+  expect(actions.updateMetadata(meta)).toEqual(expectedAction)
+})

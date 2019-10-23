@@ -89,6 +89,11 @@ const initGraphHistory = () => ({
   type: types.INIT_GRAPH_HISTORY,
 })
 
+const updateMetadata = meta => ({
+  payload: meta,
+  type: types.UPDATE_METADATA,
+})
+
 export {
   createEdge,
   createNode,
@@ -103,6 +108,7 @@ export {
   unselectEdge,
   unselectNode,
   updateEdgeProperties,
+  updateMetadata,
   updateNodePositionEnd,
   updateNodePositionStart,
   updateNodeProperties,

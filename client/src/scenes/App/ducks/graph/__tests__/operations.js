@@ -260,6 +260,11 @@ test('load Graph', () => {
         },
       },
     },
+    metadata: {
+      algorithm: '',
+      createdAt: '',
+      name: '',
+    },
     nodes: {},
   }
 
@@ -298,6 +303,11 @@ test('unselect all - node is not selected, edge is not selected', () => {
               selected: false,
             },
           },
+        },
+        metadata: {
+          algorithm: '',
+          createdAt: '',
+          name: '',
         },
         nodes: {
           node: {
@@ -343,6 +353,11 @@ test('unselect all - node is selected, edge is not selected', () => {
               selected: false,
             },
           },
+        },
+        metadata: {
+          algorithm: '',
+          createdAt: '',
+          name: '',
         },
         nodes: {
           node: {
@@ -395,6 +410,11 @@ test('unselect all - node is not selected, edge is selected', () => {
             },
           },
         },
+        metadata: {
+          algorithm: '',
+          createdAt: '',
+          name: '',
+        },
         nodes: {
           node: {
             id: 'node',
@@ -445,6 +465,11 @@ test('unselect all - node is selected, edge is selected', () => {
               selected: true,
             },
           },
+        },
+        metadata: {
+          algorithm: '',
+          createdAt: '',
+          name: '',
         },
         nodes: {
           node: {

@@ -5,6 +5,13 @@ import get from 'lodash/fp/get'
 import * as types from './types'
 
 /**
+ *
+ *  interface Metadata {
+ *    algorithm: string
+ *    createdAt: string
+ *    name: string
+ *  }
+ *
  *  interface Node {
  *    id: string
  *    properties: {
@@ -38,6 +45,11 @@ import * as types from './types'
 
 export const initialState = {
   edges: {},
+  metadata: {
+    algorithm: '',
+    createdAt: '',
+    name: '',
+  },
   nodes: {},
 }
 
@@ -84,6 +96,12 @@ const reducer = (state = initialState, action) => {
           get(`edges[${action.payload.id}].properties`, state),
           action.payload.properties,
         ),
+        state,
+      )
+    case types.UPDATE_METADATA:
+      return set(
+        `metadata`,
+        defaults(get(`metadata`, state), action.payload),
         state,
       )
 
