@@ -146,10 +146,10 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
 
           <div className={classes.title}>
             <Typography variant="h6">
-              {graphMetadata.id ? graphMetadata.name : 'Editor'}
+              {graphMetadata.name ? graphMetadata.name : 'Editor'}
             </Typography>
             <Typography gutterBottom display="block" variant="caption">
-              {graphMetadata.id ? graphMetadata.algorithm : null}
+              {graphMetadata.algorithm ? graphMetadata.algorithm : null}
             </Typography>
           </div>
 
