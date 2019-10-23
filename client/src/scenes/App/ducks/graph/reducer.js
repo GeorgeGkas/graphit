@@ -5,10 +5,10 @@ import get from 'lodash/fp/get'
 import * as types from './types'
 
 /**
- *
  *  interface Metadata {
  *    algorithm: string
  *    createdAt: string
+ *    id: string
  *    name: string
  *  }
  *
@@ -48,6 +48,7 @@ export const initialState = {
   metadata: {
     algorithm: '',
     createdAt: '',
+    id: '',
     name: '',
   },
   nodes: {},

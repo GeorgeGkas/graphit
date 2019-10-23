@@ -33,6 +33,7 @@ const edge = {
 const metadata = {
   algorithm: '',
   createdAt: '',
+  id: '',
   name: '',
 }
 
@@ -75,6 +76,7 @@ test('load graph', () => {
       metadata: {
         algorithm: 'dijkstra',
         createdAt: 'today',
+        id: '',
         name: 'My project',
       },
       nodes: {
@@ -92,6 +94,7 @@ test('load graph', () => {
     metadata: {
       algorithm: 'dijkstra',
       createdAt: 'today',
+      id: '',
       name: 'My project',
     },
     nodes: {
@@ -664,6 +667,7 @@ test('handle update metadata - name', () => {
     metadata: {
       algorithm: '',
       createdAt: '',
+      id: '',
       name: 'newName',
     },
     nodes: {},
@@ -689,6 +693,7 @@ test('handle update metadata - algorithm', () => {
     metadata: {
       algorithm: 'dijkstra',
       createdAt: '',
+      id: '',
       name: '',
     },
     nodes: {},
@@ -714,6 +719,33 @@ test('handle update metadata - createdAt', () => {
     metadata: {
       algorithm: '',
       createdAt: 'today',
+      id: '',
+      name: '',
+    },
+    nodes: {},
+  })
+})
+
+test('handle update metadata - id', () => {
+  const initialReducerState = { ...initialState }
+  const afterUpdatingEdgeEmpty = reducer(initialReducerState, {
+    payload: {
+      id: '123',
+    },
+    type: types.UPDATE_METADATA,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {},
+    metadata,
+    nodes: {},
+  })
+  expect(afterUpdatingEdgeEmpty).toEqual({
+    edges: {},
+    metadata: {
+      algorithm: '',
+      createdAt: '',
+      id: '123',
       name: '',
     },
     nodes: {},
@@ -740,6 +772,7 @@ test('handle update metadata - multiple properties update', () => {
     metadata: {
       algorithm: 'dijkstra',
       createdAt: 'today',
+      id: '',
       name: '',
     },
     nodes: {},
