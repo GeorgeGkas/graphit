@@ -86,9 +86,7 @@ const mapDispatchToProps = dispatch =>
  */
 const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
   const classes = useStyles()
-  const [currentProjectIdAction, setCurrentProjectIdAction] = useState(
-    projects.selectedProjectId,
-  )
+  const [currentProjectIdAction, setCurrentProjectIdAction] = useState(null)
   const [getProjectListLoading, setGetProjectListLoadingState] = useState(true)
   const [deleteProjectLoading, setDeleteProjectLoadingState] = useState(false)
 

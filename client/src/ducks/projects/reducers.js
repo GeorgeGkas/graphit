@@ -1,8 +1,7 @@
-import { SET_PROJECT_LIST, SELECT_PROJECT_BY_ID } from './types'
+import { SET_PROJECT_LIST } from './types'
 
 export const initialState = {
   projectList: [],
-  selectedProjectId: null,
 }
 
 const update = (state = initialState, action) => {
@@ -11,11 +10,6 @@ const update = (state = initialState, action) => {
       return {
         ...state,
         projectList: action.payload,
-      }
-    case SELECT_PROJECT_BY_ID:
-      return {
-        ...state,
-        selectedProjectId: action.payload,
       }
     default:
       return state

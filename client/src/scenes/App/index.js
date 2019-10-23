@@ -46,7 +46,6 @@ const mapDispatchToProps = dispatch =>
 const App = ({
   currentEditorAction,
   getProjectById,
-  requestProjectList,
   selectedEdge,
   selectedNode,
 }) => {
@@ -58,7 +57,6 @@ const App = ({
       if (id) {
         toast.dismiss()
         toast(<Notification message="Fetching project..." />)
-        await requestProjectList()
         await getProjectById(id)
       }
     })()

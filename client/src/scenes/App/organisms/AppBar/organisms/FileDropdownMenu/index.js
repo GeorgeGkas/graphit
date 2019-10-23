@@ -4,6 +4,7 @@
 import React, { useState } from 'react'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
 
 /**
  * Import UI framework modules.
@@ -28,6 +29,7 @@ import { operations as projectsOperations } from '../../../../../../ducks/projec
  * Import components.
  */
 import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
+import Notification from '../../../../../../organisms/Notification'
 import PromptSaveDialog from './organisms/PromptSaveDialog'
 
 /**
@@ -71,8 +73,6 @@ const FileDropdownMenu = ({
   graph,
   initGraphHistory,
   pastExist,
-  projects,
-  selectProjectById,
   updateProjectById,
 }) => {
   const [overwriteDialogVisible, makeOverwriteDialogVisible] = useState(false)
@@ -97,7 +97,6 @@ const FileDropdownMenu = ({
                     toggleOverwriteDialog()
                   } else {
                     initGraphHistory()
-                    selectProjectById(null)
                     fileDropdownMenu.close()
                   }
                 }}
@@ -122,13 +121,13 @@ const FileDropdownMenu = ({
                   button
                   disabled={currentEditorAction === 'isPlaying'}
                   onClick={async () => {
-                    if (projects.selectedProjectId) {
+                    if (graph.metadata.id) {
                       const data = {
                         graph: JSON.stringify(graph),
                       }
 
                       fileDropdownMenu.close()
-                      await updateProjectById(projects.selectedProjectId, data)
+                      await updateProjectById(graph.metadata.id, data)
                     } else {
                       togglePromptSaveDialog()
                     }
@@ -157,7 +156,6 @@ const FileDropdownMenu = ({
       <ConfirmDialog
         confirmAction={() => {
           initGraphHistory()
-          selectProjectById(null)
           toggleOverwriteDialog()
           fileDropdownMenu.close()
         }}
@@ -183,7 +181,14 @@ const FileDropdownMenu = ({
               },
             }),
           }
+
+          toast.dismiss()
+          toast(<Notification message="Creating new project..." />)
+
           await createProject(data)
+
+          toast.dismiss()
+          toast(<Notification message="Project created successfully" />)
         }}
         promptSaveDialogVisible={promptSaveDialogVisible}
       />

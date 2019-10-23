@@ -8,13 +8,11 @@ const {
   deleteProjectById: deleteProjectByIdAction,
   getProjectById: getProjectByIdAction,
   requestProjectList: requestProjectListAction,
-  selectProjectById: selectProjectByIdAction,
   setProjectList: setProjectListAction,
   updateProjectById: updateProjectByIdAction,
 } = actions
 
 const createProject = data => async dispatch => {
-  toast(<Notification message="Creating new project..." />)
   await dispatch(createProjectAction(data))
 }
 
@@ -30,15 +28,12 @@ const requestProjectList = () => async dispatch => {
   await dispatch(requestProjectListAction())
 }
 
-const selectProjectById = id => dispatch => {
-  dispatch(selectProjectByIdAction(id))
-}
-
 const setProjectList = projectList => dispatch => {
   dispatch(setProjectListAction(projectList))
 }
 
 const updateProjectById = (id, data) => async dispatch => {
+  toast.dismiss()
   toast(<Notification message="Updating project..." />)
   await dispatch(updateProjectByIdAction(id, data))
 }
@@ -48,7 +43,6 @@ export {
   deleteProjectById,
   getProjectById,
   requestProjectList,
-  selectProjectById,
   setProjectList,
   updateProjectById,
 }

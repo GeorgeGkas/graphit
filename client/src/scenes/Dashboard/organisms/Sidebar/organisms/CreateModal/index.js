@@ -2,7 +2,6 @@
  * Import globals.
  */
 import React from 'react'
-import axios from 'axios'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 
@@ -76,10 +75,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * Connect component to Redux.
  */
-const mapStateToProps = state => ({
-  projectList: state.projects.projectList,
-  selectedProjectId: state.projects.selectedProjectId,
-})
+const mapStateToProps = null
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(projectsOperations, dispatch)
@@ -87,15 +83,7 @@ const mapDispatchToProps = dispatch =>
 /**
  * Component.
  */
-const CreateModal = ({
-  auth,
-  handleClose,
-  open,
-  projectList,
-  selectProjectById,
-  selectedProjectId,
-  setProjectList,
-}) => {
+const CreateModal = ({ auth, createProject, handleClose, open }) => {
   const classes = useStyles()
   const [uploadedGraph, setUploadedGraph] = React.useState(
     '{"edges":{}, "metadata": {}, "nodes": {}}',
@@ -211,34 +199,19 @@ const CreateModal = ({
             ]}
             onComplete={async () => {
               const graph = JSON.parse(uploadedGraph)
-              const createdAt = new Date().toISOString()
               const data = {
                 author: auth.authUser.uid,
                 graph: JSON.stringify({
                   ...graph,
                   metadata: {
                     algorithm: 'Dijkstra',
-                    createdAt,
+                    createdAt: new Date().toISOString(),
                     name: projectName,
                   },
                 }),
               }
 
-              const response = await axios.post('/projects', data, {
-                baseURL: process.env.REACT_APP_API_ENDPOINT,
-                withCredentials: true,
-              })
-
-              setProjectList([
-                {
-                  algorithm: 'Dijkstra',
-                  createdAt,
-                  id: response.data.data,
-                  name: projectName,
-                },
-                ...projectList,
-              ])
-              selectProjectById(response.data.data)
+              await createProject(data)
             }}
             onCompleteEndFail={() => (
               <Grid

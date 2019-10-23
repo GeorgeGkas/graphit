@@ -82,12 +82,9 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  currentEditorAction: state.editor.currentEditorAction,
   futureExist: state.graph.future.length,
   graphMetadata: state.graph.present.metadata,
   pastExist: state.graph.past.length,
-  projectList: state.projects.projectList,
-  selectedProjectId: state.projects.selectedProjectId,
 })
 
 const mapDispatchToProps = dispatch =>
@@ -96,14 +93,7 @@ const mapDispatchToProps = dispatch =>
 /**
  * Component.
  */
-const AppBar = ({
-  auth,
-  futureExist,
-  graphMetadata,
-  loadGraph,
-  pastExist,
-  selectedProjectId,
-}) => {
+const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
     popupId: 'fileDropdownMenu',
@@ -157,10 +147,10 @@ const AppBar = ({
 
           <div className={classes.title}>
             <Typography variant="h6">
-              {selectedProjectId ? graphMetadata.name : 'Editor'}
+              {graphMetadata.id ? graphMetadata.name : 'Editor'}
             </Typography>
             <Typography gutterBottom display="block" variant="caption">
-              {selectedProjectId ? graphMetadata.algorithm : null}
+              {graphMetadata.id ? graphMetadata.algorithm : null}
             </Typography>
           </div>
 

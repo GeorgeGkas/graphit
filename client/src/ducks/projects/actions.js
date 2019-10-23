@@ -11,11 +11,6 @@ const setProjectList = projectList => ({
   type: types.SET_PROJECT_LIST,
 })
 
-const selectProjectById = project => ({
-  payload: project,
-  type: types.SELECT_PROJECT_BY_ID,
-})
-
 const requestProjectList = () => ({
   payload: {
     options: {
@@ -77,7 +72,6 @@ const deleteProjectById = id => ({
 
         if (getState().projects.selectedProjectId === id) {
           dispatch(graphOperations.initGraphHistory())
-          dispatch(selectProjectById(null))
         }
 
         toast.dismiss()
@@ -104,7 +98,7 @@ const getProjectById = id => ({
         dispatch(
           graphOperations.loadGraph(JSON.parse(response.data.data.graph)),
         )
-        dispatch(selectProjectById(id))
+
         toast.dismiss()
         toast(<Notification message="Project fetched successfully" />)
       },
@@ -147,9 +141,12 @@ const createProject = data => ({
             ...getState().projects.projectList,
           ]),
         )
-        dispatch(selectProjectById(response.data.data))
-        toast.dismiss()
-        toast(<Notification message="Project created successfully" />)
+
+        dispatch(
+          graphOperations.updateMetadata({
+            id: response.data.data,
+          }),
+        )
       },
     },
     request: {
@@ -166,7 +163,6 @@ export {
   deleteProjectById,
   getProjectById,
   requestProjectList,
-  selectProjectById,
   setProjectList,
   updateProjectById,
 }

@@ -12,6 +12,16 @@ export default async function create(
       .get('db')
       .collection('projects')
       .add(project)
+
+    const graph: {
+      metadata: {
+        id: string
+      }
+    } = JSON.parse(project.graph)
+    graph.metadata.id = docRef.id
+
+    await docRef.update({ graph: JSON.stringify(graph) })
+
     return res.status(201).json({ data: docRef.id })
   } catch (e) {
     logger.error(e)
