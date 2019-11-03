@@ -4960,6 +4960,13 @@ gzip-size@5.1.1:
     duplexer "^0.1.1"
     pify "^4.0.1"
 
+halogenium@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/halogenium/-/halogenium-2.3.0.tgz#7c9137255cc12f82a972072f3deaae75f5b7377a"
+  integrity sha512-vb8Em3utw+aM+fp1TavBV8G+GsA/56rQE8NXRnd5lN7GPwx/ozl4SrJjZXLQNXwHKWy7Z33sGH7wFDlar0nNCg==
+  dependencies:
+    prop-types "^15.6.0"
+
 handle-thing@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
@@ -6250,6 +6257,11 @@ jest@24.7.1:
   dependencies:
     import-local "^2.0.0"
     jest-cli "^24.7.1"
+
+js-cookie@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
+  integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
 
 js-levenshtein@^1.1.3:
   version "1.1.6"
