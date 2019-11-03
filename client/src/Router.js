@@ -8,6 +8,7 @@ import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom'
 /**
  * Import components.
  */
+import Loading from './organisms/Loading'
 import PrivateRoute from './organisms/PrivateRoute'
 
 /**
@@ -21,14 +22,14 @@ import CheckAuthLoadingScreen from './scenes/CheckAuthLoadingScreen'
 const App = loadable(
   () => import(/* webpackChunkName: "App" */ './scenes/App'),
   {
-    fallback: <div>Fetching page...</div>,
+    fallback: <Loading />,
   },
 )
 
 const Dashboard = loadable(
   () => import(/* webpackChunkName: "Dashboard" */ './scenes/Dashboard'),
   {
-    fallback: <div>Fetching page...</div>,
+    fallback: <Loading />,
   },
 )
 
