@@ -32,6 +32,7 @@ export default () =>
 
         return {
           edges: unselectAll(currentState.edges),
+          metadata: currentState.metadata,
           nodes: unselectAll(currentState.nodes),
         }
       },
