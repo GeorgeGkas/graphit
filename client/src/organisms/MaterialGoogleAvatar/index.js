@@ -53,7 +53,7 @@ const MaterialGoogleAvatar = ({ auth }) => {
 
   if (auth.authUser) {
     return (
-      <>
+      <div id="google_signin_button">
         <IconButton
           className={classes.avatarMenuButton}
           color="inherit"
@@ -92,15 +92,17 @@ const MaterialGoogleAvatar = ({ auth }) => {
             </Fade>
           )}
         </Popper>
-      </>
+      </div>
     )
   } else {
     return (
-      <GoogleSignIn
-        buttonText="Sign In"
-        onFailure={console.error}
-        onSuccess={_ => _}
-      />
+      <div id="google_signin_button">
+        <GoogleSignIn
+          buttonText="Sign In"
+          onFailure={console.error}
+          onSuccess={_ => _}
+        />
+      </div>
     )
   }
 }

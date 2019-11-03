@@ -29,6 +29,7 @@ import { makeStyles } from '@material-ui/core/styles'
  * Import ducks.
  */
 import { operations as graphOperations } from '../../ducks/graph'
+import { operations as tutorialOperations } from '../../ducks/tutorial'
 
 /**
  * Import components.
@@ -88,12 +89,19 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(graphOperations, dispatch)
+  bindActionCreators({ ...graphOperations, ...tutorialOperations }, dispatch)
 
 /**
  * Component.
  */
-const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
+const AppBar = ({
+  auth,
+  futureExist,
+  graphMetadata,
+  loadGraph,
+  pastExist,
+  setTutorialVisibility,
+}) => {
   const classes = useStyles()
   const fileDropdownMenu = usePopupState({
     popupId: 'fileDropdownMenu',
@@ -104,6 +112,8 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
   const toggleLoadDialog = () => makeLoadDialogVisible(!loadDialogVisible)
 
   const [selectedProjectToLoad, setSelectedProjectToLoad] = React.useState({})
+
+  const openTutorial = () => setTutorialVisibility(true)
 
   return (
     <>
@@ -156,6 +166,7 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
           <Button
             className={classes.buttonApp}
             color="inherit"
+            id="file_dropdown_menu"
             {...bindToggle(fileDropdownMenu)}
           >
             File
@@ -172,6 +183,15 @@ const AppBar = ({ auth, futureExist, graphMetadata, loadGraph, pastExist }) => {
               />
             )}
           </Popper>
+
+          <Button
+            className={classes.buttonApp}
+            color="inherit"
+            id="help_button"
+            onClick={openTutorial}
+          >
+            Help
+          </Button>
 
           <div className={classes.grow} />
 

@@ -1,6 +1,7 @@
 /**
  * Import globals.
  */
+import Cookies from 'js-cookie'
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -20,6 +21,7 @@ import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
 import Notification from '../../organisms/Notification'
 import PropertiesEditor from './organisms/PropertiesEditor'
+import Tutorial from './organisms/Tutorial'
 
 /**
  * Import ducks.
@@ -54,6 +56,7 @@ const App = ({
 
   React.useEffect(() => {
     ;(async () => {
+      Cookies.set('new_user', '1')
       if (id) {
         toast.dismiss()
         toast(<Notification message="Fetching project..." />)
@@ -83,6 +86,8 @@ const App = ({
       </Slide>
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
+
+      <Tutorial />
     </>
   )
 }

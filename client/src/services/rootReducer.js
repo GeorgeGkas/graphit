@@ -11,6 +11,7 @@ import algorithm from '../scenes/App/ducks/algorithm'
 import editor from '../scenes/App/ducks/editor'
 import graph, { types as graphTypes } from '../scenes/App/ducks/graph'
 import projects from '../ducks/projects'
+import tutorial from '../scenes/App/ducks/tutorial'
 
 export default () =>
   combineReducers({
@@ -40,4 +41,5 @@ export default () =>
       undoType: graphTypes.UNDO_GRAPH_HISTORY,
     }),
     projects,
+    tutorial,
   })
