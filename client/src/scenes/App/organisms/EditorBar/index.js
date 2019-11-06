@@ -331,7 +331,7 @@ const EditorBar = ({
             <Tooltip title="Next step">
               <div
                 id="editor_bar_algorithm_next_step_section"
-                style={{ display: 'flex' }}
+                style={{ marginTop: '8px' }}
               >
                 <IconButton
                   disabled={
