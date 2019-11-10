@@ -28,13 +28,12 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
-import { operations as graphOperations } from '../../ducks/graph'
 import { operations as tutorialOperations } from '../../ducks/tutorial'
 
 /**
  * Import components.
  */
-import ConfirmDialog from '../../../../organisms/ConfirmDialog'
+// import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 
@@ -83,23 +82,19 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  futureExist: state.graph.future.length,
   graphMetadata: state.graph.present.metadata,
-  pastExist: state.graph.past.length,
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ ...graphOperations, ...tutorialOperations }, dispatch)
+  bindActionCreators({ ...tutorialOperations }, dispatch)
 
 /**
  * Component.
  */
 const AppBar = ({
   auth,
-  futureExist,
   graphMetadata,
-  loadGraph,
-  pastExist,
+  handleCreateModalOpen,
   setTutorialVisibility,
 }) => {
   const classes = useStyles()
@@ -108,35 +103,10 @@ const AppBar = ({
     variant: 'popover',
   })
 
-  const [loadDialogVisible, makeLoadDialogVisible] = React.useState(false)
-  const toggleLoadDialog = () => makeLoadDialogVisible(!loadDialogVisible)
-
-  const [selectedProjectToLoad, setSelectedProjectToLoad] = React.useState({})
-
   const openTutorial = () => setTutorialVisibility(true)
 
   return (
     <>
-      <input
-        accept=".json"
-        className={classes.fileInput}
-        id="load_state"
-        type="file"
-        onChange={e => {
-          const reader = new FileReader()
-          reader.onloadend = () => {
-            setSelectedProjectToLoad(reader.result)
-
-            if (pastExist || futureExist) {
-              toggleLoadDialog()
-            } else {
-              loadGraph(JSON.parse(reader.result))
-            }
-          }
-          reader.readAsText(e.target.files[0])
-        }}
-      />
-
       <MUIAppBar className={classes.root} position="static">
         <Toolbar>
           {auth.authUser && (
@@ -146,7 +116,6 @@ const AppBar = ({
                 color="inherit"
                 component={Link}
                 edge="start"
-                target="_blank"
                 to="/dashboard"
               >
                 <DashboardIcon />
@@ -180,6 +149,7 @@ const AppBar = ({
               <FileDropdownMenu
                 TransitionProps={TransitionProps}
                 fileDropdownMenu={fileDropdownMenu}
+                handleCreateModalOpen={handleCreateModalOpen}
               />
             )}
           </Popper>
@@ -198,19 +168,6 @@ const AppBar = ({
           <MaterialGoogleAvatar auth={auth} />
         </Toolbar>
       </MUIAppBar>
-
-      <ConfirmDialog
-        confirmAction={() => {
-          loadGraph(JSON.parse(selectedProjectToLoad))
-          toggleLoadDialog()
-        }}
-        confirmDialogVisible={loadDialogVisible}
-        confirmMessage={
-          'All unsaved changes will be deleted if you confirm this action.'
-        }
-        confirmTitle="Load project?"
-        handleClose={toggleLoadDialog}
-      />
     </>
   )
 }

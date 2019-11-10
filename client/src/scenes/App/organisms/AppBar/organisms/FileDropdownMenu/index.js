@@ -30,7 +30,6 @@ import { operations as projectsOperations } from '../../../../../../ducks/projec
  */
 import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
 import Notification from '../../../../../../organisms/Notification'
-import PromptSaveDialog from './organisms/PromptSaveDialog'
 
 /**
  * Import services
@@ -71,7 +70,7 @@ const FileDropdownMenu = ({
   fileDropdownMenu,
   futureExist,
   graph,
-  initGraphHistory,
+  handleCreateModalOpen,
   pastExist,
   updateProjectById,
 }) => {
@@ -80,12 +79,6 @@ const FileDropdownMenu = ({
   )
   const toggleOverwriteDialog = () =>
     makeOverwriteDialogVisible(!overwriteDialogVisible)
-
-  const [promptSaveDialogVisible, makePromptSaveDialogVisible] = React.useState(
-    false,
-  )
-  const togglePromptSaveDialog = () =>
-    makePromptSaveDialogVisible(!promptSaveDialogVisible)
 
   return (
     <>
@@ -100,7 +93,7 @@ const FileDropdownMenu = ({
                   if (futureExist || pastExist) {
                     toggleOverwriteDialog()
                   } else {
-                    initGraphHistory()
+                    handleCreateModalOpen()
                     fileDropdownMenu.close()
                   }
                 }}
@@ -110,35 +103,36 @@ const FileDropdownMenu = ({
                 </ListItem>
               </MenuItem>
 
-              <MenuItem
-                button
-                disabled={currentEditorAction === 'isPlaying'}
-                onClick={() => document.getElementById('load_state').click()}
-              >
-                <ListItem component="div">
-                  <ListItemText primary="Open" />
-                </ListItem>
-              </MenuItem>
-
               {auth.authUser ? (
                 <MenuItem
                   button
                   disabled={currentEditorAction === 'isPlaying'}
                   onClick={async () => {
-                    if (graph.metadata.id) {
-                      const data = {
-                        graph: JSON.stringify(graph),
-                      }
+                    const data = {
+                      author: auth.authUser.uid,
+                      graph: JSON.stringify(graph),
+                    }
 
-                      fileDropdownMenu.close()
+                    fileDropdownMenu.close()
+                    if (graph.metadata.id) {
                       await updateProjectById(graph.metadata.id, data)
                     } else {
-                      togglePromptSaveDialog()
+                      toast.dismiss()
+                      toast(<Notification message="Saving project..." />)
+
+                      await createProject(data)
+
+                      toast.dismiss()
+                      toast(
+                        <Notification message="Project saved successfully" />,
+                      )
                     }
                   }}
                 >
                   <ListItem component="div">
-                    <ListItemText primary="Save" />
+                    <ListItemText
+                      primary={graph.metadata.id ? 'Update' : 'Save'}
+                    />
                   </ListItem>
                 </MenuItem>
               ) : null}
@@ -159,8 +153,7 @@ const FileDropdownMenu = ({
 
       <ConfirmDialog
         confirmAction={() => {
-          initGraphHistory()
-          toggleOverwriteDialog()
+          handleCreateModalOpen()
           fileDropdownMenu.close()
         }}
         confirmDialogVisible={overwriteDialogVisible}
@@ -169,32 +162,6 @@ const FileDropdownMenu = ({
         }
         confirmTitle="Create new project?"
         handleClose={toggleOverwriteDialog}
-      />
-
-      <PromptSaveDialog
-        handleClose={togglePromptSaveDialog}
-        promptSaveDialogAction={async projectName => {
-          const data = {
-            author: auth.authUser.uid,
-            graph: JSON.stringify({
-              ...graph,
-              metadata: {
-                algorithm: 'Dijkstra',
-                createdAt: new Date().toISOString(),
-                name: projectName,
-              },
-            }),
-          }
-
-          toast.dismiss()
-          toast(<Notification message="Creating new project..." />)
-
-          await createProject(data)
-
-          toast.dismiss()
-          toast(<Notification message="Project created successfully" />)
-        }}
-        promptSaveDialogVisible={promptSaveDialogVisible}
       />
     </>
   )

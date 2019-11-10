@@ -2,6 +2,7 @@
  * Import globals.
  */
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -151,16 +152,10 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
                   <>
                     <Tooltip title="View">
                       <IconButton
+                        component={Link}
                         disabled={deleteProjectLoading}
-                        onClick={() => {
-                          const url =
-                            window.location.protocol +
-                            '//' +
-                            window.location.host +
-                            '/app/' +
-                            value
-                          window.open(url, '_blank').focus()
-                        }}
+                        target="_blank"
+                        to={`/app/${value}`}
                       >
                         <RemoveRedEyeIcon />
                       </IconButton>

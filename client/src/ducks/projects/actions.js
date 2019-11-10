@@ -147,6 +147,13 @@ const createProject = data => ({
             id: response.data.data,
           }),
         )
+
+        /**
+         * Use browsers' built-in History API to update
+         * the URL with the Id of the saved project.
+         */
+        // eslint-disable-next-line no-restricted-globals
+        history.replaceState({}, '', `app/${response.data.data}`)
       },
     },
     request: {

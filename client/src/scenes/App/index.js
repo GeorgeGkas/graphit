@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useRouteMatch } from 'react-router-dom'
 
 /**
  * Import UI framework modules.
@@ -16,6 +16,7 @@ import Slide from '@material-ui/core/Slide'
  * Import components.
  */
 import AppBar from './organisms/AppBar'
+import CreateModal from './organisms/CreateModal'
 import Dijkstra from './organisms/Dijkstra'
 import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
@@ -35,6 +36,7 @@ import { toast } from 'react-toastify'
  */
 const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
+  isNewEditor: state.graph.present.metadata.algorithm === '',
   selectedEdge: graphSelectors.getSelected(state.graph.present.edges),
   selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
 })
@@ -48,10 +50,12 @@ const mapDispatchToProps = dispatch =>
 const App = ({
   currentEditorAction,
   getProjectById,
+  isNewEditor,
   selectedEdge,
   selectedNode,
 }) => {
   const [gridVisible, makeGridVisible] = React.useState(false)
+  const { path } = useRouteMatch()
   const { id } = useParams()
 
   React.useEffect(() => {
@@ -72,10 +76,19 @@ const App = ({
     (Boolean(selectedEdge) ^ Boolean(selectedNode)) === 1
   const showAlgorithmPanel = currentEditorAction === 'isPlaying'
 
+  const [openCreateModal, setCreateModalOpen] = React.useState(
+    path === '/app' && isNewEditor,
+  )
+
+  const handleCreateModalOpen = () => setCreateModalOpen(true)
+  const handleCreateModalClose = () => {
+    setCreateModalOpen(false)
+  }
+
   return (
     <>
       <div style={{ position: 'relative' }}>
-        <AppBar />
+        <AppBar handleCreateModalOpen={handleCreateModalOpen} />
         <EditorBar gridVisible={gridVisible} toggleGrid={toggleGrid} />
       </div>
 
@@ -88,6 +101,11 @@ const App = ({
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
 
       <Tutorial />
+
+      <CreateModal
+        handleClose={handleCreateModalClose}
+        open={openCreateModal}
+      />
     </>
   )
 }

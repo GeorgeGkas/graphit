@@ -2,6 +2,7 @@
  * Import globals.
  */
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 /**
  * Import UI framework modules.
@@ -12,11 +13,6 @@ import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
-
-/**
- * Import components.
- */
-import CreateModal from './organisms/CreateModal'
 
 /**
  * Construct component styles.
@@ -42,15 +38,6 @@ const useStyles = makeStyles(theme => ({
  */
 const Sidebar = () => {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
 
   return (
     <Container className={classes.containerFix}>
@@ -59,17 +46,17 @@ const Sidebar = () => {
           <Button
             className={classes.createButton}
             color="secondary"
+            component={Link}
             size="large"
+            target="_blank"
+            to="/app"
             variant="contained"
-            onClick={handleOpen}
           >
             <AddIcon className={classes.createButtonIcon} />
             Create
           </Button>
         </Tooltip>
       </Box>
-
-      <CreateModal handleClose={handleClose} open={open} />
     </Container>
   )
 }

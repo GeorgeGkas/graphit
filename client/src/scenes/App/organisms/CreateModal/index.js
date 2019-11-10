@@ -2,7 +2,7 @@
  * Import globals.
  */
 import React from 'react'
-import { bindActionCreators, compose } from 'redux'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 /**
@@ -22,13 +22,12 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import components.
  */
-import Stepper from '../Stepper'
+import Stepper from '../../../../organisms/Stepper'
 
 /**
  * Import ducks.
  */
-import { operations as projectsOperations } from '../../../../../../ducks/projects'
-import { withAuthentication } from '../../../../../../providers/Auth'
+import { operations as graphOperations } from '../../ducks/graph'
 
 /**
  * Construct component styles.
@@ -75,15 +74,22 @@ const useStyles = makeStyles(theme => ({
 /**
  * Connect component to Redux.
  */
-const mapStateToProps = null
+const mapStateToProps = state => ({
+  isNewEditor: state.graph.present.metadata.algorithm === '',
+})
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(projectsOperations, dispatch)
+  bindActionCreators(graphOperations, dispatch)
 
 /**
  * Component.
  */
-const CreateModal = ({ auth, createProject, handleClose, open }) => {
+const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
+  /**
+   * Lazy load component every time we click New button
+   * to prevent file input from keeping its previous state.
+   */
+
   const classes = useStyles()
   const [uploadedGraph, setUploadedGraph] = React.useState(
     '{"edges":{}, "metadata": {}, "nodes": {}}',
@@ -101,7 +107,16 @@ const CreateModal = ({ auth, createProject, handleClose, open }) => {
       }}
       className={classes.modal}
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        if (isNewEditor) {
+          return
+        }
+
+        setUploadedGraph('{"edges":{}, "metadata": {}, "nodes": {}}')
+        setUploadedGraphFilename(null)
+
+        handleClose()
+      }}
     >
       <Fade in={open}>
         <div className={classes.paper}>
@@ -119,7 +134,9 @@ const CreateModal = ({ auth, createProject, handleClose, open }) => {
                       className={classes.uploadButton}
                       variant="text"
                       onClick={() =>
-                        document.getElementById('load_state').click()
+                        document
+                          .getElementById('load_state_create_modal_guest')
+                          .click()
                       }
                     >
                       <Grid item className={classes.uploadContainer}>
@@ -138,7 +155,7 @@ const CreateModal = ({ auth, createProject, handleClose, open }) => {
                         <input
                           accept=".json"
                           className={classes.fileInput}
-                          id="load_state"
+                          id="load_state_create_modal_guest"
                           type="file"
                           onChange={e => {
                             const reader = new FileReader()
@@ -198,22 +215,20 @@ const CreateModal = ({ auth, createProject, handleClose, open }) => {
               },
             ]}
             onComplete={async () => {
-              const graph = JSON.parse(uploadedGraph)
-              const data = {
-                author: auth.authUser.uid,
-                graph: JSON.stringify({
-                  ...graph,
-                  metadata: {
-                    algorithm: 'Dijkstra',
-                    createdAt: new Date().toISOString(),
-                    name: projectName,
-                  },
-                }),
+              const graph = {
+                ...JSON.parse(uploadedGraph),
+                metadata: {
+                  algorithm: 'Dijkstra',
+                  createdAt: new Date().toISOString(),
+                  id: '',
+                  name: projectName,
+                },
               }
 
-              await createProject(data)
+              await new Promise(resolve => setTimeout(resolve, 1000))
+              loadGraph(graph)
             }}
-            onCompleteEndFail={() => (
+            onCompleteEndSuccess={() => (
               <Grid
                 container
                 alignItems="center"
@@ -221,35 +236,27 @@ const CreateModal = ({ auth, createProject, handleClose, open }) => {
                 justify="center"
               >
                 <Typography gutterBottom variant="body1">
-                  Could not create project
+                  Hooray!!!
                 </Typography>
+                <Typography gutterBottom variant="caption">
+                  Close this window to start working on your project
+                </Typography>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    setUploadedGraph(
+                      '{"edges":{}, "metadata": {}, "nodes": {}}',
+                    )
+                    setUploadedGraphFilename(null)
+
+                    handleClose()
+                  }}
+                >
+                  Close
+                </Button>
               </Grid>
             )}
-            onCompleteEndSuccess={() => {
-              return (
-                <Grid
-                  container
-                  alignItems="center"
-                  direction="column"
-                  justify="center"
-                >
-                  <Typography gutterBottom variant="body1">
-                    Hooray!!!
-                  </Typography>
-                  <Typography gutterBottom variant="caption">
-                    Close this window and select the newly create project from
-                    project list
-                  </Typography>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={handleClose}
-                  >
-                    Close
-                  </Button>
-                </Grid>
-              )
-            }}
             onCompleteStart={() => (
               <Grid
                 container
@@ -269,10 +276,7 @@ const CreateModal = ({ auth, createProject, handleClose, open }) => {
   )
 }
 
-export default compose(
-  withAuthentication,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
 )(CreateModal)
