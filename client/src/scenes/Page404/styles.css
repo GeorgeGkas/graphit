@@ -20,29 +20,25 @@ body {
   left: 0;
 }
 .not-found div.wave-1 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-1.svg);
+  background: url(./images/wave-1.svg);
 }
 .not-found div.wave-2 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-2.svg);
+  background: url(./images/wave-2.svg);
 }
 .not-found div.wave-3 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-3.svg);
+  background: url(./images/wave-3.svg);
 }
 .not-found div.wave-4 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-4.svg);
+  background: url(./images/wave-4.svg);
 }
 .not-found div.wave-5 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-5.svg);
+  background: url(./images/wave-5.svg);
 }
 .not-found div.wave-6 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-6.svg);
+  background: url(./images/wave-6.svg);
 }
 .not-found div.wave-7 {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-7.svg);
-}
-.not-found div.sky-bg {
-  background: url(http://res.cloudinary.com/andrewhani/image/upload/v1524821915/404/bg-1_gvybzk.svg);
-  height: 100%;
+  background: url(./images/wave-7.svg);
 }
 .not-found div[class*='wave']:not(.wave-4) {
   height: calc(100% - 250px);

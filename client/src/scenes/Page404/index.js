@@ -7,7 +7,6 @@ import island from './images/island.svg'
 const Page404 = () => (
   <>
     <div className="not-found parallax">
-      <div className="sky-bg" />
       <div className="wave-7" />
       <div className="wave-6" />
       <Link className="wave-island" to="/">
