@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Wrapper from './styles'
+import './styles.css'
 import boat from './images/boat.svg'
 import island from './images/island.svg'
 
 const Page404 = () => (
-  <Wrapper>
+  <>
     <div className="not-found parallax">
       <div className="sky-bg" />
       <div className="wave-7" />
@@ -42,7 +42,7 @@ const Page404 = () => (
       </a>
       .
     </p>
-  </Wrapper>
+  </>
 )
 
 export default Page404
