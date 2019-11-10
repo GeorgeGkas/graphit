@@ -185,14 +185,20 @@ const startPlaying = () => (dispatch, getState) => {
   /**
    * Get the initial node.
    */
-  const initial = find(matchesProperty('properties.initial', true))(
+  const initials = filter(matchesProperty('properties.initial', true))(
     getState().graph.present.nodes,
   )
-  if (!initial) {
+  if (!initials.length) {
     toast.dismiss()
     toast(<Notification message="Please set an initial node" />)
     return
+  } else if (initials.length > 1) {
+    toast.dismiss()
+    toast(<Notification message="Please select only one initial node" />)
+    return
   }
+
+  const initial = initials.pop()
 
   /**
    * Get the sub-graph (in case of a graph forest),
