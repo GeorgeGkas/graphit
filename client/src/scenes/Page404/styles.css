@@ -692,14 +692,3 @@ body {
     transform: translate3d(0, 0, 0);
   }
 }
-
-.credit {
-  position: absolute;
-  bottom: 0;
-  left: 5%;
-  color: #fff;
-}
-
-.credit > a {
-  color: #fff;
-}
