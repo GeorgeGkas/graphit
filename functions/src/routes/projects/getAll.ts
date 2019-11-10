@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { invokeMap, map, merge, pick, values } from 'lodash/fp'
+import { invokeMap, map, merge, orderBy, pick, values } from 'lodash/fp'
 import logger from '../../utils/logger'
 
 export default async function getAll(
@@ -24,7 +24,11 @@ export default async function getAll(
       )(invokeMap('data', docs)),
     )
 
-    const result = values(merge(ids, projects))
+    const result = orderBy(
+      ['createdAt'],
+      ['desc'],
+      values(merge(ids, projects)),
+    )
 
     return res.status(200).json({ data: result })
   } catch (e) {
