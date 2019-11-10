@@ -4,6 +4,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 /**
  * Import UI framework modules.
@@ -85,11 +86,7 @@ const mapDispatchToProps = dispatch =>
  * Component.
  */
 const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
-  /**
-   * Lazy load component every time we click New button
-   * to prevent file input from keeping its previous state.
-   */
-
+  const history = useHistory()
   const classes = useStyles()
   const [uploadedGraph, setUploadedGraph] = React.useState(
     '{"edges":{}, "metadata": {}, "nodes": {}}',
@@ -225,8 +222,9 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                 },
               }
 
-              await new Promise(resolve => setTimeout(resolve, 1000))
+              await new Promise(resolve => setTimeout(resolve, 500))
               loadGraph(graph)
+              history.replace('/app')
             }}
             onCompleteEndSuccess={() => (
               <Grid
