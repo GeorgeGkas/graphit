@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Wrapper from './styles'
+import boat from './images/boat.svg'
+import island from './images/island.svg'
 
 const Page404 = () => (
   <Wrapper>
@@ -9,10 +11,7 @@ const Page404 = () => (
       <div className="wave-7" />
       <div className="wave-6" />
       <Link className="wave-island" to="/">
-        <img
-          alt="Island"
-          src="http://res.cloudinary.com/andrewhani/image/upload/v1524501929/404/island.svg"
-        />
+        <img alt="Island" src={island} />
       </Link>
       <div className="wave-5" />
       <div className="wave-lost wrp">
@@ -22,11 +21,7 @@ const Page404 = () => (
       </div>
       <div className="wave-4" />
       <div className="wave-boat">
-        <img
-          alt="Boat"
-          className="boat"
-          src="http://res.cloudinary.com/andrewhani/image/upload/v1524501894/404/boat.svg"
-        />
+        <img alt="Boat" className="boat" src={boat} />
       </div>
       <div className="wave-3" />
       <div className="wave-2" />
