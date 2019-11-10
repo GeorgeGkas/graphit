@@ -1,7 +1,6 @@
 /**
  * Import globals.
  */
-import Cookies from 'js-cookie'
 import React from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useRouteMatch } from 'react-router-dom'
@@ -50,7 +49,6 @@ const App = ({
 }) => {
   const { path } = useRouteMatch()
   const history = useHistory()
-  Cookies.set('new_user', '1')
 
   /**
    * If user wants to load a project by using its URL and

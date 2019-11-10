@@ -1,8 +1,7 @@
-import Cookies from 'js-cookie'
 import { SET_TUTORIAL_VISIBILITY } from './types'
 
 export const initialState = {
-  visible: !Cookies.get('new_user'),
+  visible: false,
 }
 
 const update = (state = initialState, action) => {
