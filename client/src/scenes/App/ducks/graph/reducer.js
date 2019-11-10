@@ -15,6 +15,7 @@ import * as types from './types'
  *  interface Node {
  *    id: string
  *    properties: {
+ *      final: false
  *      initial: false
  *      name: string
  *    }

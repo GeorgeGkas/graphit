@@ -2,7 +2,7 @@
  * Import globals.
  */
 import React from 'react'
-import { Group, Text, Circle } from 'react-konva'
+import { Arrow, Group, Text, Circle } from 'react-konva'
 
 /**
  * Import themes.
@@ -129,10 +129,9 @@ const Node = ({
       />
     ) : null}
 
-    {thisNode.properties.initial ? (
+    {thisNode.properties.final ? (
       <Circle
-        fill={'rgba(0, 0, 0, 0)'}
-        height={40}
+        height={42}
         stroke={
           algorithm_current_step.highlighted_nodes.some(
             id => id === thisNode.id,
@@ -144,10 +143,46 @@ const Node = ({
             ? algorithmComponentsTheme.node.selected.color
             : currentEditorAction === 'isPlaying'
             ? algorithmComponentsTheme.node.neutral.color
-            : editorComponentsTheme.node.neutral.color
+            : editorComponentsTheme.finalNode.color
+        }
+        strokeWidth={1.5}
+        width={42}
+      />
+    ) : null}
+
+    {thisNode.properties.initial ? (
+      <Arrow
+        fill={
+          algorithm_current_step.highlighted_nodes.some(
+            id => id === thisNode.id,
+          )
+            ? algorithmComponentsTheme.node.highlighted.color
+            : algorithm_current_step.selected_nodes.some(
+                id => id === thisNode.id,
+              )
+            ? algorithmComponentsTheme.node.selected.color
+            : currentEditorAction === 'isPlaying'
+            ? algorithmComponentsTheme.node.neutral.color
+            : editorComponentsTheme.initialNode.color
+        }
+        pointerLength={10}
+        pointerWidth={10}
+        points={[-50, 0, -25, 0]}
+        stroke={
+          algorithm_current_step.highlighted_nodes.some(
+            id => id === thisNode.id,
+          )
+            ? algorithmComponentsTheme.node.highlighted.color
+            : algorithm_current_step.selected_nodes.some(
+                id => id === thisNode.id,
+              )
+            ? algorithmComponentsTheme.node.selected.color
+            : currentEditorAction === 'isPlaying'
+            ? algorithmComponentsTheme.node.neutral.color
+            : editorComponentsTheme.initialNode.color
         }
         strokeWidth={1}
-        width={40}
+        tension={0.8}
       />
     ) : null}
 

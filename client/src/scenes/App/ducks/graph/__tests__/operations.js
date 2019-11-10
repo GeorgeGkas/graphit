@@ -25,6 +25,7 @@ test('create node with default props', () => {
       payload: {
         id: 'UUID',
         properties: {
+          final: false,
           initial: false,
           name: 's',
         },
@@ -58,6 +59,7 @@ test('create node in request position when grid is disabled', () => {
       payload: {
         id: 'UUID',
         properties: {
+          final: false,
           initial: false,
           name: 's',
         },
@@ -84,6 +86,7 @@ test('create node in on top of grid when using default position', () => {
       payload: {
         id: 'UUID',
         properties: {
+          final: false,
           initial: false,
           name: 's',
         },
@@ -121,6 +124,7 @@ test('create node on top of grid when using custom position', () => {
       payload: {
         id: 'UUID',
         properties: {
+          final: false,
           initial: false,
           name: 's',
         },
@@ -315,6 +319,7 @@ test('unselect all - node is not selected, edge is not selected', () => {
           node: {
             id: 'node',
             properties: {
+              final: false,
               initial: false,
               name: 's',
             },
@@ -366,6 +371,7 @@ test('unselect all - node is selected, edge is not selected', () => {
           node: {
             id: 'node',
             properties: {
+              final: false,
               initial: false,
               name: 's',
             },
@@ -423,6 +429,7 @@ test('unselect all - node is not selected, edge is selected', () => {
           node: {
             id: 'node',
             properties: {
+              final: false,
               initial: false,
               name: 's',
             },
@@ -480,6 +487,7 @@ test('unselect all - node is selected, edge is selected', () => {
           node: {
             id: 'node',
             properties: {
+              final: false,
               initial: false,
               name: 's',
             },

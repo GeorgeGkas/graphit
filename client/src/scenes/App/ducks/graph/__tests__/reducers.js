@@ -4,6 +4,7 @@ import * as types from '../types'
 const node = {
   id: 'node',
   properties: {
+    final: false,
     initial: false,
     name: 's',
   },
@@ -420,6 +421,7 @@ test('handle update node initial and name', () => {
       node: {
         ...node,
         properties: {
+          final: false,
           initial: true,
           name: 'a',
         },

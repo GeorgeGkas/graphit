@@ -79,6 +79,11 @@ const NodeEditor = ({
   )
   const toggleInitialState = () => setInitialState(!nodeIsInitial)
 
+  const [nodeIsFinal, setFinalState] = React.useState(
+    selectedNode.properties.final,
+  )
+  const toggleFinalState = () => setFinalState(!nodeIsFinal)
+
   const submitForm = () => {
     const newNodeName = document.getElementById('node_name_input').value
     const oldNodeName = selectedNode.properties.name
@@ -88,9 +93,11 @@ const NodeEditor = ({
      */
     if (
       newNodeName !== oldNodeName ||
-      nodeIsInitial !== selectedNode.properties.initial
+      nodeIsInitial !== selectedNode.properties.initial ||
+      nodeIsFinal !== selectedNode.properties.final
     ) {
       updateNodeProperties(selectedNode.id, {
+        final: nodeIsFinal,
         initial: nodeIsInitial,
         name: newNodeName,
       })
@@ -143,6 +150,14 @@ const NodeEditor = ({
               <Switch checked={nodeIsInitial} onChange={toggleInitialState} />
             }
             label="Set as initial node"
+            labelPlacement="start"
+          />
+          <FormControlLabel
+            className={classes.formControlLabel}
+            control={
+              <Switch checked={nodeIsFinal} onChange={toggleFinalState} />
+            }
+            label="Set as final node"
             labelPlacement="start"
           />
         </form>

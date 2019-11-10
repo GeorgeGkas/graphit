@@ -159,6 +159,17 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                             reader.onloadend = (file => () => {
                               setUploadedGraph(reader.result)
                               setUploadedGraphFilename(file.name)
+
+                              if (
+                                JSON.parse(
+                                  reader.result,
+                                ).metadata.name.trim() !== ''
+                              ) {
+                                setProjectNameValidity(true)
+                                setProjectName(
+                                  JSON.parse(reader.result).metadata.name,
+                                )
+                              }
                             })(e.target.files[0])
                             reader.readAsText(e.target.files[0])
                           }}
@@ -183,6 +194,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                       <TextField
                         autoFocus
                         fullWidth
+                        defaultValue={projectName}
                         helperText="Type any non empty value."
                         id="project_name_input"
                         label="Project Name"
@@ -247,7 +259,8 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                       '{"edges":{}, "metadata": {}, "nodes": {}}',
                     )
                     setUploadedGraphFilename(null)
-
+                    setProjectName(null)
+                    setProjectNameValidity(false)
                     handleClose()
                   }}
                 >

@@ -43,6 +43,7 @@ const createNode = (
   const node = {
     id: uuid.v4(),
     properties: {
+      final: false,
       initial: false,
       name: 's',
     },
