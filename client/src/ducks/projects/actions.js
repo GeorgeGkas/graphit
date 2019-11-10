@@ -91,16 +91,11 @@ const getProjectById = id => ({
     options: {
       onError({ error }) {
         console.error(error)
-        toast.dismiss()
-        toast(<Notification message="Could not fetch project" />)
       },
       onSuccess({ dispatch, response }) {
         dispatch(
           graphOperations.loadGraph(JSON.parse(response.data.data.graph)),
         )
-
-        toast.dismiss()
-        toast(<Notification message="Project fetched successfully" />)
       },
     },
     request: {

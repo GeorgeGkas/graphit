@@ -3,9 +3,8 @@
  */
 import Cookies from 'js-cookie'
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { useParams, useRouteMatch } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 
 /**
  * Import UI framework modules.
@@ -20,7 +19,6 @@ import CreateModal from './organisms/CreateModal'
 import Dijkstra from './organisms/Dijkstra'
 import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
-import Notification from '../../organisms/Notification'
 import PropertiesEditor from './organisms/PropertiesEditor'
 import Tutorial from './organisms/Tutorial'
 
@@ -28,8 +26,6 @@ import Tutorial from './organisms/Tutorial'
  * Import ducks.
  */
 import { selectors as graphSelectors } from './ducks/graph'
-import { operations as projectsOperations } from '../../ducks/projects'
-import { toast } from 'react-toastify'
 
 /**
  * Connect component to Redux.
@@ -41,33 +37,30 @@ const mapStateToProps = state => ({
   selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
 })
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(projectsOperations, dispatch)
+const mapDispatchToProps = null
 
 /**
  * Component.
  */
 const App = ({
   currentEditorAction,
-  getProjectById,
   isNewEditor,
   selectedEdge,
   selectedNode,
 }) => {
-  const [gridVisible, makeGridVisible] = React.useState(false)
   const { path } = useRouteMatch()
-  const { id } = useParams()
+  const history = useHistory()
+  Cookies.set('new_user', '1')
 
-  React.useEffect(() => {
-    ;(async () => {
-      Cookies.set('new_user', '1')
-      if (id) {
-        toast.dismiss()
-        toast(<Notification message="Fetching project..." />)
-        await getProjectById(id)
-      }
-    })()
-  }, [])
+  /**
+   * If user wants to load a project by using its URL and
+   * project does not exist, redirect him to 404 Page.
+   */
+  if (path === '/app/:id' && isNewEditor) {
+    history.push('/404')
+  }
+
+  const [gridVisible, makeGridVisible] = React.useState(false)
 
   const toggleGrid = () => makeGridVisible(!gridVisible)
 
@@ -77,7 +70,7 @@ const App = ({
   const showAlgorithmPanel = currentEditorAction === 'isPlaying'
 
   const [openCreateModal, setCreateModalOpen] = React.useState(
-    path === '/app' && isNewEditor,
+    (path === '/app' || path === '/app/:id') && isNewEditor,
   )
 
   const handleCreateModalOpen = () => setCreateModalOpen(true)

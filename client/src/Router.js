@@ -15,6 +15,7 @@ import PrivateRoute from './organisms/PrivateRoute'
  * Import scenes
  */
 import CheckAuthLoadingScreen from './scenes/CheckAuthLoadingScreen'
+import FetchProjectId from './scenes/FetchProjectId'
 
 /**
  * Lazy load scenes.
@@ -42,7 +43,12 @@ const Router = () => {
     <CheckAuthLoadingScreen>
       <BrowserRouter>
         <Switch>
-          <Route component={App} path="/app/:id" />
+          <Route path="/app/:id">
+            <FetchProjectId>
+              <App />
+            </FetchProjectId>
+          </Route>
+
           <Route exact component={App} path="/app" />
           <Redirect exact from="/" to="/app" />
           <PrivateRoute
