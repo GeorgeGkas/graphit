@@ -15,7 +15,10 @@ import CloudUploadIcon from '@material-ui/icons/CloudUploadSharp'
 import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
 import Modal from '@material-ui/core/Modal'
+import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
@@ -95,6 +98,9 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
   const [projectName, setProjectName] = React.useState(null)
   const [validProjectName, setProjectNameValidity] = React.useState(false)
 
+  const [algorithm, chooseAlgorithm] = React.useState('')
+  const [algorithmValid, setAlgorithmValid] = React.useState(false)
+
   return (
     <Modal
       closeAfterTransition
@@ -169,6 +175,11 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                                 setProjectName(
                                   JSON.parse(reader.result).metadata.name,
                                 )
+
+                                setAlgorithmValid(true)
+                                chooseAlgorithm(
+                                  JSON.parse(reader.result).metadata.algorithm,
+                                )
                               }
                             })(e.target.files[0])
                             reader.readAsText(e.target.files[0])
@@ -181,6 +192,41 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                 nextStepDisabledIf: uploadedGraphFilename === null,
                 optional: true,
                 title: 'Upload from file',
+              },
+              {
+                content: (
+                  <Grid
+                    container
+                    alignItems="center"
+                    direction="column"
+                    justify="center"
+                  >
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="algorithm_select_label">
+                        Algorithm
+                      </InputLabel>
+                      <Select
+                        id="algorithm_select"
+                        value={algorithm}
+                        onChange={e => {
+                          if (
+                            e.target.value === 'Dijkstra' ||
+                            e.target.value === 'Automata'
+                          ) {
+                            setAlgorithmValid(true)
+                            chooseAlgorithm(e.target.value)
+                          }
+                        }}
+                      >
+                        <MenuItem value={'Dijkstra'}>Dijkstra</MenuItem>
+                        <MenuItem value={'Automata'}>Automata</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                ),
+                nextStepDisabledIf: !algorithmValid,
+                optional: false,
+                title: 'Choose algorithm',
               },
               {
                 content: (
@@ -227,7 +273,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
               const graph = {
                 ...JSON.parse(uploadedGraph),
                 metadata: {
-                  algorithm: 'Dijkstra',
+                  algorithm,
                   createdAt: new Date().toISOString(),
                   id: '',
                   name: projectName,
@@ -261,6 +307,8 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                     setUploadedGraphFilename(null)
                     setProjectName(null)
                     setProjectNameValidity(false)
+                    chooseAlgorithm('')
+                    setAlgorithmValid(false)
                     handleClose()
                   }}
                 >
