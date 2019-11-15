@@ -50,6 +50,7 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
+  algorithm: state.graph.present.metadata.algorithm,
   selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
 })
 
@@ -67,6 +68,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
  * Component.
  */
 const NodeEditor = ({
+  algorithm,
   editorDialogVisible,
   handleClose,
   selectedNode,
@@ -152,14 +154,16 @@ const NodeEditor = ({
             label="Set as initial node"
             labelPlacement="start"
           />
-          <FormControlLabel
-            className={classes.formControlLabel}
-            control={
-              <Switch checked={nodeIsFinal} onChange={toggleFinalState} />
-            }
-            label="Set as final node"
-            labelPlacement="start"
-          />
+          {algorithm === 'Automata' && (
+            <FormControlLabel
+              className={classes.formControlLabel}
+              control={
+                <Switch checked={nodeIsFinal} onChange={toggleFinalState} />
+              }
+              label="Set as final node"
+              labelPlacement="start"
+            />
+          )}
         </form>
       </DialogContent>
       <DialogActions>
