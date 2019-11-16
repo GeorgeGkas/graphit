@@ -147,6 +147,7 @@ test('create edge if not exist', () => {
           edge1: {
             id: 'edge1',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -160,6 +161,7 @@ test('create edge if not exist', () => {
           edge2: {
             id: 'edge2',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -186,6 +188,7 @@ test('create edge if not exist', () => {
       payload: {
         id: 'UUID',
         properties: {
+          input: '@',
           weight: 0,
         },
         ui: {
@@ -210,6 +213,7 @@ test('do not create edge if exist', () => {
           edge1: {
             id: 'edge1',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -223,6 +227,7 @@ test('do not create edge if exist', () => {
           edge2: {
             id: 'edge2',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -253,6 +258,7 @@ test('load Graph', () => {
       edge: {
         id: 'edge',
         properties: {
+          input: '@',
           weight: 0,
         },
         ui: {
@@ -298,6 +304,7 @@ test('unselect all - node is not selected, edge is not selected', () => {
           edge: {
             id: 'edge',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -350,6 +357,7 @@ test('unselect all - node is selected, edge is not selected', () => {
           edge: {
             id: 'edge',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -408,6 +416,7 @@ test('unselect all - node is not selected, edge is selected', () => {
           edge: {
             id: 'edge',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {
@@ -466,6 +475,7 @@ test('unselect all - node is selected, edge is selected', () => {
           edge: {
             id: 'edge',
             properties: {
+              input: '@',
               weight: 0,
             },
             ui: {

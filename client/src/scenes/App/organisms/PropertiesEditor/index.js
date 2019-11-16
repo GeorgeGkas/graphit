@@ -25,7 +25,8 @@ import {
 /**
  * Import components.
  */
-import EdgeEditor from './organisms/EdgeEditor'
+import EdgeInputEditor from './organisms/EdgeInputEditor'
+import EdgeWeightEditor from './organisms/EdgeWeightEditor'
 import NodeEditor from './organisms/NodeEditor'
 import { Wrapper } from './styles'
 
@@ -50,6 +51,7 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
+  algorithm: state.graph.present.metadata.algorithm,
   edges: state.graph.present.edges,
   nodes: state.graph.present.nodes,
   selectedEdge: graphSelectors.getSelected(state.graph.present.edges),
@@ -64,6 +66,7 @@ const mapDispatchToProps = dispatch =>
  * Component.
  */
 const PropertiesEditor = ({
+  algorithm,
   deleteEdge,
   deleteNode,
   edges,
@@ -123,8 +126,14 @@ const PropertiesEditor = ({
           editorDialogVisible={editorDialogVisible}
           handleClose={toggleEditorDialog}
         />
+      ) : algorithm === 'Automata' ? (
+        <EdgeInputEditor
+          editorDialogVisible={editorDialogVisible}
+          handleClickOpen={toggleEditorDialog}
+          handleClose={toggleEditorDialog}
+        />
       ) : (
-        <EdgeEditor
+        <EdgeWeightEditor
           editorDialogVisible={editorDialogVisible}
           handleClickOpen={toggleEditorDialog}
           handleClose={toggleEditorDialog}

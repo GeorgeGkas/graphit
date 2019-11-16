@@ -31,6 +31,7 @@ import * as types from './types'
  *  interface Edge {
  *    id: string
  *    properties: {
+ *      input: string
  *      weight: number
  *    }
  *    ui: {

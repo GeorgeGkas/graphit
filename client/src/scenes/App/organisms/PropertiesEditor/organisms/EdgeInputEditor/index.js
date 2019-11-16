@@ -64,22 +64,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 /**
  * Component.
  */
-const EdgeEditor = ({
+const EdgeInputEditor = ({
   editorDialogVisible,
   handleClose,
   selectedEdge,
   updateEdgeProperties,
 }) => {
   const classes = useStyles()
-  const [validEdgeWeight, validateEdgeWeight] = React.useState(true)
+  const [validEdgeInput, validateEdgeInput] = React.useState(true)
 
   const submitForm = () => {
-    const newEdgeWeight = document.getElementById('edge_weight_input').value
-    const oldEdgeWeight = selectedEdge.properties.weight
+    const newEdgeInput = document.getElementById('edge_input_input').value
+    const oldEdgeInput = selectedEdge.properties.input
 
-    if (oldEdgeWeight !== newEdgeWeight) {
+    if (newEdgeInput !== oldEdgeInput) {
       updateEdgeProperties(selectedEdge.id, {
-        weight: Number(newEdgeWeight),
+        input: String(newEdgeInput),
       })
     }
 
@@ -98,7 +98,7 @@ const EdgeEditor = ({
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">Edit Edge</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Input</DialogTitle>
       <DialogContent>
         <form
           noValidate
@@ -109,18 +109,23 @@ const EdgeEditor = ({
             <TextField
               autoFocus
               fullWidth
-              defaultValue={selectedEdge.properties.weight}
-              error={!validEdgeWeight}
-              helperText="Use any negative or positive integer."
-              id="edge_weight_input"
-              label="Weight"
+              defaultValue={selectedEdge.properties.input}
+              error={!validEdgeInput}
+              helperText="Single character values separated by comma (eg. a,b,c). Use @ for ε transitions."
+              id="edge_input_input"
+              label="Input"
               margin="dense"
               type="text"
               onChange={e =>
-                validateEdgeWeight(/^(-)?(\d)+$/.test(e.target.value))
+                validateEdgeInput(
+                  e.target.value !== '' &&
+                    /^(?!.*?([a-zA-z@]).*?\1)[a-zA-z@](?:,[a-zA-z@])*$/gm.test(
+                      e.target.value,
+                    ),
+                )
               }
               onFocus={() => {
-                document.getElementById('edge_weight_input').select()
+                document.getElementById('edge_input_input').select()
               }}
             />
           </FormControl>
@@ -130,11 +135,7 @@ const EdgeEditor = ({
         <Button color="primary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button
-          color="primary"
-          disabled={!validEdgeWeight}
-          onClick={submitForm}
-        >
+        <Button color="primary" disabled={!validEdgeInput} onClick={submitForm}>
           Apply Changes
         </Button>
       </DialogActions>
@@ -145,4 +146,4 @@ const EdgeEditor = ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EdgeEditor)
+)(EdgeInputEditor)

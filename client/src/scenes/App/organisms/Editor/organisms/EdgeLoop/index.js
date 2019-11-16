@@ -15,6 +15,7 @@ import algorithmComponentsTheme from '../../../../../../themes/algorithmComponen
  */
 const EdgeLoop = ({
   algorithm_current_step,
+  algorithmType,
   currentEditorAction,
   node,
   selectEdge,
@@ -115,7 +116,11 @@ const EdgeLoop = ({
       id={thisEdge.id + '_text_back'}
       stroke={editorComponentsTheme.stage.fill.color}
       strokeWidth={7}
-      text={String(thisEdge.properties.weight)}
+      text={
+        algorithmType === 'Automata'
+          ? String(thisEdge.properties.input)
+          : String(thisEdge.properties.weight)
+      }
       x={node.ui.pos.x - 30}
       y={node.ui.pos.y - 30}
     />
@@ -123,7 +128,11 @@ const EdgeLoop = ({
       fontFamily="Roboto"
       fontSize={15}
       id={thisEdge.id + '_text'}
-      text={String(thisEdge.properties.weight)}
+      text={
+        algorithmType === 'Automata'
+          ? String(thisEdge.properties.input)
+          : String(thisEdge.properties.weight)
+      }
       x={node.ui.pos.x - 30}
       y={node.ui.pos.y - 30}
     />
