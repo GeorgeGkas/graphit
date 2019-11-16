@@ -131,6 +131,7 @@ const Node = ({
 
     {thisNode.properties.final ? (
       <Circle
+        fill="#fafafa"
         height={42}
         stroke={
           algorithm_current_step.highlighted_nodes.some(

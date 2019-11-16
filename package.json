@@ -21,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn lint && CI=true yarn test",
+      "pre-commit": "lint-staged && yarn lint && cross-env CI=true yarn test",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -32,6 +32,7 @@
     ]
   },
   "dependencies": {
+    "cross-env": "^6.0.3",
     "dotenv": "^8.1.0",
     "dotenv-expand": "^5.1.0"
   }

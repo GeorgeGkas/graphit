@@ -26,9 +26,6 @@ const useStyles = makeStyles(theme => ({
   footer: {
     padding: '24px',
   },
-  root: {
-    width: '90%',
-  },
 }))
 
 /**
@@ -83,14 +80,18 @@ const CustomStepper = ({
         await steps[activeStep].onNext()
       }
 
-      let newSkippedStepsSet = skippedStepsSet
-      if (isStepSkippable(activeStep)) {
-        newSkippedStepsSet = new Set(skippedStepsSet.values())
-        newSkippedStepsSet.delete(activeStep)
-      }
+      if (steps[activeStep].onNextFinish) {
+        setActiveStep(() => steps.length)
+      } else {
+        let newSkippedStepsSet = skippedStepsSet
+        if (isStepSkippable(activeStep)) {
+          newSkippedStepsSet = new Set(skippedStepsSet.values())
+          newSkippedStepsSet.delete(activeStep)
+        }
 
-      setActiveStep(prevActiveStep => prevActiveStep + 1)
-      setSkippedStepsSet(newSkippedStepsSet)
+        setActiveStep(prevActiveStep => prevActiveStep + 1)
+        setSkippedStepsSet(newSkippedStepsSet)
+      }
     } catch (e) {
       if (typeof steps[activeStep].onError === 'function') {
         await steps[activeStep].onError(e)
@@ -102,9 +103,13 @@ const CustomStepper = ({
     setActiveStep(prevActiveStep => prevActiveStep - 1)
   }
 
-  const handleSkippableStep = () => {
+  const handleSkippableStep = async () => {
     if (!isStepOptional(steps[activeStep])) {
       throw new Error("You can't skip a step that isn't optional.")
+    }
+
+    if (typeof steps[activeStep].onSkip === 'function') {
+      await steps[activeStep].onSkip()
     }
 
     setActiveStep(prevActiveStep => prevActiveStep + 1)
@@ -126,7 +131,10 @@ const CustomStepper = ({
               <Typography variant="caption">Optional</Typography>
             )
           }
-          if (isStepSkippable(index)) {
+          if (
+            isStepSkippable(index) &&
+            !(typeof step.onNextFinish === 'function' && step.onNextFinish())
+          ) {
             stepProps.completed = false
           }
           return (
@@ -169,7 +177,11 @@ const CustomStepper = ({
                 variant="contained"
                 onClick={handleNextStep}
               >
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                {activeStep === steps.length - 1 ||
+                (typeof steps[activeStep].onNextFinish === 'function' &&
+                  steps[activeStep].onNextFinish())
+                  ? 'Finish'
+                  : 'Next'}
               </Button>
             </div>
           </>

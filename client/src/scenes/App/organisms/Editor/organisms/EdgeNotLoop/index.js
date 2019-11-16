@@ -20,6 +20,7 @@ import buildEdge from './services/buildEdge'
  */
 const EdgeNotLoop = ({
   algorithm_current_step,
+  algorithmType,
   currentEditorAction,
   curvePower,
   isDoubleEdge,
@@ -113,7 +114,11 @@ const EdgeNotLoop = ({
         height={2 * 24}
         stroke={editorComponentsTheme.stage.fill.color}
         strokeWidth={7}
-        text={String(thisResolvedEdge.properties.weight)}
+        text={
+          algorithmType === 'Automata'
+            ? String(thisResolvedEdge.properties.input)
+            : String(thisResolvedEdge.properties.weight)
+        }
         verticalAlign="middle"
         width={2 * 24}
         x={points[2] - 24}
@@ -124,7 +129,11 @@ const EdgeNotLoop = ({
         fontFamily="Roboto"
         fontSize={15}
         height={2 * 24}
-        text={String(thisResolvedEdge.properties.weight)}
+        text={
+          algorithmType === 'Automata'
+            ? String(thisResolvedEdge.properties.input)
+            : String(thisResolvedEdge.properties.weight)
+        }
         verticalAlign="middle"
         width={2 * 24}
         x={points[2] - 24}

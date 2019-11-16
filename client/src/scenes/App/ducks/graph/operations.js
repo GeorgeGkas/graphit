@@ -79,6 +79,7 @@ const createEdge = (fromNodeId, toNodeId) => (dispatch, getState) => {
     createEdgeAction({
       id: uuid.v4(),
       properties: {
+        input: '@',
         weight: 0,
       },
       ui: {

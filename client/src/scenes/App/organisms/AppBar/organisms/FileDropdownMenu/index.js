@@ -74,11 +74,12 @@ const FileDropdownMenu = ({
   pastExist,
   updateProjectById,
 }) => {
-  const [overwriteDialogVisible, makeOverwriteDialogVisible] = React.useState(
-    false,
-  )
-  const toggleOverwriteDialog = () =>
-    makeOverwriteDialogVisible(!overwriteDialogVisible)
+  const [
+    newProjectOverwriteDialogVisible,
+    makeNewProjectOverwriteDialogVisible,
+  ] = React.useState(false)
+  const toggleNewProjectOverwriteDialog = () =>
+    makeNewProjectOverwriteDialogVisible(!newProjectOverwriteDialogVisible)
 
   return (
     <>
@@ -91,7 +92,7 @@ const FileDropdownMenu = ({
                 disabled={currentEditorAction === 'isPlaying'}
                 onClick={() => {
                   if (futureExist || pastExist) {
-                    toggleOverwriteDialog()
+                    toggleNewProjectOverwriteDialog()
                   } else {
                     handleCreateModalOpen()
                     fileDropdownMenu.close()
@@ -156,12 +157,12 @@ const FileDropdownMenu = ({
           handleCreateModalOpen()
           fileDropdownMenu.close()
         }}
-        confirmDialogVisible={overwriteDialogVisible}
+        confirmDialogVisible={newProjectOverwriteDialogVisible}
         confirmMessage={
           'All unsaved changes will be deleted if you confirm this action.'
         }
         confirmTitle="Create new project?"
-        handleClose={toggleOverwriteDialog}
+        handleClose={toggleNewProjectOverwriteDialog}
       />
     </>
   )

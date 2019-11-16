@@ -31,9 +31,11 @@ const dijkstra = (graph, initial) => {
   const steps = []
   const Q = new Set()
   const dist = new Map()
+  const prev = new Map()
 
   for (const node of values(graph.nodes)) {
     dist.set(node.id, Infinity)
+    prev.set(node.id, null)
     Q.add(node.id)
   }
 
@@ -93,6 +95,7 @@ const dijkstra = (graph, initial) => {
 
       if (alt < dist.get(v.id)) {
         dist.set(v.id, alt)
+        prev.set(v.id, u)
       }
     }
 
@@ -125,7 +128,18 @@ const dijkstra = (graph, initial) => {
     distances: Object.fromEntries(dist),
     highlighted_edges: [],
     highlighted_nodes: [],
-    selected_edges: map('id')(graph.edges),
+    selected_edges: reduce((arr, [current, previous]) => {
+      const edgeId = find(
+        edge =>
+          edge.ui.connects.from === previous && edge.ui.connects.to === current,
+      )(graph.edges)
+
+      if (!edgeId) {
+        return arr
+      }
+
+      return [...arr, edgeId.id]
+    })([])([...prev.entries()]),
     selected_nodes: uniq(
       concat(
         map('ui.connects.from')(graph.edges),

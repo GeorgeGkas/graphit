@@ -15,8 +15,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -50,8 +48,7 @@ const useStyles = makeStyles(theme => ({
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
-  algorithm: state.graph.present.metadata.algorithm,
-  selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
+  selectedEdge: graphSelectors.getSelected(state.graph.present.edges),
 })
 
 const mapDispatchToProps = dispatch =>
@@ -67,41 +64,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 /**
  * Component.
  */
-const NodeEditor = ({
-  algorithm,
+const EdgeWeightEditor = ({
   editorDialogVisible,
   handleClose,
-  selectedNode,
-  updateNodeProperties,
+  selectedEdge,
+  updateEdgeProperties,
 }) => {
   const classes = useStyles()
-  const [validNodeName, validateNodeName] = React.useState(true)
-  const [nodeIsInitial, setInitialState] = React.useState(
-    selectedNode.properties.initial,
-  )
-  const toggleInitialState = () => setInitialState(!nodeIsInitial)
-
-  const [nodeIsFinal, setFinalState] = React.useState(
-    selectedNode.properties.final,
-  )
-  const toggleFinalState = () => setFinalState(!nodeIsFinal)
+  const [validEdgeWeight, validateEdgeWeight] = React.useState(true)
 
   const submitForm = () => {
-    const newNodeName = document.getElementById('node_name_input').value
-    const oldNodeName = selectedNode.properties.name
+    const newEdgeWeight = document.getElementById('edge_weight_input').value
+    const oldEdgeWeight = selectedEdge.properties.weight
 
-    /**
-     * Dispatch action only if node properties have changed.
-     */
-    if (
-      newNodeName !== oldNodeName ||
-      nodeIsInitial !== selectedNode.properties.initial ||
-      nodeIsFinal !== selectedNode.properties.final
-    ) {
-      updateNodeProperties(selectedNode.id, {
-        final: nodeIsFinal,
-        initial: nodeIsInitial,
-        name: newNodeName,
+    if (oldEdgeWeight !== newEdgeWeight) {
+      updateEdgeProperties(selectedEdge.id, {
+        weight: Number(newEdgeWeight),
       })
     }
 
@@ -120,7 +98,7 @@ const NodeEditor = ({
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">Edit Node</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Edge</DialogTitle>
       <DialogContent>
         <form
           noValidate
@@ -131,46 +109,32 @@ const NodeEditor = ({
             <TextField
               autoFocus
               fullWidth
-              defaultValue={selectedNode.properties.name}
-              error={!validNodeName}
-              helperText="Allowed names are all values from a through Z."
-              id="node_name_input"
-              label="Name"
+              defaultValue={selectedEdge.properties.weight}
+              error={!validEdgeWeight}
+              helperText="Use any negative or positive integer."
+              id="edge_weight_input"
+              label="Weight"
               margin="dense"
               type="text"
               onChange={e =>
-                validateNodeName(/^[A-Za-z]$/.test(e.target.value))
+                validateEdgeWeight(/^(-)?(\d)+$/.test(e.target.value))
               }
               onFocus={() => {
-                document.getElementById('node_name_input').select()
+                document.getElementById('edge_weight_input').select()
               }}
             />
           </FormControl>
-          <FormControlLabel
-            className={classes.formControlLabel}
-            control={
-              <Switch checked={nodeIsInitial} onChange={toggleInitialState} />
-            }
-            label="Set as initial node"
-            labelPlacement="start"
-          />
-          {algorithm === 'Automata' && (
-            <FormControlLabel
-              className={classes.formControlLabel}
-              control={
-                <Switch checked={nodeIsFinal} onChange={toggleFinalState} />
-              }
-              label="Set as final node"
-              labelPlacement="start"
-            />
-          )}
         </form>
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button color="primary" disabled={!validNodeName} onClick={submitForm}>
+        <Button
+          color="primary"
+          disabled={!validEdgeWeight}
+          onClick={submitForm}
+        >
           Apply Changes
         </Button>
       </DialogActions>
@@ -181,4 +145,4 @@ const NodeEditor = ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NodeEditor)
+)(EdgeWeightEditor)

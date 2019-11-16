@@ -33,7 +33,6 @@ import { operations as tutorialOperations } from '../../ducks/tutorial'
 /**
  * Import components.
  */
-// import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 
@@ -86,7 +85,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ ...tutorialOperations }, dispatch)
+  bindActionCreators(tutorialOperations, dispatch)
 
 /**
  * Component.

@@ -30,6 +30,7 @@ import Node from './organisms/Node'
  * Connect component to Redux.
  */
 const mapStateToProps = state => ({
+  algorithmType: state.graph.present.metadata.algorithm,
   algorithm_current_step: state.algorithm.steps[state.algorithm.currentIndex],
   currentEditorAction: state.editor.currentEditorAction,
   cursor: state.editor.cursor,
@@ -63,6 +64,7 @@ const buildCursorStyle = currentEditorAction =>
  */
 const Editor = ({
   algorithm_current_step,
+  algorithmType,
   createEdge,
   createNode,
   currentEditorAction,
@@ -187,6 +189,7 @@ const Editor = ({
               return edge.ui.connects.to !== edge.ui.connects.from ? (
                 <EdgeNotLoop
                   key={edge.id}
+                  algorithmType={algorithmType}
                   algorithm_current_step={algorithm_current_step}
                   currentEditorAction={currentEditorAction}
                   curvePower={curvePower}
@@ -199,6 +202,7 @@ const Editor = ({
               ) : (
                 <EdgeLoop
                   key={edge.id}
+                  algorithmType={algorithmType}
                   algorithm_current_step={algorithm_current_step}
                   currentEditorAction={currentEditorAction}
                   node={nodes[edge.ui.connects.from]}

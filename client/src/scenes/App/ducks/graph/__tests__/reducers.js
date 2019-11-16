@@ -20,6 +20,7 @@ const node = {
 const edge = {
   id: 'edge',
   properties: {
+    input: '@',
     weight: 0,
   },
   ui: {
@@ -610,6 +611,46 @@ test('handle update edge weight', () => {
         properties: {
           ...edge.properties,
           weight: 7,
+        },
+      },
+    },
+    metadata,
+    nodes: {},
+  })
+})
+
+test('handle update edge input', () => {
+  const initialReducerState = {
+    edges: {
+      edge,
+    },
+    metadata,
+    nodes: {},
+  }
+  const afterUpdatingEdgeWeight = reducer(initialReducerState, {
+    payload: {
+      id: 'edge',
+      properties: {
+        input: '9,a,b',
+      },
+    },
+    type: types.UPDATE_EDGE_PROPERTIES,
+  })
+
+  expect(initialReducerState).toEqual({
+    edges: {
+      edge,
+    },
+    metadata,
+    nodes: {},
+  })
+  expect(afterUpdatingEdgeWeight).toEqual({
+    edges: {
+      edge: {
+        ...edge,
+        properties: {
+          ...edge.properties,
+          input: '9,a,b',
         },
       },
     },
