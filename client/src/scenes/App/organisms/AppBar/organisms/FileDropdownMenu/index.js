@@ -81,13 +81,6 @@ const FileDropdownMenu = ({
   const toggleNewProjectOverwriteDialog = () =>
     makeNewProjectOverwriteDialogVisible(!newProjectOverwriteDialogVisible)
 
-  const [
-    openProjectOverwriteDialogVisible,
-    makeOpenProjectOverwriteDialogVisible,
-  ] = React.useState(false)
-  const toggleOpenProjectOverwriteDialog = () =>
-    makeOpenProjectOverwriteDialogVisible(!openProjectOverwriteDialogVisible)
-
   return (
     <>
       <Fade {...TransitionProps} timeout={360}>
@@ -108,23 +101,6 @@ const FileDropdownMenu = ({
               >
                 <ListItem component="div">
                   <ListItemText primary="New" />
-                </ListItem>
-              </MenuItem>
-
-              <MenuItem
-                button
-                disabled={currentEditorAction === 'isPlaying'}
-                onClick={() => {
-                  if (futureExist || pastExist) {
-                    toggleOpenProjectOverwriteDialog()
-                  } else {
-                    document.getElementById('open_graph').click()
-                    fileDropdownMenu.close()
-                  }
-                }}
-              >
-                <ListItem component="div">
-                  <ListItemText primary="Open" />
                 </ListItem>
               </MenuItem>
 
@@ -187,19 +163,6 @@ const FileDropdownMenu = ({
         }
         confirmTitle="Create new project?"
         handleClose={toggleNewProjectOverwriteDialog}
-      />
-
-      <ConfirmDialog
-        confirmAction={() => {
-          document.getElementById('open_graph').click()
-          fileDropdownMenu.close()
-        }}
-        confirmDialogVisible={openProjectOverwriteDialogVisible}
-        confirmMessage={
-          'All unsaved changes will be deleted if you confirm this action.'
-        }
-        confirmTitle="Load existing project?"
-        handleClose={toggleOpenProjectOverwriteDialog}
       />
     </>
   )
