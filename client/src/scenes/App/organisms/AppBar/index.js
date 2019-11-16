@@ -28,12 +28,12 @@ import { makeStyles } from '@material-ui/core/styles'
 /**
  * Import ducks.
  */
+import { operations as graphOperations } from '../../ducks/graph'
 import { operations as tutorialOperations } from '../../ducks/tutorial'
 
 /**
  * Import components.
  */
-// import ConfirmDialog from '../../../../organisms/ConfirmDialog'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 
@@ -86,7 +86,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ ...tutorialOperations }, dispatch)
+  bindActionCreators({ ...graphOperations, ...tutorialOperations }, dispatch)
 
 /**
  * Component.
@@ -95,6 +95,7 @@ const AppBar = ({
   auth,
   graphMetadata,
   handleCreateModalOpen,
+  loadGraph,
   setTutorialVisibility,
 }) => {
   const classes = useStyles()
@@ -107,6 +108,19 @@ const AppBar = ({
 
   return (
     <>
+      <input
+        accept=".json"
+        id="open_graph"
+        style={{ display: 'none', position: 'absolute' }}
+        type="file"
+        onChange={e => {
+          const reader = new FileReader()
+          reader.onloadend = () => {
+            loadGraph(JSON.parse(reader.result))
+          }
+          reader.readAsText(e.target.files[0])
+        }}
+      />
       <MUIAppBar className={classes.root} position="static">
         <Toolbar>
           {auth.authUser && (

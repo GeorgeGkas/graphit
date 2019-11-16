@@ -11,7 +11,6 @@ import { useHistory } from 'react-router-dom'
  */
 import Backdrop from '@material-ui/core/Backdrop'
 import Button from '@material-ui/core/Button'
-import CloudUploadIcon from '@material-ui/icons/CloudUploadSharp'
 import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
@@ -37,13 +36,6 @@ import { operations as graphOperations } from '../../ducks/graph'
  * Construct component styles.
  */
 const useStyles = makeStyles(theme => ({
-  fileInput: {
-    display: 'none',
-    position: 'absolute',
-  },
-  filename: {
-    textTransform: 'none',
-  },
   formControl: {
     width: '100%',
   },
@@ -60,18 +52,6 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     minWidth: '768px',
     padding: theme.spacing(2, 4, 3),
-  },
-  uploadButton: {
-    '&:hover': {
-      backgroundColor: 'inherit',
-    },
-    border: '2px dashed #ddd',
-    width: '100%',
-  },
-  uploadContainer: {
-    padding: '30px',
-    textAlign: 'center',
-    width: '100%',
   },
 }))
 
@@ -94,7 +74,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
   const [uploadedGraph, setUploadedGraph] = React.useState(
     '{"edges":{}, "metadata": {}, "nodes": {}}',
   )
-  const [uploadedGraphFilename, setUploadedGraphFilename] = React.useState(null)
+
   const [projectName, setProjectName] = React.useState(null)
   const [validProjectName, setProjectNameValidity] = React.useState(false)
 
@@ -116,8 +96,6 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
         }
 
         setUploadedGraph('{"edges":{}, "metadata": {}, "nodes": {}}')
-        setUploadedGraphFilename(null)
-
         handleClose()
       }}
     >
@@ -125,74 +103,6 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
         <div className={classes.paper}>
           <Stepper
             steps={[
-              {
-                content: (
-                  <Grid
-                    container
-                    alignItems="center"
-                    direction="column"
-                    justify="center"
-                  >
-                    <Button
-                      className={classes.uploadButton}
-                      variant="text"
-                      onClick={() =>
-                        document
-                          .getElementById('load_state_create_modal_guest')
-                          .click()
-                      }
-                    >
-                      <Grid item className={classes.uploadContainer}>
-                        <CloudUploadIcon color="primary" fontSize="large" />
-                        <Typography gutterBottom variant="body1">
-                          Browse
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          className={classes.filename}
-                          display="block"
-                          variant="caption"
-                        >
-                          {uploadedGraphFilename}
-                        </Typography>
-                        <input
-                          accept=".json"
-                          className={classes.fileInput}
-                          id="load_state_create_modal_guest"
-                          type="file"
-                          onChange={e => {
-                            const reader = new FileReader()
-                            reader.onloadend = (file => () => {
-                              setUploadedGraph(reader.result)
-                              setUploadedGraphFilename(file.name)
-
-                              if (
-                                JSON.parse(
-                                  reader.result,
-                                ).metadata.name.trim() !== ''
-                              ) {
-                                setProjectNameValidity(true)
-                                setProjectName(
-                                  JSON.parse(reader.result).metadata.name,
-                                )
-
-                                setAlgorithmValid(true)
-                                chooseAlgorithm(
-                                  JSON.parse(reader.result).metadata.algorithm,
-                                )
-                              }
-                            })(e.target.files[0])
-                            reader.readAsText(e.target.files[0])
-                          }}
-                        />
-                      </Grid>
-                    </Button>
-                  </Grid>
-                ),
-                nextStepDisabledIf: uploadedGraphFilename === null,
-                optional: true,
-                title: 'Upload from file',
-              },
               {
                 content: (
                   <Grid
@@ -304,7 +214,6 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                     setUploadedGraph(
                       '{"edges":{}, "metadata": {}, "nodes": {}}',
                     )
-                    setUploadedGraphFilename(null)
                     setProjectName(null)
                     setProjectNameValidity(false)
                     chooseAlgorithm('')

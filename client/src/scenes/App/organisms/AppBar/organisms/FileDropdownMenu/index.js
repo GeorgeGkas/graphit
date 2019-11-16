@@ -74,11 +74,19 @@ const FileDropdownMenu = ({
   pastExist,
   updateProjectById,
 }) => {
-  const [overwriteDialogVisible, makeOverwriteDialogVisible] = React.useState(
-    false,
-  )
-  const toggleOverwriteDialog = () =>
-    makeOverwriteDialogVisible(!overwriteDialogVisible)
+  const [
+    newProjectOverwriteDialogVisible,
+    makeNewProjectOverwriteDialogVisible,
+  ] = React.useState(false)
+  const toggleNewProjectOverwriteDialog = () =>
+    makeNewProjectOverwriteDialogVisible(!newProjectOverwriteDialogVisible)
+
+  const [
+    openProjectOverwriteDialogVisible,
+    makeOpenProjectOverwriteDialogVisible,
+  ] = React.useState(false)
+  const toggleOpenProjectOverwriteDialog = () =>
+    makeOpenProjectOverwriteDialogVisible(!openProjectOverwriteDialogVisible)
 
   return (
     <>
@@ -91,7 +99,7 @@ const FileDropdownMenu = ({
                 disabled={currentEditorAction === 'isPlaying'}
                 onClick={() => {
                   if (futureExist || pastExist) {
-                    toggleOverwriteDialog()
+                    toggleNewProjectOverwriteDialog()
                   } else {
                     handleCreateModalOpen()
                     fileDropdownMenu.close()
@@ -100,6 +108,23 @@ const FileDropdownMenu = ({
               >
                 <ListItem component="div">
                   <ListItemText primary="New" />
+                </ListItem>
+              </MenuItem>
+
+              <MenuItem
+                button
+                disabled={currentEditorAction === 'isPlaying'}
+                onClick={() => {
+                  if (futureExist || pastExist) {
+                    toggleOpenProjectOverwriteDialog()
+                  } else {
+                    document.getElementById('open_graph').click()
+                    fileDropdownMenu.close()
+                  }
+                }}
+              >
+                <ListItem component="div">
+                  <ListItemText primary="Open" />
                 </ListItem>
               </MenuItem>
 
@@ -156,12 +181,25 @@ const FileDropdownMenu = ({
           handleCreateModalOpen()
           fileDropdownMenu.close()
         }}
-        confirmDialogVisible={overwriteDialogVisible}
+        confirmDialogVisible={newProjectOverwriteDialogVisible}
         confirmMessage={
           'All unsaved changes will be deleted if you confirm this action.'
         }
         confirmTitle="Create new project?"
-        handleClose={toggleOverwriteDialog}
+        handleClose={toggleNewProjectOverwriteDialog}
+      />
+
+      <ConfirmDialog
+        confirmAction={() => {
+          document.getElementById('open_graph').click()
+          fileDropdownMenu.close()
+        }}
+        confirmDialogVisible={openProjectOverwriteDialogVisible}
+        confirmMessage={
+          'All unsaved changes will be deleted if you confirm this action.'
+        }
+        confirmTitle="Load existing project?"
+        handleClose={toggleOpenProjectOverwriteDialog}
       />
     </>
   )
