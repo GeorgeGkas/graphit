@@ -5,7 +5,7 @@ export default function localDownload(graph) {
     'data:text/json;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(graph, null, 2)),
   )
-  element.setAttribute('download', 'editor.json')
+  element.setAttribute('download', graph.metadata.name + '.json')
 
   element.style.display = 'none'
   document.body.appendChild(element)
