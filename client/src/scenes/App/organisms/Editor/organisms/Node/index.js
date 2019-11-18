@@ -189,10 +189,12 @@ const Node = ({
 
     <Circle
       fill={
-        algorithm_current_step.highlighted_nodes.some(id => id === thisNode.id)
-          ? algorithmComponentsTheme.node.highlighted.color
-          : algorithm_current_step.selected_nodes.some(id => id === thisNode.id)
+        algorithm_current_step.selected_nodes.some(id => id === thisNode.id)
           ? algorithmComponentsTheme.node.selected.color
+          : algorithm_current_step.highlighted_nodes.some(
+              id => id === thisNode.id,
+            )
+          ? algorithmComponentsTheme.node.highlighted.color
           : currentEditorAction === 'isPlaying'
           ? algorithmComponentsTheme.node.neutral.color
           : editorComponentsTheme.node.neutral.color
