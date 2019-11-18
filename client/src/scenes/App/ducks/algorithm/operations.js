@@ -98,30 +98,6 @@ const dijkstra = (graph, initial) => {
         prev.set(v.id, u)
       }
     }
-
-    if (outerEdges.length) {
-      steps.push({
-        distances: Object.fromEntries(dist),
-        highlighted_edges: map('id')(outerEdges),
-        highlighted_nodes: map('id')(neighbors),
-        selected_edges: [],
-        selected_nodes: [u],
-        unvisited: reduce((obj, id) => ({ ...obj, [id]: Q.has(id) }))({})(
-          map('id')(values(graph.nodes)),
-        ),
-      })
-    }
-
-    steps.push({
-      distances: Object.fromEntries(dist),
-      highlighted_edges: [],
-      highlighted_nodes: [],
-      selected_edges: [],
-      selected_nodes: [],
-      unvisited: reduce((obj, id) => ({ ...obj, [id]: Q.has(id) }))({})(
-        map('id')(values(graph.nodes)),
-      ),
-    })
   }
 
   steps.push({

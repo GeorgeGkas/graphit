@@ -6,16 +6,10 @@ import { connect } from 'react-redux'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
 /**
- * Import UI framework modules.
- */
-import Slide from '@material-ui/core/Slide'
-
-/**
  * Import components.
  */
 import AppBar from './organisms/AppBar'
 import CreateModal from './organisms/CreateModal'
-import Dijkstra from './organisms/Dijkstra'
 import Editor from './organisms/Editor'
 import EditorBar from './organisms/EditorBar'
 import PropertiesEditor from './organisms/PropertiesEditor'
@@ -65,7 +59,6 @@ const App = ({
   const shouldRenderPropertiesEditor =
     currentEditorAction === 'select' &&
     (Boolean(selectedEdge) ^ Boolean(selectedNode)) === 1
-  const showAlgorithmPanel = currentEditorAction === 'isPlaying'
 
   const [openCreateModal, setCreateModalOpen] = React.useState(
     (path === '/app' || path === '/app/:id') && isNewEditor,
@@ -84,10 +77,6 @@ const App = ({
       </div>
 
       <Editor gridVisible={gridVisible} />
-
-      <Slide direction="left" in={showAlgorithmPanel}>
-        <Dijkstra />
-      </Slide>
 
       {shouldRenderPropertiesEditor ? <PropertiesEditor /> : null}
 
