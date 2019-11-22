@@ -110,13 +110,15 @@ const EdgeNotLoop = ({
       <Text
         align="center"
         fontFamily="Roboto"
-        fontSize={15}
+        fontSize={13}
         height={2 * 24}
         stroke={editorComponentsTheme.stage.fill.color}
         strokeWidth={7}
         text={
           algorithmType === 'Automata'
             ? String(thisResolvedEdge.properties.input)
+                .split(',')
+                .join(', ')
             : String(thisResolvedEdge.properties.weight)
         }
         verticalAlign="middle"
@@ -127,11 +129,13 @@ const EdgeNotLoop = ({
       <Text
         align="center"
         fontFamily="Roboto"
-        fontSize={15}
+        fontSize={13}
         height={2 * 24}
         text={
           algorithmType === 'Automata'
             ? String(thisResolvedEdge.properties.input)
+                .split(',')
+                .join(', ')
             : String(thisResolvedEdge.properties.weight)
         }
         verticalAlign="middle"

@@ -112,13 +112,15 @@ const EdgeLoop = ({
     />
     <Text
       fontFamily="Roboto"
-      fontSize={15}
+      fontSize={13}
       id={thisEdge.id + '_text_back'}
       stroke={editorComponentsTheme.stage.fill.color}
       strokeWidth={7}
       text={
         algorithmType === 'Automata'
           ? String(thisEdge.properties.input)
+              .split(',')
+              .join(', ')
           : String(thisEdge.properties.weight)
       }
       x={node.ui.pos.x - 30}
@@ -126,11 +128,13 @@ const EdgeLoop = ({
     />
     <Text
       fontFamily="Roboto"
-      fontSize={15}
+      fontSize={13}
       id={thisEdge.id + '_text'}
       text={
         algorithmType === 'Automata'
           ? String(thisEdge.properties.input)
+              .split(',')
+              .join(', ')
           : String(thisEdge.properties.weight)
       }
       x={node.ui.pos.x - 30}
