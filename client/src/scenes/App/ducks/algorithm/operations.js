@@ -23,6 +23,9 @@ const startPlaying = () => (dispatch, getState) => {
       case 'Dijkstra':
         algorithmResults = runDijkstra(getState().graph.present)
         break
+      case 'Automata':
+        console.log('start running automata')
+        return
       default:
         toast.dismiss()
         toast(<Notification message="Could not run requested algorithm" />)

@@ -2,6 +2,13 @@
  * Import globals.
  */
 import React from 'react'
+import filter from 'lodash/fp/filter'
+import find from 'lodash/fp/find'
+import intersection from 'lodash/fp/intersection'
+import map from 'lodash/fp/map'
+import reduce from 'lodash/fp/reduce'
+import uniq from 'lodash/fp/uniq'
+import values from 'lodash/fp/values'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -31,11 +38,18 @@ import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
 import { makeStyles } from '@material-ui/core/styles'
 
 /**
+ * Import Components.
+ */
+import InputDialog from '../../../../organisms/InputDialog'
+import Notification from '../../../../organisms/Notification'
+
+/**
  * Import ducks.
  */
 import { operations as algorithmOperations } from '../../ducks/algorithm'
 import { operations as editorOperations } from '../../ducks/editor'
 import { operations as graphOperations } from '../../ducks/graph'
+import { toast } from 'react-toastify'
 
 /**
  * Construct component styles.
@@ -64,6 +78,7 @@ const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   cursor: state.editor.cursor,
   futureExist: state.graph.future.length,
+  graph: state.graph.present,
   nextAlgorithmEntryExist:
     state.algorithm.steps[state.algorithm.currentIndex + 1] !== undefined,
   pastExist: state.graph.past.length,
@@ -90,6 +105,7 @@ const EditorBar = ({
   cursor,
   firstIteration,
   futureExist,
+  graph,
   gridVisible,
   lastIteration,
   nextAlgorithmEntryExist,
@@ -108,6 +124,66 @@ const EditorBar = ({
   updateStage,
 }) => {
   const classes = useStyles()
+
+  const [
+    promptAutomataInputDialogVisible,
+    makePromptAutomataInputDialogVisible,
+  ] = React.useState(false)
+  const [
+    automataInputDialogError,
+    makeAutomataInputDialogError,
+  ] = React.useState(true)
+
+  const togglePromptAutomataInputDialog = () => {
+    makePromptAutomataInputDialogVisible(!promptAutomataInputDialogVisible)
+    makeAutomataInputDialogError(true)
+  }
+
+  const validAutomata = () => {
+    if (
+      filter(['properties.initial', true])(values(graph.nodes)).length !== 1
+    ) {
+      toast.dismiss()
+      toast(
+        <Notification message="Automata should have exactly one starting state" />,
+      )
+      return false
+    }
+
+    if (!find(['properties.final', true])(values(graph.nodes))) {
+      toast.dismiss()
+      toast(
+        <Notification message="Automata should have at least one ending state" />,
+      )
+      return false
+    }
+
+    return true
+  }
+
+  const validateAutomata = () =>
+    validAutomata() && togglePromptAutomataInputDialog()
+
+  const inputIsInAlphabet = input => {
+    const automataSymbols = uniq(
+      reduce((arr, input) => [...arr, ...input.split(',')])([])(
+        map('properties.input')(values(graph.edges)),
+      ),
+    )
+
+    const inputSymbols = uniq(input.split(''))
+
+    return makeAutomataInputDialogError(
+      !input ||
+        inputSymbols.length !==
+          intersection(inputSymbols, automataSymbols).length,
+    )
+  }
+
+  const startPlayingAutomata = () => {
+    togglePromptAutomataInputDialog()
+    startPlaying()
+  }
 
   const zoomOut = () => {
     const scaleBy = 1.1
@@ -286,6 +362,8 @@ const EditorBar = ({
                     unselectAll()
                     currentEditorAction === 'isPlaying'
                       ? stopPlaying()
+                      : graph.metadata.algorithm === 'Automata'
+                      ? validateAutomata()
                       : startPlaying()
                   }}
                 >
@@ -362,6 +440,17 @@ const EditorBar = ({
           </div>
         </Toolbar>
       </AppBar>
+
+      <InputDialog
+        cancelDialogAction={togglePromptAutomataInputDialog}
+        confirmDialogAction={startPlayingAutomata}
+        confirmDialogVisible={promptAutomataInputDialogVisible}
+        error={automataInputDialogError}
+        errorText="Input string must contain only symbols from the alphabet"
+        inputLabel="Input string"
+        title="Automata input string"
+        validateInput={inputIsInAlphabet}
+      />
     </>
   )
 }
