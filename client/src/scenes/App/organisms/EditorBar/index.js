@@ -187,9 +187,9 @@ const EditorBar = ({
     )
   }
 
-  const startPlayingAutomata = () => {
+  const startPlayingAutomata = input => {
     togglePromptAutomataInputDialog()
-    startPlaying()
+    startPlaying(input)
   }
 
   const zoomOut = () => {
