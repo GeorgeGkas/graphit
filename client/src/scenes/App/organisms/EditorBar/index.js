@@ -8,6 +8,7 @@ import intersection from 'lodash/fp/intersection'
 import map from 'lodash/fp/map'
 import reduce from 'lodash/fp/reduce'
 import uniq from 'lodash/fp/uniq'
+import uniqBy from 'lodash/fp/uniqBy'
 import values from 'lodash/fp/values'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -140,9 +141,9 @@ const EditorBar = ({
   }
 
   const validAutomata = () => {
-    if (
-      filter(['properties.initial', true])(values(graph.nodes)).length !== 1
-    ) {
+    const nodes = values(graph.nodes)
+
+    if (filter(['properties.initial', true])(nodes).length !== 1) {
       toast.dismiss()
       toast(
         <Notification message="Automata should have exactly one starting state" />,
@@ -150,11 +151,17 @@ const EditorBar = ({
       return false
     }
 
-    if (!find(['properties.final', true])(values(graph.nodes))) {
+    if (!find(['properties.final', true])(nodes)) {
       toast.dismiss()
       toast(
         <Notification message="Automata should have at least one ending state" />,
       )
+      return false
+    }
+
+    if (uniqBy('properties.name', nodes).length !== nodes.length) {
+      toast.dismiss()
+      toast(<Notification message="Duplicate state names are prohibited" />)
       return false
     }
 
