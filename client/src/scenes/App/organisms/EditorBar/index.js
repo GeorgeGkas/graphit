@@ -133,11 +133,11 @@ const EditorBar = ({
   const [
     automataInputDialogError,
     makeAutomataInputDialogError,
-  ] = React.useState(true)
+  ] = React.useState(false)
 
   const togglePromptAutomataInputDialog = () => {
     makePromptAutomataInputDialogVisible(!promptAutomataInputDialogVisible)
-    makeAutomataInputDialogError(true)
+    makeAutomataInputDialogError(false)
   }
 
   const validAutomata = () => {
@@ -181,7 +181,7 @@ const EditorBar = ({
     const inputSymbols = uniq(input.split(''))
 
     return makeAutomataInputDialogError(
-      !input ||
+      input.includes('@') ||
         inputSymbols.length !==
           intersection(inputSymbols, automataSymbols).length,
     )
