@@ -12,7 +12,6 @@ export const initialState = {
   isFinal: false,
   steps: [
     {
-      distances: {},
       highlighted_edges: [],
       highlighted_nodes: [],
       selected_edges: [],

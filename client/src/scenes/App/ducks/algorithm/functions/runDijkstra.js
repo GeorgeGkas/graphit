@@ -58,7 +58,6 @@ function run(graph, initial) {
   dist.set(initial.id, 0)
 
   steps.push({
-    distances: Object.fromEntries(dist),
     highlighted_edges: [],
     highlighted_nodes: [],
     selected_edges: [],
@@ -79,7 +78,6 @@ function run(graph, initial) {
     const neighbors = map(edge => graph.nodes[edge.ui.connects.to])(outerEdges)
 
     steps.push({
-      distances: Object.fromEntries(dist),
       highlighted_edges: [],
       highlighted_nodes: [],
       selected_edges: [],
@@ -91,7 +89,6 @@ function run(graph, initial) {
 
     if (outerEdges.length) {
       steps.push({
-        distances: Object.fromEntries(dist),
         highlighted_edges: map('id')(outerEdges),
         highlighted_nodes: map('id')(neighbors),
         selected_edges: [],
@@ -117,7 +114,6 @@ function run(graph, initial) {
   }
 
   steps.push({
-    distances: Object.fromEntries(dist),
     highlighted_edges: [],
     highlighted_nodes: [],
     selected_edges: reduce((arr, [current, previous]) => {
