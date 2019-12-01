@@ -14,7 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 /**
  * Component.
  */
-const Notification = ({ message }) => {
+const Notification = ({ disableClickAwayListener = false, message }) => {
   const [notificationVisible, makeNotificationVisible] = React.useState(false)
   const toggleNotification = () => makeNotificationVisible(!notificationVisible)
 
@@ -28,6 +28,10 @@ const Notification = ({ message }) => {
 
   return (
     <Snackbar
+      ClickAwayListenerProps={{
+        mouseEvent: !disableClickAwayListener ? 'onClick' : false,
+        touchEvent: !disableClickAwayListener ? 'onTouchEnd' : false,
+      }}
       ContentProps={{
         square: true,
       }}
