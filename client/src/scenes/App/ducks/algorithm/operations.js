@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 
 import * as actions from './actions'
 import { operations as editorOperations } from '../editor'
+import runAutomata from './functions/runAutomata'
 import runDijkstra from './functions/runDijkstra'
 
 import Notification from '../../../../organisms/Notification'
@@ -16,7 +17,7 @@ const {
   stopPlaying: stopPlayingAction,
 } = actions
 
-const startPlaying = () => (dispatch, getState) => {
+const startPlaying = payload => (dispatch, getState) => {
   try {
     let algorithmResults
     switch (getState().graph.present.metadata.algorithm) {
@@ -24,8 +25,9 @@ const startPlaying = () => (dispatch, getState) => {
         algorithmResults = runDijkstra(getState().graph.present)
         break
       case 'Automata':
-        console.log('start running automata')
-        return
+        const input = payload
+        algorithmResults = runAutomata(getState().graph.present, input)
+        break
       default:
         toast.dismiss()
         toast(<Notification message="Could not run requested algorithm" />)
