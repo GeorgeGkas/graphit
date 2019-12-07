@@ -1,7 +1,24 @@
-/**
- * Import globals.
- */
-import React from 'react'
+import AppBar from '@material-ui/core/AppBar'
+import blue from '@material-ui/core/colors/blue'
+import IconButton from '@material-ui/core/IconButton'
+import { makeStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
+import BrushIcon from '@material-ui/icons/BrushSharp'
+import CategoryIcon from '@material-ui/icons/CategorySharp'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeftSharp'
+import ChevronRightIcon from '@material-ui/icons/ChevronRightSharp'
+import DeviceHubIcon from '@material-ui/icons/DeviceHubSharp'
+import GridOffIcon from '@material-ui/icons/GridOffSharp'
+import GridOnIcon from '@material-ui/icons/GridOnSharp'
+import PlayArrowIcon from '@material-ui/icons/PlayArrowSharp'
+import RedoIcon from '@material-ui/icons/RedoSharp'
+import SkipNextIcon from '@material-ui/icons/SkipNextSharp'
+import SkipPreviousIcon from '@material-ui/icons/SkipPreviousSharp'
+import StopIcon from '@material-ui/icons/StopSharp'
+import UndoIcon from '@material-ui/icons/UndoSharp'
+import ZoomInIcon from '@material-ui/icons/ZoomInSharp'
+import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
 import filter from 'lodash/fp/filter'
 import find from 'lodash/fp/find'
 import intersection from 'lodash/fp/intersection'
@@ -10,51 +27,17 @@ import reduce from 'lodash/fp/reduce'
 import uniq from 'lodash/fp/uniq'
 import uniqBy from 'lodash/fp/uniqBy'
 import values from 'lodash/fp/values'
-import { bindActionCreators } from 'redux'
+import React from 'react'
 import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import UI framework modules.
- */
-import blue from '@material-ui/core/colors/blue'
-import AppBar from '@material-ui/core/AppBar'
-import CategoryIcon from '@material-ui/icons/CategorySharp'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeftSharp'
-import ChevronRightIcon from '@material-ui/icons/ChevronRightSharp'
-import BrushIcon from '@material-ui/icons/BrushSharp'
-import DeviceHubIcon from '@material-ui/icons/DeviceHubSharp'
-import GridOffIcon from '@material-ui/icons/GridOffSharp'
-import GridOnIcon from '@material-ui/icons/GridOnSharp'
-import IconButton from '@material-ui/core/IconButton'
-import PlayArrowIcon from '@material-ui/icons/PlayArrowSharp'
-import RedoIcon from '@material-ui/icons/RedoSharp'
-import SkipNextIcon from '@material-ui/icons/SkipNextSharp'
-import SkipPreviousIcon from '@material-ui/icons/SkipPreviousSharp'
-import StopIcon from '@material-ui/icons/StopSharp'
-import Toolbar from '@material-ui/core/Toolbar'
-import Tooltip from '@material-ui/core/Tooltip'
-import UndoIcon from '@material-ui/icons/UndoSharp'
-import ZoomInIcon from '@material-ui/icons/ZoomInSharp'
-import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
-import { makeStyles } from '@material-ui/core/styles'
-
-/**
- * Import Components.
- */
 import InputDialog from '../../../../organisms/InputDialog'
 import Notification from '../../../../organisms/Notification'
-
-/**
- * Import ducks.
- */
 import { operations as algorithmOperations } from '../../ducks/algorithm'
 import { operations as editorOperations } from '../../ducks/editor'
 import { operations as graphOperations } from '../../ducks/graph'
-import { toast } from 'react-toastify'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
@@ -72,9 +55,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   cursor: state.editor.cursor,
@@ -98,9 +78,6 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   )
 
-/**
- * Component.
- */
 const EditorBar = ({
   currentEditorAction,
   cursor,

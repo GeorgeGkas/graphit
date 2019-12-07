@@ -1,7 +1,8 @@
-import forEach from 'lodash/fp/forEach'
-import uuid from 'uuid'
 import filter from 'lodash/fp/filter'
+import forEach from 'lodash/fp/forEach'
 import values from 'lodash/fp/values'
+import uuid from 'uuid'
+
 import * as actions from './actions'
 import * as selectors from './selectors'
 

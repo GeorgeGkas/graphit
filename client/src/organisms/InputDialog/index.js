@@ -1,12 +1,3 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { connect } from 'react-redux'
-
-/**
- * Import UI framework modules.
- */
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -14,12 +5,11 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
-import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import React from 'react'
+import { connect } from 'react-redux'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   form: {
     display: 'flex',
@@ -35,23 +25,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = null
 
 const mapDispatchToProps = null
 
-/**
- * Transition component, used when toggle NodeEditor.
- */
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} direction="up" {...props} />
 })
 
-/**
- * Component.
- */
 const InputDialog = ({
   cancelDialogAction,
   confirmDialogAction,

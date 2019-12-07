@@ -1,18 +1,9 @@
-/**
- * Import globals.
- */
 import React from 'react'
-import { Circle, Text, Group } from 'react-konva'
+import { Circle, Group, Text } from 'react-konva'
 
-/**
- * Import themes.
- */
-import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 import algorithmComponentsTheme from '../../../../../../themes/algorithmComponents.theme'
+import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 
-/**
- * Component.
- */
 const EdgeLoop = ({
   algorithm_current_step,
   algorithmType,

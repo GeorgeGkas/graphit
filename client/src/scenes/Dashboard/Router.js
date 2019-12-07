@@ -1,17 +1,8 @@
-/**
- * Import globals.
- */
 import React from 'react'
-import { Switch, Redirect, Route, useRouteMatch } from 'react-router-dom'
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
-/**
- * Import components.
- */
 import Dashboard from './scenes/Projects'
 
-/**
- * Component.
- */
 const Router = () => {
   let { path } = useRouteMatch()
 

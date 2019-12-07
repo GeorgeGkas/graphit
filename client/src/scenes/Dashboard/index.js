@@ -1,23 +1,10 @@
-/**
- * Import globals.
- */
+import Grid from '@material-ui/core/Grid'
 import React from 'react'
 
-/**
- * Import UI framework modules.
- */
-import Grid from '@material-ui/core/Grid'
-
-/**
- * Import components.
- */
 import AppBar from './organisms/AppBar'
-import Router from './Router'
 import Sidebar from './organisms/Sidebar'
+import Router from './Router'
 
-/**
- * Component.
- */
 const Dashboard = () => {
   return (
     <>

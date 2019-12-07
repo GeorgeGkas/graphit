@@ -1,13 +1,3 @@
-import React from 'react'
-import {
-  usePopupState,
-  bindToggle,
-  bindPopover,
-} from 'material-ui-popup-state/hooks'
-
-/**
- * Import UI framework modules.
- */
 import Avatar from '@material-ui/core/Avatar'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Fade from '@material-ui/core/Fade'
@@ -17,15 +7,16 @@ import MenuList from '@material-ui/core/MenuList'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import { makeStyles } from '@material-ui/core/styles'
-/**
- * Import components.
- */
+import {
+  bindPopover,
+  bindToggle,
+  usePopupState,
+} from 'material-ui-popup-state/hooks'
+import React from 'react'
+
 import GoogleSignIn from './organisms/GoogleSignIn'
 import SignOutComponent from './organisms/SignOut'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   avatar: {
     height: 30,
@@ -41,9 +32,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Component.
- */
 const MaterialGoogleAvatar = ({ auth }) => {
   const classes = useStyles()
   const profileDropdownMenu = usePopupState({

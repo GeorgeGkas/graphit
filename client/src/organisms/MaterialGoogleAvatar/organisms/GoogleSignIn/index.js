@@ -1,19 +1,9 @@
-/**
- * Import globals.
- */
-import React from 'react'
-
-/**
- * Import UI framework modules.
- */
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
 
-/**
- * Import components.
- */
-import GoogleIcon from './atoms/GoogleIcon'
 import { withAuthentication } from '../../../../providers/Auth'
+import GoogleIcon from './atoms/GoogleIcon'
 
 const useStyles = makeStyles(() => ({
   signin: {
@@ -40,9 +30,6 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-/**
- * Component.
- */
 const GoogleSignIn = ({ auth, buttonText, onFailure, onSuccess, render }) => {
   const classes = useStyles()
 

@@ -1,17 +1,5 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-
-/**
- * Import UI framework modules.
- */
 import Backdrop from '@material-ui/core/Backdrop'
 import Button from '@material-ui/core/Button'
-import CloudUploadIcon from '@material-ui/icons/CloudUploadSharp'
 import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
 import Grid from '@material-ui/core/Grid'
@@ -19,23 +7,18 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Modal from '@material-ui/core/Modal'
 import Select from '@material-ui/core/Select'
+import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import CloudUploadIcon from '@material-ui/icons/CloudUploadSharp'
+import React from 'react'
+import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import components.
- */
 import Stepper from '../../../../organisms/Stepper'
-
-/**
- * Import ducks.
- */
 import { operations as graphOperations } from '../../ducks/graph'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   fileInput: {
     display: 'none',
@@ -75,9 +58,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   isNewEditor: state.graph.present.metadata.algorithm === '',
 })
@@ -85,9 +65,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(graphOperations, dispatch)
 
-/**
- * Component.
- */
 const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
   const history = useHistory()
   const classes = useStyles()

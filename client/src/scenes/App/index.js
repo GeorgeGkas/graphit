@@ -1,13 +1,8 @@
-/**
- * Import globals.
- */
 import React from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
-/**
- * Import components.
- */
+import { selectors as graphSelectors } from './ducks/graph'
 import AppBar from './organisms/AppBar'
 import CreateModal from './organisms/CreateModal'
 import Editor from './organisms/Editor'
@@ -15,14 +10,6 @@ import EditorBar from './organisms/EditorBar'
 import PropertiesEditor from './organisms/PropertiesEditor'
 import Tutorial from './organisms/Tutorial'
 
-/**
- * Import ducks.
- */
-import { selectors as graphSelectors } from './ducks/graph'
-
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   isNewEditor: state.graph.present.metadata.algorithm === '',
@@ -32,9 +19,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = null
 
-/**
- * Component.
- */
 const App = ({
   currentEditorAction,
   isNewEditor,

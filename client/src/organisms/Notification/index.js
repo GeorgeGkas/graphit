@@ -1,19 +1,9 @@
-/**
- * Import globals.
- */
-import React from 'react'
-
-/**
- * Import UI framework modules.
- */
-import CloseIcon from '@material-ui/icons/CloseSharp'
 import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
+import CloseIcon from '@material-ui/icons/CloseSharp'
+import React from 'react'
 
-/**
- * Component.
- */
 const Notification = ({ disableClickAwayListener = false, message }) => {
   const [notificationVisible, makeNotificationVisible] = React.useState(false)
   const toggleNotification = () => makeNotificationVisible(!notificationVisible)

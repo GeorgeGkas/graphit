@@ -1,18 +1,9 @@
-/**
- * Import globals.
- */
 import React from 'react'
-import { Arrow, Group, Text, Circle } from 'react-konva'
+import { Arrow, Circle, Group, Text } from 'react-konva'
 
-/**
- * Import themes.
- */
-import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 import algorithmComponentsTheme from '../../../../../../themes/algorithmComponents.theme'
+import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 
-/**
- * Component.
- */
 const Node = ({
   algorithm_current_step,
   createEdge,

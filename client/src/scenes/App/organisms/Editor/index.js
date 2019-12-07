@@ -1,34 +1,21 @@
-/**
- * Import globals.
- */
 import map from 'lodash/fp/map'
 import values from 'lodash/fp/values'
 import React, { useState } from 'react'
-import { Stage, Layer, Circle, Arrow } from 'react-konva'
-import { bindActionCreators } from 'redux'
+import { Arrow, Circle, Layer, Stage } from 'react-konva'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import ducks.
- */
+import editorComponentsTheme from '../../../../themes/editorComponents.theme'
 import { operations as editorOperations } from '../../ducks/editor'
 import {
   operations as graphOperations,
   selectors as graphSelectors,
 } from '../../ducks/graph'
-
-/**
- * Import components.
- */
-import editorComponentsTheme from '../../../../themes/editorComponents.theme'
-import Grid from './organisms/Grid'
-import EdgeNotLoop from './organisms/EdgeNotLoop'
 import EdgeLoop from './organisms/EdgeLoop'
+import EdgeNotLoop from './organisms/EdgeNotLoop'
+import Grid from './organisms/Grid'
 import Node from './organisms/Node'
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   algorithmType: state.graph.present.metadata.algorithm,
   algorithm_current_step: state.algorithm.steps[state.algorithm.currentIndex],
@@ -49,9 +36,6 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   )
 
-/**
- * Construct appropriate cursor variant.
- */
 const buildCursorStyle = currentEditorAction =>
   currentEditorAction === 'select' || currentEditorAction === 'isPlaying'
     ? 'default'
@@ -59,9 +43,6 @@ const buildCursorStyle = currentEditorAction =>
     ? 'crosshair'
     : 'copy'
 
-/**
- * Component.
- */
 const Editor = ({
   algorithm_current_step,
   algorithmType,

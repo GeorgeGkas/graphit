@@ -1,7 +1,8 @@
-import set from 'lodash/fp/set'
-import omit from 'lodash/fp/omit'
 import defaults from 'lodash/fp/defaults'
 import get from 'lodash/fp/get'
+import omit from 'lodash/fp/omit'
+import set from 'lodash/fp/set'
+
 import * as types from './types'
 
 /**

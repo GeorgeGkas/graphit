@@ -1,25 +1,12 @@
-/**
- * Import globals.
- */
 import loadable from '@loadable/component'
 import React from 'react'
-import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-/**
- * Import components.
- */
 import Loading from './organisms/Loading'
 import PrivateRoute from './organisms/PrivateRoute'
-
-/**
- * Import scenes
- */
 import CheckAuthLoadingScreen from './scenes/CheckAuthLoadingScreen'
 import FetchProjectId from './scenes/FetchProjectId'
 
-/**
- * Lazy load scenes.
- */
 const App = loadable(
   () => import(/* webpackChunkName: "App" */ './scenes/App'),
   {

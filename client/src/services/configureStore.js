@@ -5,11 +5,12 @@
  */
 
 import axios from 'axios'
+import { applyMiddleware, compose, createStore } from 'redux'
 import axiosMiddleware from 'redux-axios-middleware'
-import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import createRootReducer from './rootReducer'
+
 import * as rootOperations from './rootOperations'
+import createRootReducer from './rootReducer'
 
 const rootReducer = createRootReducer()
 

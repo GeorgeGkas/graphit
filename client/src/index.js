@@ -3,12 +3,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
+
 import AuthProvider from './providers/Auth'
-import * as serviceWorker from './services/serviceWorker'
 import FirebaseProvider from './providers/Firebase'
-import GlobalStyle from './styles.global'
-import configureReduxStore from './services/configureStore'
 import Router from './Router'
+import configureReduxStore from './services/configureStore'
+import * as serviceWorker from './services/serviceWorker'
+import GlobalStyle from './styles.global'
 
 const { store } = configureReduxStore()
 

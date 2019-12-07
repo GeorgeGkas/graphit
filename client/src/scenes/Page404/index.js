@@ -1,6 +1,8 @@
+import './styles.css'
+
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './styles.css'
+
 import boat from './images/boat.svg'
 import island from './images/island.svg'
 

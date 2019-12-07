@@ -1,21 +1,11 @@
-/**
- * Import globals.
- */
-import React from 'react'
-
-/**
- * Import UI framework modules.
- */
 import Button from '@material-ui/core/Button'
 import Step from '@material-ui/core/Step'
-import Stepper from '@material-ui/core/Stepper'
 import StepLabel from '@material-ui/core/StepLabel'
-import Typography from '@material-ui/core/Typography'
+import Stepper from '@material-ui/core/Stepper'
 import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import React from 'react'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   button: {
     marginRight: theme.spacing(1),
@@ -28,9 +18,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Component.
- */
 const CustomStepper = ({
   onComplete = _ => _,
   onCompleteEndFail = () => null,

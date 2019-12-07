@@ -1,12 +1,7 @@
-/**
- * Import globals.
- */
 import React from 'react'
+
 import { withAuthentication } from '../../../../providers/Auth'
 
-/**
- * Component.
- */
 const SignOut = ({
   auth,
   buttonText,

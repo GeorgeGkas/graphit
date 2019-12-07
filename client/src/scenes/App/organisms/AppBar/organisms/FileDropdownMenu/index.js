@@ -1,14 +1,3 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { bindActionCreators, compose } from 'redux'
-import { connect } from 'react-redux'
-import { toast } from 'react-toastify'
-
-/**
- * Import UI framework modules.
- */
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Fade from '@material-ui/core/Fade'
 import ListItem from '@material-ui/core/ListItem'
@@ -16,30 +5,20 @@ import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Paper from '@material-ui/core/Paper'
+import React from 'react'
+import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
+import { bindActionCreators, compose } from 'redux'
 
-/**
- * Import ducks.
- */
+import { operations as projectsOperations } from '../../../../../../ducks/projects'
+import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
+import Notification from '../../../../../../organisms/Notification'
+import { withAuthentication } from '../../../../../../providers/Auth'
 import { operations as algorithmOperations } from '../../../../ducks/algorithm'
 import { operations as editorOperations } from '../../../../ducks/editor'
 import { operations as graphOperations } from '../../../../ducks/graph'
-import { operations as projectsOperations } from '../../../../../../ducks/projects'
-
-/**
- * Import components.
- */
-import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
-import Notification from '../../../../../../organisms/Notification'
-
-/**
- * Import services
- */
 import localDownload from './services/localDownload'
-import { withAuthentication } from '../../../../../../providers/Auth'
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   currentEditorAction: state.editor.currentEditorAction,
   futureExist: state.graph.future.length,
@@ -59,9 +38,6 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   )
 
-/**
- * Component
- */
 const FileDropdownMenu = ({
   TransitionProps,
   auth,

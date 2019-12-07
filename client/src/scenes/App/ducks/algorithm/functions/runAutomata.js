@@ -1,13 +1,12 @@
-import React from 'react'
-import { toast } from 'react-toastify'
-
 import cloneDeep from 'lodash/fp/cloneDeep'
 import filter from 'lodash/fp/filter'
 import find from 'lodash/fp/find'
 import values from 'lodash/fp/values'
-import resolveGraph from './resolveGraph'
+import React from 'react'
+import { toast } from 'react-toastify'
 
 import Notification from '../../../../../organisms/Notification'
+import resolveGraph from './resolveGraph'
 
 export default function automata(graph, input) {
   /**

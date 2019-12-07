@@ -1,38 +1,21 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-/**
- * Import UI framework modules.
- */
 import Button from '@material-ui/core/Button'
-import DeleteIcon from '@material-ui/icons/DeleteSharp'
-import EditIcon from '@material-ui/icons/EditSharp'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
+import DeleteIcon from '@material-ui/icons/DeleteSharp'
+import EditIcon from '@material-ui/icons/EditSharp'
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import ducks.
- */
 import {
   operations as graphOperations,
   selectors as graphSelectors,
 } from '../../ducks/graph'
-
-/**
- * Import components.
- */
 import EdgeInputEditor from './organisms/EdgeInputEditor'
 import EdgeWeightEditor from './organisms/EdgeWeightEditor'
 import NodeEditor from './organisms/NodeEditor'
 import { Wrapper } from './styles'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   buttonIcon: {
     fontSize: 20,
@@ -47,9 +30,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   algorithm: state.graph.present.metadata.algorithm,
   edges: state.graph.present.edges,
@@ -62,9 +42,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ ...graphOperations }, dispatch)
 
-/**
- * Component.
- */
 const PropertiesEditor = ({
   algorithm,
   deleteEdge,

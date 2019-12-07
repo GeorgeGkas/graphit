@@ -1,6 +1,6 @@
 import concat from 'lodash/fp/concat'
-import find from 'lodash/fp/find'
 import filter from 'lodash/fp/filter'
+import find from 'lodash/fp/find'
 import map from 'lodash/fp/map'
 import matchesProperty from 'lodash/fp/matchesProperty'
 import minBy from 'lodash/fp/minBy'
@@ -8,6 +8,7 @@ import reduce from 'lodash/fp/reduce'
 import uniq from 'lodash/fp/uniq'
 import uniqBy from 'lodash/fp/uniqBy'
 import values from 'lodash/fp/values'
+
 import resolveGraph from './resolveGraph'
 
 export default function dijkstra(graph) {

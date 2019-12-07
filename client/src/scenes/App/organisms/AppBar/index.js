@@ -1,49 +1,28 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { bindActionCreators, compose } from 'redux'
-import { connect } from 'react-redux'
-import {
-  usePopupState,
-  bindToggle,
-  bindPopover,
-} from 'material-ui-popup-state/hooks'
-
-/**
- * Import UI framework modules.
- */
-import blue from '@material-ui/core/colors/blue'
-import Button from '@material-ui/core/Button'
-import DashboardIcon from '@material-ui/icons/DashboardSharp'
-import IconButton from '@material-ui/core/IconButton'
 import MUIAppBar from '@material-ui/core/AppBar'
+import Button from '@material-ui/core/Button'
+import blue from '@material-ui/core/colors/blue'
+import IconButton from '@material-ui/core/IconButton'
 import Popper from '@material-ui/core/Popper'
+import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import DashboardIcon from '@material-ui/icons/DashboardSharp'
+import {
+  bindPopover,
+  bindToggle,
+  usePopupState,
+} from 'material-ui-popup-state/hooks'
+import React from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { bindActionCreators, compose } from 'redux'
 
-/**
- * Import ducks.
- */
-import { operations as tutorialOperations } from '../../ducks/tutorial'
-
-/**
- * Import components.
- */
-import FileDropdownMenu from './organisms/FileDropdownMenu'
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
-
-/**
- * Import services.
- */
 import { withAuthentication } from '../../../../providers/Auth'
+import { operations as tutorialOperations } from '../../ducks/tutorial'
+import FileDropdownMenu from './organisms/FileDropdownMenu'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
@@ -77,9 +56,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   graphMetadata: state.graph.present.metadata,
 })
@@ -87,9 +63,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(tutorialOperations, dispatch)
 
-/**
- * Component.
- */
 const AppBar = ({
   auth,
   graphMetadata,

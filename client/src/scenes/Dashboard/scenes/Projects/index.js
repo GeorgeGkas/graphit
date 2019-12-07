@@ -1,34 +1,21 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-/**
- * Import UI framework modules.
- */
 import CircularProgress from '@material-ui/core/CircularProgress'
-import DeleteIcon from '@material-ui/icons/DeleteSharp'
 import IconButton from '@material-ui/core/IconButton'
-import MUIDataTable from 'mui-datatables'
-import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEyeSharp'
-import Tooltip from '@material-ui/core/Tooltip'
 import {
   MuiThemeProvider,
   createMuiTheme,
   makeStyles,
 } from '@material-ui/core/styles'
+import Tooltip from '@material-ui/core/Tooltip'
+import DeleteIcon from '@material-ui/icons/DeleteSharp'
+import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEyeSharp'
+import MUIDataTable from 'mui-datatables'
+import React from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import ducks.
- */
 import { operations as projectsOperations } from '../../../../ducks/projects'
 
-/**
- * Construct component styles.
- */
 const datatableTheme = () =>
   createMuiTheme({
     overrides: {
@@ -72,9 +59,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   projects: state.projects,
 })
@@ -82,9 +66,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(projectsOperations, dispatch)
 
-/**
- * Component.
- */
 const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
   const classes = useStyles()
   const [currentProjectIdAction, setCurrentProjectIdAction] = React.useState(

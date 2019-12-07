@@ -1,13 +1,3 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-/**
- * Import UI framework modules.
- */
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -16,21 +6,18 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Fade from '@material-ui/core/Fade'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import ducks.
- */
 import {
   operations as graphOperations,
   selectors as graphSelectors,
 } from '../../../../ducks/graph'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   form: {
     display: 'flex',
@@ -46,9 +33,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   algorithm: state.graph.present.metadata.algorithm,
   selectedNode: graphSelectors.getSelected(state.graph.present.nodes),
@@ -57,16 +41,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(graphOperations, dispatch)
 
-/**
- * Transition component, used when toggle NodeEditor.
- */
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} direction="up" {...props} />
 })
 
-/**
- * Component.
- */
 const NodeEditor = ({
   algorithm,
   editorDialogVisible,

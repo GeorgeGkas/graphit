@@ -4,8 +4,8 @@
  */
 
 import deepOrange from '@material-ui/core/colors/deepOrange'
-import grey from '@material-ui/core/colors/grey'
 import green from '@material-ui/core/colors/green'
+import grey from '@material-ui/core/colors/grey'
 
 export default {
   connectArrow: {

@@ -1,17 +1,8 @@
-/**
- * Import globals.
- */
 import React from 'react'
 import { Layer, Line } from 'react-konva'
 
-/**
- * Import themes.
- */
 import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 
-/**
- * Build X axis.
- */
 const buildX = ({ padding, stage }) => {
   const gridX = []
 
@@ -40,9 +31,6 @@ const buildX = ({ padding, stage }) => {
   return gridX
 }
 
-/**
- * Build Y axis.
- */
 const buildY = ({ padding, stage }) => {
   const gridY = []
 
@@ -71,9 +59,6 @@ const buildY = ({ padding, stage }) => {
   return gridY
 }
 
-/**
- * Component.
- */
 const Grid = ({ stage }) => {
   const padding = 35
 

@@ -3,14 +3,15 @@
  * Import all your Duck Reducers to this file.
  */
 
-import set from 'lodash/fp/set'
-import undoable, { includeAction } from 'redux-undo'
 import mapValues from 'lodash/fp/mapValues'
+import set from 'lodash/fp/set'
 import { combineReducers } from 'redux'
+import undoable, { includeAction } from 'redux-undo'
+
+import projects from '../ducks/projects'
 import algorithm from '../scenes/App/ducks/algorithm'
 import editor from '../scenes/App/ducks/editor'
 import graph, { types as graphTypes } from '../scenes/App/ducks/graph'
-import projects from '../ducks/projects'
 import tutorial from '../scenes/App/ducks/tutorial'
 
 export default () =>

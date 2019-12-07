@@ -1,23 +1,10 @@
-/**
- * Import globals.
- */
 import React from 'react'
-import { Arrow, Text, Group } from 'react-konva'
+import { Arrow, Group, Text } from 'react-konva'
 
-/**
- * Import themes.
- */
-import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 import algorithmComponentsTheme from '../../../../../../themes/algorithmComponents.theme'
-
-/**
- * Import utilities.
- */
+import editorComponentsTheme from '../../../../../../themes/editorComponents.theme'
 import buildEdge from './services/buildEdge'
 
-/**
- * Component.
- */
 const EdgeNotLoop = ({
   algorithm_current_step,
   algorithmType,

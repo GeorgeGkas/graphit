@@ -3,8 +3,9 @@
  */
 
 import uuid from 'uuid'
-import * as types from '../types'
+
 import * as operations from '../operations'
+import * as types from '../types'
 
 jest.mock('uuid')
 uuid.v4.mockImplementation(() => 'UUID')

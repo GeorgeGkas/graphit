@@ -1,30 +1,13 @@
-/**
- * Import globals.
- */
-import React from 'react'
-
-/**
- * Import UI framework modules.
- */
-import blue from '@material-ui/core/colors/blue'
 import MUIAppBar from '@material-ui/core/AppBar'
+import blue from '@material-ui/core/colors/blue'
+import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
 
-/**
- * Import components.
- */
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
-
-/**
- * Import services.
- */
 import { withAuthentication } from '../../../../providers/Auth'
 
-/**
- * Construct component styles.
- */
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
@@ -41,9 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/**
- * Component.
- */
 const AppBar = ({ auth }) => {
   const classes = useStyles()
 

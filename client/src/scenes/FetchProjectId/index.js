@@ -1,14 +1,11 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import Loading from '../../organisms/Loading'
+import { bindActionCreators } from 'redux'
 
 import { operations as projectsOperations } from '../../ducks/projects'
+import Loading from '../../organisms/Loading'
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = null
 
 const mapDispatchToProps = dispatch =>

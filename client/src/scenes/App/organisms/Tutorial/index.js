@@ -1,14 +1,4 @@
-/**
- * Import globals.
- */
-import React from 'react'
-import ReactTour from 'reactour'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-/**
- * Import UI framework modules.
- */
+import Typography from '@material-ui/core/Typography'
 import BrushIcon from '@material-ui/icons/BrushSharp'
 import CategoryIcon from '@material-ui/icons/CategorySharp'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeftSharp'
@@ -20,19 +10,16 @@ import RedoIcon from '@material-ui/icons/RedoSharp'
 import SkipNextIcon from '@material-ui/icons/SkipNextSharp'
 import SkipPreviousIcon from '@material-ui/icons/SkipPreviousSharp'
 import StopIcon from '@material-ui/icons/StopSharp'
-import Typography from '@material-ui/core/Typography'
 import UndoIcon from '@material-ui/icons/UndoSharp'
 import ZoomInIcon from '@material-ui/icons/ZoomInSharp'
 import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
+import React from 'react'
+import { connect } from 'react-redux'
+import ReactTour from 'reactour'
+import { bindActionCreators } from 'redux'
 
-/**
- * Import ducks.
- */
 import { operations as tutorialOperations } from '../../ducks/tutorial'
 
-/**
- * React tour steps.
- */
 const steps = [
   {
     content: (
@@ -303,9 +290,6 @@ const steps = [
   },
 ]
 
-/**
- * Connect component to Redux.
- */
 const mapStateToProps = state => ({
   isTourOpen: state.tutorial.visible,
 })
@@ -313,9 +297,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(tutorialOperations, dispatch)
 
-/**
- * Component.
- */
 const Tutorial = ({ isTourOpen, setTutorialVisibility }) => {
   const closeTutorial = () => setTutorialVisibility(false)
 

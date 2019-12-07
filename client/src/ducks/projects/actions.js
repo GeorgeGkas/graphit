@@ -1,10 +1,10 @@
-import React from 'react'
-import Notification from '../../organisms/Notification'
 import filter from 'lodash/fp/filter'
+import React from 'react'
 import { toast } from 'react-toastify'
 
-import * as types from './types'
+import Notification from '../../organisms/Notification'
 import { operations as graphOperations } from '../../scenes/App/ducks/graph'
+import * as types from './types'
 
 const setProjectList = projectList => ({
   payload: projectList,

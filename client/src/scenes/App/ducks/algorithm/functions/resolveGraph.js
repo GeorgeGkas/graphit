@@ -1,6 +1,6 @@
+import filter from 'lodash/fp/filter'
 import includes from 'lodash/fp/includes'
 import keys from 'lodash/fp/keys'
-import filter from 'lodash/fp/filter'
 import map from 'lodash/fp/map'
 import matchesProperty from 'lodash/fp/matchesProperty'
 import reduce from 'lodash/fp/reduce'

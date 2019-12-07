@@ -1,12 +1,11 @@
 import React from 'react'
 import { toast } from 'react-toastify'
 
-import * as actions from './actions'
+import Notification from '../../../../organisms/Notification'
 import { operations as editorOperations } from '../editor'
+import * as actions from './actions'
 import runAutomata from './functions/runAutomata'
 import runDijkstra from './functions/runDijkstra'
-
-import Notification from '../../../../organisms/Notification'
 
 const {
   firstIteration: firstIterationAction,
