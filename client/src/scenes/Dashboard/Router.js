@@ -9,9 +9,7 @@ const Router = () => {
   return (
     <Switch>
       <Route exact component={Dashboard} path={`${path}/projects`} />
-      <Route>
-        <Redirect to={`${path}/projects`} />
-      </Route>
+      <Redirect to="/404" />
     </Switch>
   )
 }
