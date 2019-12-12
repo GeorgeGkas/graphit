@@ -15,7 +15,7 @@
       "npm --prefix \"client\" run build"
     ],
     "public": "client/build",
-    "site": "dijkstra-visualizer",
+    "site": "graphit",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
