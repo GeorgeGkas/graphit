@@ -23,14 +23,30 @@ export default function automata(graph, input) {
   /**
    * Run Automata in resolved graph.
    */
-
   let currentStates = []
+  let nextStates = []
   const steps = []
+
+  let step = {
+    highlighted_edges: [],
+    highlighted_nodes: [],
+    selected_edges: [],
+    selected_nodes: [],
+    unvisited: [],
+  }
 
   currentStates.push(initial)
 
+  for (const state of currentStates) {
+    followEpsilonsTransitions(resolvedGraph, state, nextStates, step)
+  }
+
+  currentStates = [initial, ...cloneDeep(nextStates)]
+  nextStates = []
+  steps.push(step)
+
   for (const char of input) {
-    const step = {
+    step = {
       highlighted_edges: [],
       highlighted_nodes: [],
       selected_edges: [],
@@ -38,7 +54,6 @@ export default function automata(graph, input) {
       unvisited: [],
     }
 
-    const nextStates = []
     for (const state of currentStates) {
       followCharTransitions(resolvedGraph, state, nextStates, step, char)
     }
@@ -48,7 +63,7 @@ export default function automata(graph, input) {
     }
 
     currentStates = cloneDeep(nextStates)
-
+    nextStates = []
     steps.push(step)
   }
 
@@ -79,6 +94,11 @@ function followEpsilonsTransitions(graph, initial, nextStates, step) {
 
   while (S.length) {
     const state = S.shift()
+
+    if (step.selected_nodes.includes(state.id)) {
+      continue
+    }
+
     step.selected_nodes.push(state.id)
 
     const transitions = filter(['ui.connects.from', state.id])(
@@ -87,11 +107,14 @@ function followEpsilonsTransitions(graph, initial, nextStates, step) {
 
     for (const transition of transitions) {
       if (transition.properties.input.split(',').includes('@')) {
-        step.selected_edges.push(transition.id)
         if (!nextStates.some(state => state.id === transition.ui.connects.to)) {
           const next = graph.nodes[transition.ui.connects.to]
           S.push(next)
           nextStates.push(next)
+        }
+
+        if (!step.selected_edges.includes(transition.id)) {
+          step.selected_edges.push(transition.id)
         }
       }
     }
@@ -104,14 +127,14 @@ function followCharTransitions(graph, state, nextStates, step, char) {
   )
 
   for (const transition of transitions) {
-    if (!nextStates.some(state => state.id === transition.ui.connects.to)) {
-      if (transition.properties.input.split(',').includes(char)) {
+    if (transition.properties.input.split(',').includes(char)) {
+      if (!nextStates.some(state => state.id === transition.ui.connects.to)) {
         const next = graph.nodes[transition.ui.connects.to]
         nextStates.push(next)
+      }
+
+      if (!step.selected_edges.includes(transition.id)) {
         step.selected_edges.push(transition.id)
-        if (!step.selected_nodes.includes(state.id)) {
-          step.selected_nodes.push(state.id)
-        }
       }
     }
   }
