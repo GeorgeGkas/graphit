@@ -49,11 +49,15 @@ const Router = () => {
           </CheckAuthLoadingScreen>
         </Route>
 
-        <PrivateRoute fallback="/app" path="/dashboard">
-          <CheckAuthLoadingScreen>
-            <Dashboard />
-          </CheckAuthLoadingScreen>
-        </PrivateRoute>
+        <PrivateRoute
+          component={
+            <CheckAuthLoadingScreen>
+              <Dashboard />
+            </CheckAuthLoadingScreen>
+          }
+          fallback="/app"
+          path="/dashboard"
+        />
 
         <Route component={Page404} />
       </Switch>
