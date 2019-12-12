@@ -88,7 +88,7 @@ const AppBar = ({
                 color="inherit"
                 component={Link}
                 edge="start"
-                to="/dashboard"
+                to="/dashboard/projects"
               >
                 <DashboardIcon />
               </IconButton>
