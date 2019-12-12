@@ -50,11 +50,11 @@ const Router = () => {
         </Route>
 
         <PrivateRoute
-          component={
+          component={() => (
             <CheckAuthLoadingScreen>
               <Dashboard />
             </CheckAuthLoadingScreen>
-          }
+          )}
           fallback="/app"
           path="/dashboard"
         />
