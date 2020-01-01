@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -49,6 +50,8 @@ const EdgeWeightEditor = ({
   updateEdgeProperties,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [validEdgeWeight, validateEdgeWeight] = React.useState(true)
 
   const submitForm = () => {
@@ -76,7 +79,9 @@ const EdgeWeightEditor = ({
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">Edit Edge</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+        {t('app.edge_weight_editor.title')}
+      </DialogTitle>
       <DialogContent>
         <form
           noValidate
@@ -89,9 +94,9 @@ const EdgeWeightEditor = ({
               fullWidth
               defaultValue={selectedEdge.properties.weight}
               error={!validEdgeWeight}
-              helperText="Use any negative or positive integer."
+              helperText={t('app.edge_weight_editor.weight_input_help_text')}
               id="edge_weight_input"
-              label="Weight"
+              label={t('app.edge_weight_editor.weight_input_label')}
               margin="dense"
               type="text"
               onChange={e =>
@@ -106,14 +111,14 @@ const EdgeWeightEditor = ({
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={handleClose}>
-          Cancel
+          {t('app.edge_weight_editor.cancel')}
         </Button>
         <Button
           color="primary"
           disabled={!validEdgeWeight}
           onClick={submitForm}
         >
-          Apply Changes
+          {t('app.edge_weight_editor.confirm')}
         </Button>
       </DialogActions>
     </Dialog>

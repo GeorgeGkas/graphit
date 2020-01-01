@@ -5,6 +5,7 @@ import Stepper from '@material-ui/core/Stepper'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -26,6 +27,8 @@ const CustomStepper = ({
   steps,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [activeStep, setActiveStep] = React.useState(0)
   const [skippedStepsSet, setSkippedStepsSet] = React.useState(
     new Set(steps.map((step, index) => (step.optional ? index : undefined))),
@@ -92,7 +95,7 @@ const CustomStepper = ({
 
   const handleSkippableStep = async () => {
     if (!isStepOptional(steps[activeStep])) {
-      throw new Error("You can't skip a step that isn't optional.")
+      throw new Error(t('stepper.prohibit_optional_step_skip'))
     }
 
     if (typeof steps[activeStep].onSkip === 'function') {
@@ -115,7 +118,7 @@ const CustomStepper = ({
           const labelProps = {}
           if (isStepOptional(step)) {
             labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
+              <Typography variant="caption">{t('stepper.optional')}</Typography>
             )
           }
           if (
@@ -144,7 +147,7 @@ const CustomStepper = ({
                 disabled={activeStep === 0}
                 onClick={handlePreviousStep}
               >
-                Back
+                {t('stepper.back')}
               </Button>
               {isStepOptional(steps[activeStep]) && (
                 <Button
@@ -153,7 +156,7 @@ const CustomStepper = ({
                   variant="contained"
                   onClick={handleSkippableStep}
                 >
-                  Skip
+                  {t('stepper.skip')}
                 </Button>
               )}
 
@@ -167,8 +170,8 @@ const CustomStepper = ({
                 {activeStep === steps.length - 1 ||
                 (typeof steps[activeStep].onNextFinish === 'function' &&
                   steps[activeStep].onNextFinish())
-                  ? 'Finish'
-                  : 'Next'}
+                  ? t('stepper.finish')
+                  : t('stepper.next')}
               </Button>
             </div>
           </>

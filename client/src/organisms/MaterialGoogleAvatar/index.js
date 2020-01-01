@@ -13,6 +13,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import GoogleSignIn from './organisms/GoogleSignIn'
 import SignOutComponent from './organisms/SignOut'
@@ -34,6 +35,8 @@ const useStyles = makeStyles(theme => ({
 
 const MaterialGoogleAvatar = ({ auth }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const profileDropdownMenu = usePopupState({
     popupId: 'profileDropdownMenu',
     variant: 'popover',
@@ -69,7 +72,9 @@ const MaterialGoogleAvatar = ({ auth }) => {
                   <MenuList>
                     <SignOutComponent
                       render={doSignOut => (
-                        <MenuItem onClick={doSignOut}>Sign out</MenuItem>
+                        <MenuItem onClick={doSignOut}>
+                          {t('google_connect.signout')}
+                        </MenuItem>
                       )}
                       onFailure={console.error}
                       onSuccess={profileDropdownMenu.close}
@@ -86,7 +91,7 @@ const MaterialGoogleAvatar = ({ auth }) => {
     return (
       <div id="google_signin_button">
         <GoogleSignIn
-          buttonText="Sign In"
+          buttonText={t('google_connect.signin')}
           onFailure={console.error}
           onSuccess={_ => _}
         />

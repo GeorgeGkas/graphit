@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { withFirebase } from '../Firebase'
 
@@ -11,6 +12,8 @@ import { withFirebase } from '../Firebase'
 const AuthContext = React.createContext(null)
 
 const AuthProvider = withFirebase(props => {
+  const { t } = useTranslation()
+
   const [authUser, setAuthUser] = React.useState(null)
 
   const requestAuthUser = async () => {
@@ -79,7 +82,7 @@ const AuthProvider = withFirebase(props => {
     const cookieIsSet = await requestSessionCookieFromIdToken(token)
 
     if (!cookieIsSet) {
-      throw new Error('Could not set session cookie.')
+      throw new Error(t('providers.auth.could_not_set_cookie'))
     }
 
     await props.firebase.signOut()
@@ -90,7 +93,7 @@ const AuthProvider = withFirebase(props => {
     const cookieIsUnset = await revokeSessionCookie()
 
     if (!cookieIsUnset) {
-      throw new Error('Could not unset session cookie.')
+      throw new Error(t('providers.auth.could_not_unset_cookie'))
     }
   }
 

@@ -4,6 +4,7 @@ import Hidden from '@material-ui/core/Hidden'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import graphImage from './images/graph.svg'
@@ -57,6 +58,7 @@ const useStyles = makeStyles(() => ({
 
 const Landing = () => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   return (
     <div>
@@ -71,7 +73,7 @@ const Landing = () => {
         <Grid item md={6} sm={7} xs={10}>
           <div className={classes.firstHalf}>
             <Typography gutterBottom align="center" component="h1" variant="h3">
-              graph IT
+              {t('common.project_name')}
             </Typography>
             <Typography
               paragraph
@@ -79,7 +81,7 @@ const Landing = () => {
               className={classes.description}
               variant="body1"
             >
-              Interactive graph editor for Computer Science enthusiasts.
+              {t('landing.description')}
             </Typography>
             <div style={{ paddingTop: '24px' }}>
               <Button
@@ -88,7 +90,7 @@ const Landing = () => {
                 to="/app"
               >
                 <Typography className={classes.callToActionButtonText}>
-                  Open editor
+                  {t('landing.callToAction')}
                 </Typography>
               </Button>
             </div>
@@ -109,7 +111,7 @@ const Landing = () => {
       </Grid>
 
       <Typography align="center" className={classes.footer} variant="body2">
-        Design and developed by{' '}
+        {t('landing.footer')}
         <a
           className={classes.footerProfileLink}
           href="https://github.com/georgegkas"

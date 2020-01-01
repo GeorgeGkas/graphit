@@ -1,3 +1,4 @@
+import i18next from 'i18next'
 import concat from 'lodash/fp/concat'
 import filter from 'lodash/fp/filter'
 import find from 'lodash/fp/find'
@@ -19,9 +20,17 @@ export default function dijkstra(graph) {
     graph.nodes,
   )
   if (!initials.length) {
-    throw new Error('Please set an initial node')
+    throw new Error(
+      i18next.t(
+        'ducks.algorithm.functions.runDijkstra.empty_initial_node_error',
+      ),
+    )
   } else if (initials.length > 1) {
-    throw new Error('Please select only one initial node')
+    throw new Error(
+      i18next.t(
+        'ducks.algorithm.functions.runDijkstra.multiple_initial_nodes_error',
+      ),
+    )
   }
 
   const initial = initials.pop()
@@ -33,7 +42,9 @@ export default function dijkstra(graph) {
   const resolvedGraph = resolveGraph(graph, initial)
   const nodes = values(resolvedGraph.nodes)
   if (uniqBy('properties.name', nodes).length !== nodes.length) {
-    throw new Error('Duplicate node names are prohibited')
+    throw new Error(
+      i18next.t('ducks.algorithm.functions.runDijkstra.duplicate_node_names'),
+    )
   }
 
   /**

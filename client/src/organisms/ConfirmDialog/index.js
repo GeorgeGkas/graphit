@@ -6,6 +6,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Fade from '@material-ui/core/Fade'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 const mapStateToProps = null
@@ -23,6 +24,8 @@ const ConfirmDialog = ({
   confirmTitle,
   handleClose,
 }) => {
+  const { t } = useTranslation()
+
   return (
     <Dialog
       fullWidth
@@ -48,10 +51,10 @@ const ConfirmDialog = ({
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={handleClose}>
-          Cancel
+          {t('confirm_dialog.cancel')}
         </Button>
         <Button color="primary" onClick={confirmAction}>
-          Confirm
+          {t('confirm_dialog.confirm')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -49,6 +50,8 @@ const EdgeInputEditor = ({
   updateEdgeProperties,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [validEdgeInput, validateEdgeInput] = React.useState(true)
 
   const submitForm = () => {
@@ -76,7 +79,9 @@ const EdgeInputEditor = ({
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">Edit Input</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+        {t('app.edge_input_editor.title')}
+      </DialogTitle>
       <DialogContent>
         <form
           noValidate
@@ -89,9 +94,9 @@ const EdgeInputEditor = ({
               fullWidth
               defaultValue={selectedEdge.properties.input}
               error={!validEdgeInput}
-              helperText="Single character values separated by comma (eg. a,b,c). Use @ for ε transitions."
+              helperText={t('app.edge_input_editor.edge_input_input_help_test')}
               id="edge_input_input"
-              label="Input"
+              label={t('app.edge_input_editor.edge_input_input_label')}
               margin="dense"
               type="text"
               onChange={e =>
@@ -111,10 +116,10 @@ const EdgeInputEditor = ({
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={handleClose}>
-          Cancel
+          {t('app.edge_input_editor.cancel')}
         </Button>
         <Button color="primary" disabled={!validEdgeInput} onClick={submitForm}>
-          Apply Changes
+          {t('app.edge_input_editor.confirm')}
         </Button>
       </DialogActions>
     </Dialog>

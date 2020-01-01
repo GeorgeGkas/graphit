@@ -14,6 +14,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators, compose } from 'redux'
@@ -70,6 +71,8 @@ const AppBar = ({
   setTutorialVisibility,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const fileDropdownMenu = usePopupState({
     popupId: 'fileDropdownMenu',
     variant: 'popover',
@@ -82,7 +85,7 @@ const AppBar = ({
       <MUIAppBar className={classes.root} position="static">
         <Toolbar>
           {auth.authUser && (
-            <Tooltip title="Dashboard">
+            <Tooltip title={t('app.appbar.dashboard_link')}>
               <IconButton
                 className={classes.menuButton}
                 color="inherit"
@@ -97,7 +100,9 @@ const AppBar = ({
 
           <div className={classes.title}>
             <Typography variant="h6">
-              {graphMetadata.name ? graphMetadata.name : 'Editor'}
+              {graphMetadata.name
+                ? graphMetadata.name
+                : t('app.appbar.default_project_name')}
             </Typography>
             <Typography gutterBottom display="block" variant="caption">
               {graphMetadata.algorithm ? graphMetadata.algorithm : null}
@@ -110,7 +115,7 @@ const AppBar = ({
             id="file_dropdown_menu"
             {...bindToggle(fileDropdownMenu)}
           >
-            File
+            {t('app.appbar.menu.file')}
           </Button>
           <Popper
             {...bindPopover(fileDropdownMenu)}
@@ -132,7 +137,7 @@ const AppBar = ({
             id="help_button"
             onClick={openTutorial}
           >
-            Help
+            {t('app.appbar.menu.help')}
           </Button>
 
           <div className={classes.grow} />

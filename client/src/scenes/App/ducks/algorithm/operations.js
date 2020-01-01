@@ -1,3 +1,4 @@
+import i18next from 'i18next'
 import React from 'react'
 import { toast } from 'react-toastify'
 
@@ -29,7 +30,11 @@ const startPlaying = payload => (dispatch, getState) => {
         break
       default:
         toast.dismiss()
-        toast(<Notification message="Could not run requested algorithm" />)
+        toast(
+          <Notification
+            message={i18next.t('ducks.algorithm.operations.unknown_algorithm')}
+          />,
+        )
         return
     }
 

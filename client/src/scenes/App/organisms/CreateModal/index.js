@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import CloudUploadIcon from '@material-ui/icons/CloudUploadSharp'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
@@ -68,6 +69,8 @@ const mapDispatchToProps = dispatch =>
 const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
   const history = useHistory()
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [uploadedGraph, setUploadedGraph] = React.useState(
     '{"edges":{}, "metadata": {}, "nodes": {}}',
   )
@@ -123,7 +126,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                       <Grid item className={classes.uploadContainer}>
                         <CloudUploadIcon color="primary" fontSize="large" />
                         <Typography gutterBottom variant="body1">
-                          Browse
+                          {t('app.create_modal.browse_files')}
                         </Typography>
                         <Typography
                           gutterBottom
@@ -178,7 +181,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                   setAlgorithmValid(false)
                 },
                 optional: true,
-                title: 'Upload from file',
+                title: t('app.create_modal.file_upload'),
               },
               {
                 content: (
@@ -190,7 +193,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                   >
                     <FormControl className={classes.formControl}>
                       <InputLabel id="algorithm_select_label">
-                        Algorithm
+                        {t('app.create_modal.choose_operation_title')}
                       </InputLabel>
                       <Select
                         id="algorithm_select"
@@ -205,15 +208,19 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                           }
                         }}
                       >
-                        <MenuItem value={'Dijkstra'}>Dijkstra</MenuItem>
-                        <MenuItem value={'Automata'}>Automata</MenuItem>
+                        <MenuItem value={'Dijkstra'}>
+                          {t('algorithm.dijkstra.title')}
+                        </MenuItem>
+                        <MenuItem value={'Automata'}>
+                          {t('algorithm.automata.title')}
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
                 ),
                 nextStepDisabledIf: !algorithmValid,
                 optional: false,
-                title: 'Choose algorithm',
+                title: t('app.create_modal.choose_operation'),
               },
               {
                 content: (
@@ -228,9 +235,11 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                         autoFocus
                         fullWidth
                         defaultValue={projectName}
-                        helperText="Type any non empty value."
+                        helperText={t(
+                          'app.create_modal.project_name_input_help_text',
+                        )}
                         id="project_name_input"
-                        label="Project Name"
+                        label={t('app.create_modal.project_name_input_label')}
                         margin="dense"
                         type="text"
                         onChange={e => {
@@ -253,7 +262,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                     document.getElementById('project_name_input').value,
                   ),
                 optional: false,
-                title: 'Choose project name',
+                title: t('app.create_modal.choose_project_name'),
               },
             ]}
             onComplete={async () => {
@@ -279,10 +288,10 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                 justify="center"
               >
                 <Typography gutterBottom variant="body1">
-                  Hooray!!!
+                  {t('app.create_modal.project_created_title')}
                 </Typography>
                 <Typography gutterBottom variant="caption">
-                  Close this window to start working on your project
+                  {t('app.create_modal.project_created_body')}
                 </Typography>
                 <Button
                   color="primary"
@@ -299,7 +308,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                     handleClose()
                   }}
                 >
-                  Close
+                  {t('app.create_modal.close')}
                 </Button>
               </Grid>
             )}
@@ -311,7 +320,7 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
                 justify="center"
               >
                 <Typography gutterBottom variant="body1">
-                  Creating new project...
+                  {t('app.create_modal.creating_new_project')}
                 </Typography>
               </Grid>
             )}

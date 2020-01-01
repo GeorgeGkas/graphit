@@ -14,281 +14,12 @@ import UndoIcon from '@material-ui/icons/UndoSharp'
 import ZoomInIcon from '@material-ui/icons/ZoomInSharp'
 import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import ReactTour from 'reactour'
 import { bindActionCreators } from 'redux'
 
 import { operations as tutorialOperations } from '../../ducks/tutorial'
-
-const steps = [
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Welcome to
-        </Typography>
-        <Typography gutterBottom variant="h6">
-          Dijkstra Visualizer
-        </Typography>
-        <Typography gutterBottom variant="body1">
-          This tutorial will guide you through the various elements of the
-          application.
-        </Typography>
-      </>
-    ),
-    selector: '#root',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          <Typography gutterBottom variant="h6">
-            Dijkstra Visualizer
-          </Typography>
-          is an interactive editor that allow students and educators create
-          custom graphs and run Dijkstra's Shortest Path First algorithm on
-          them.
-        </Typography>
-      </>
-    ),
-    selector: '#root',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          This highlighted surface is your editor. You can combine nodes and
-          edges to create graphs.
-        </Typography>
-      </>
-    ),
-    selector: '#interactive_editor',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The menu bar will be responsible for most of the interactions with the
-          editor.
-        </Typography>
-      </>
-    ),
-    selector: '#editor_bar',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The <strong>undo</strong> <RedoIcon /> and <strong>redo</strong>{' '}
-          <UndoIcon /> functionalities will manage any misconfigurations of your
-          graphs.
-        </Typography>
-      </>
-    ),
-    selector: '#editor_bar_undo_redo_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          In case the graph is too big or too small for your screen, you can
-          change the editor size using the <strong>zoom in</strong>{' '}
-          <ZoomInIcon /> and <strong>zoom out</strong> <ZoomOutIcon />{' '}
-          functionalities.
-        </Typography>
-      </>
-    ),
-    selector: '#editor_bar_zoom_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Activating the <strong>grid</strong> <GridOnIcon /> allows you to snap
-          graph nodes on top of it for increasing visual appearance.
-        </Typography>
-      </>
-    ),
-    selector: '#editor_bar_grid_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The various editor modes provide ways to manage node and edges.
-        </Typography>
-      </>
-    ),
-    selector: '#editor_bar_editor_mode_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Using the <strong>selector</strong> <BrushIcon /> mode you can
-          reposition any node. When a node or edge is selected you can{' '}
-          <strong>edit</strong> its properties or <strong>delete</strong> it
-          from the editor.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_editor_select_mode_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Using the <strong>nodes</strong> <CategoryIcon /> mode you can create
-          new nodes.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_editor_nodes_mode_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Using the <strong>edges</strong> <DeviceHubIcon /> mode you can create
-          new edges.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_editor_edges_mode_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          When you are done creating the graph, those actions will run the
-          Dijkstra's algorithm step by step.
-        </Typography>
-      </>
-    ),
-    selector: '#editor_bar_algorithm_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Clicking the <strong>play</strong> <PlayArrowIcon /> action button,
-          starts the editor into play mode. You cannot edit your graph while
-          being on this mode. To exit this mode, click the <strong>stop</strong>{' '}
-          <StopIcon /> button.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_algorithm_play_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The <strong>first step</strong> <SkipPreviousIcon /> action button,
-          sets the algorithm to its initial state.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_algorithm_first_step_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The <strong>back step</strong> <ChevronLeftIcon /> action button, sets
-          the algorithm to its previous step.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_algorithm_back_step_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The <strong>next step</strong> <ChevronRightIcon /> action button,
-          sets the algorithm to its next step.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_algorithm_next_step_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          The <strong>last step</strong> <SkipNextIcon /> action button, sets
-          the algorithm to its final state.
-        </Typography>
-      </>
-    ),
-    position: 'bottom',
-    selector: '#editor_bar_algorithm_last_step_section',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          Under <strong>File</strong> menu you can find options to save and load
-          your graphs locally.
-        </Typography>
-      </>
-    ),
-    selector: '#file_dropdown_menu',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          By signing in you can save your projects to online storage for{' '}
-          <strong>free</strong>!
-        </Typography>
-      </>
-    ),
-    selector: '#google_signin_button',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          You can restart this tutorial any time by clicking the{' '}
-          <Typography gutterBottom variant="button">
-            {' '}
-            <strong>HELP</strong>
-          </Typography>{' '}
-          button from the app bar.
-        </Typography>
-      </>
-    ),
-    selector: '#help_button',
-  },
-  {
-    content: (
-      <>
-        <Typography gutterBottom variant="body1">
-          <strong>Congratulations, you have completed the tutorial!</strong>
-        </Typography>
-        <Typography gutterBottom variant="body1">
-          <em>
-            Press the upper right{' '}
-            <Typography gutterBottom variant="button">
-              ✗
-            </Typography>{' '}
-            button to exit.
-          </em>
-        </Typography>
-      </>
-    ),
-    selector: '#root',
-  },
-]
 
 const mapStateToProps = state => ({
   isTourOpen: state.tutorial.visible,
@@ -298,7 +29,233 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(tutorialOperations, dispatch)
 
 const Tutorial = ({ isTourOpen, setTutorialVisibility }) => {
+  const { t } = useTranslation()
   const closeTutorial = () => setTutorialVisibility(false)
+
+  const steps = [
+    {
+      content: (
+        <>
+          <Typography gutterBottom variant="body1">
+            {t('app.tutorial.step1.welcome')}
+          </Typography>
+          <Typography gutterBottom variant="h6">
+            {t('common.project_name')}
+          </Typography>
+          <Typography gutterBottom variant="body1">
+            {t('app.tutorial.step1.body')}
+          </Typography>
+        </>
+      ),
+      selector: '#root',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          <Typography gutterBottom variant="h6">
+            {t('common.project_name')}
+          </Typography>
+          {t('app.tutorial.step2.body')}
+        </Typography>
+      ),
+      selector: '#root',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step3.body')}
+        </Typography>
+      ),
+      selector: '#interactive_editor',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step4.body')}
+        </Typography>
+      ),
+      selector: '#editor_bar',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step5.first')} <strong>undo</strong> <RedoIcon />{' '}
+          {t('app.tutorial.step5.second')} <strong>redo</strong> <UndoIcon />{' '}
+          {t('app.tutorial.step5.third')}
+        </Typography>
+      ),
+      selector: '#editor_bar_undo_redo_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step6.first')} <strong>zoom in</strong>{' '}
+          <ZoomInIcon /> {t('app.tutorial.step6.second')}{' '}
+          <strong>zoom out</strong> <ZoomOutIcon />{' '}
+          {t('app.tutorial.step6.third')}
+        </Typography>
+      ),
+      selector: '#editor_bar_zoom_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step7.first')} <strong>grid</strong> <GridOnIcon />{' '}
+          {t('app.tutorial.step7.second')}
+        </Typography>
+      ),
+      selector: '#editor_bar_grid_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step8.body')}
+        </Typography>
+      ),
+      selector: '#editor_bar_editor_mode_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step9.first')} <strong>selector</strong>{' '}
+          <BrushIcon /> {t('app.tutorial.step9.second')} <strong>edit</strong>{' '}
+          {t('app.tutorial.step9.third')} <strong>delete</strong>{' '}
+          {t('app.tutorial.step9.fourth')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_editor_select_mode_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step10.first')} <strong>nodes</strong>{' '}
+          <CategoryIcon /> {t('app.tutorial.step10.second')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_editor_nodes_mode_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step11.first')} <strong>edges</strong>{' '}
+          <DeviceHubIcon /> {t('app.tutorial.step11.second')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_editor_edges_mode_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step13.body')}
+        </Typography>
+      ),
+      selector: '#editor_bar_algorithm_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step14.first')} <strong>play</strong>{' '}
+          <PlayArrowIcon /> {t('app.tutorial.step14.second')}{' '}
+          <strong>stop</strong> <StopIcon /> {t('app.tutorial.step14.third')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_algorithm_play_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step15.first')} <strong>first step</strong>{' '}
+          <SkipPreviousIcon /> {t('app.tutorial.step15.second')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_algorithm_first_step_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step16.first')} <strong>back step</strong>{' '}
+          <ChevronLeftIcon /> {t('app.tutorial.step16.second')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_algorithm_back_step_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step17.first')} <strong>next step</strong>{' '}
+          <ChevronRightIcon /> {t('app.tutorial.step17.second')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_algorithm_next_step_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step18.first')} <strong>last step</strong>{' '}
+          <SkipNextIcon /> {t('app.tutorial.step18.second')}
+        </Typography>
+      ),
+      position: 'bottom',
+      selector: '#editor_bar_algorithm_last_step_section',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step19.first')}{' '}
+          <strong>{t('app.appbar.menu.file')}</strong>{' '}
+          {t('app.tutorial.step19.second')}
+        </Typography>
+      ),
+      selector: '#file_dropdown_menu',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step20.body')}
+        </Typography>
+      ),
+      selector: '#google_signin_button',
+    },
+    {
+      content: (
+        <Typography gutterBottom variant="body1">
+          {t('app.tutorial.step21.first')}{' '}
+          <Typography gutterBottom variant="button">
+            {' '}
+            <strong>{t('app.appbar.menu.help')}</strong>
+          </Typography>{' '}
+          {t('app.tutorial.step21.second')}
+        </Typography>
+      ),
+      selector: '#help_button',
+    },
+    {
+      content: (
+        <>
+          <Typography gutterBottom variant="body1">
+            <strong>{t('app.tutorial.step22.first')}</strong>
+          </Typography>
+          <Typography gutterBottom variant="body1">
+            <em>
+              {t('app.tutorial.step22.second')}{' '}
+              <Typography gutterBottom variant="button">
+                ✗
+              </Typography>{' '}
+              {t('app.tutorial.step22.third')}
+            </em>
+          </Typography>
+        </>
+      ),
+      selector: '#root',
+    },
+  ]
 
   return (
     <ReactTour

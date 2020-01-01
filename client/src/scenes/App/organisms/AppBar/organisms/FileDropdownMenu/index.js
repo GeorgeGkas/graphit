@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Paper from '@material-ui/core/Paper'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
 import { bindActionCreators, compose } from 'redux'
@@ -50,6 +51,8 @@ const FileDropdownMenu = ({
   pastExist,
   updateProjectById,
 }) => {
+  const { t } = useTranslation()
+
   const [
     newProjectOverwriteDialogVisible,
     makeNewProjectOverwriteDialogVisible,
@@ -76,7 +79,7 @@ const FileDropdownMenu = ({
                 }}
               >
                 <ListItem component="div">
-                  <ListItemText primary="New" />
+                  <ListItemText primary={t('app.appbar.file_dropdown.new')} />
                 </ListItem>
               </MenuItem>
 
@@ -95,20 +98,30 @@ const FileDropdownMenu = ({
                       await updateProjectById(graph.metadata.id, data)
                     } else {
                       toast.dismiss()
-                      toast(<Notification message="Saving project..." />)
+                      toast(
+                        <Notification
+                          message={t('app.appbar.saving_project')}
+                        />,
+                      )
 
                       await createProject(data)
 
                       toast.dismiss()
                       toast(
-                        <Notification message="Project saved successfully" />,
+                        <Notification
+                          message={t('app.appbar.project_saved')}
+                        />,
                       )
                     }
                   }}
                 >
                   <ListItem component="div">
                     <ListItemText
-                      primary={graph.metadata.id ? 'Update' : 'Save'}
+                      primary={
+                        graph.metadata.id
+                          ? t('app.appbar.file_dropdown.update')
+                          : t('app.appbar.file_dropdown.save')
+                      }
                     />
                   </ListItem>
                 </MenuItem>
@@ -120,7 +133,9 @@ const FileDropdownMenu = ({
                 onClick={() => localDownload(graph)}
               >
                 <ListItem component="div">
-                  <ListItemText primary="Download" />
+                  <ListItemText
+                    primary={t('app.appbar.file_dropdown.download')}
+                  />
                 </ListItem>
               </MenuItem>
             </MenuList>
@@ -134,10 +149,8 @@ const FileDropdownMenu = ({
           fileDropdownMenu.close()
         }}
         confirmDialogVisible={newProjectOverwriteDialogVisible}
-        confirmMessage={
-          'All unsaved changes will be deleted if you confirm this action.'
-        }
-        confirmTitle="Create new project?"
+        confirmMessage={t('app.appbar.discard_changes_body')}
+        confirmTitle={t('app.appbar.discard_changes_title')}
         handleClose={toggleNewProjectOverwriteDialog}
       />
     </>

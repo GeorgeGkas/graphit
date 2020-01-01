@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
@@ -44,6 +45,8 @@ const InputDialog = ({
   validateInput,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   return (
     <Dialog
       fullWidth
@@ -90,7 +93,7 @@ const InputDialog = ({
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={cancelDialogAction}>
-          Cancel
+          {t('input_dialog.cancel')}
         </Button>
         <Button
           color="primary"
@@ -101,7 +104,7 @@ const InputDialog = ({
             )
           }}
         >
-          Confirm
+          {t('input_dialog.confirm')}
         </Button>
       </DialogActions>
     </Dialog>

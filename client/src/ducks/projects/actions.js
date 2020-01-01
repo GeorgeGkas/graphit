@@ -1,3 +1,4 @@
+import i18next from 'i18next'
 import filter from 'lodash/fp/filter'
 import React from 'react'
 import { toast } from 'react-toastify'
@@ -17,7 +18,13 @@ const requestProjectList = () => ({
       onError({ error }) {
         console.error(error)
         toast.dismiss()
-        toast(<Notification message="Could not fetch project list" />)
+        toast(
+          <Notification
+            message={i18next.t(
+              'ducks.projects.actions.fail_to_fetch_project_list',
+            )}
+          />,
+        )
       },
       onSuccess({ dispatch, response }) {
         dispatch(setProjectList(response.data.data))
@@ -37,11 +44,19 @@ const updateProjectById = (id, data) => ({
       onError({ error }) {
         console.error(error)
         toast.dismiss()
-        toast.update(<Notification message="Could not update project" />)
+        toast.update(
+          <Notification
+            message={i18next.t('ducks.projects.actions.fail_to_update_project')}
+          />,
+        )
       },
       onSuccess() {
         toast.dismiss()
-        toast(<Notification message="Project updated successfully" />)
+        toast(
+          <Notification
+            message={i18next.t('ducks.projects.actions.project_updated')}
+          />,
+        )
       },
     },
     request: {
@@ -59,7 +74,11 @@ const deleteProjectById = id => ({
       onError({ error }) {
         console.error(error)
         toast.dismiss()
-        toast(<Notification message="Could not delete project" />)
+        toast(
+          <Notification
+            message={i18next.t('ducks.projects.actions.fail_to_delete_project')}
+          />,
+        )
       },
       onSuccess({ dispatch, getState }) {
         dispatch(
@@ -75,7 +94,11 @@ const deleteProjectById = id => ({
         }
 
         toast.dismiss()
-        toast(<Notification message="Project deleted successfully" />)
+        toast(
+          <Notification
+            message={i18next.t('ducks.projects.actions.project_deleted')}
+          />,
+        )
       },
     },
     request: {
@@ -112,7 +135,11 @@ const createProject = data => ({
       onError({ error }) {
         console.error(error)
         toast.dismiss()
-        toast(<Notification message="Could not create project" />)
+        toast(
+          <Notification
+            message={i18next.t('ducks.projects.actions.fail_to_create_project')}
+          />,
+        )
       },
       onSuccess({ dispatch, getState, response }) {
         const graph = JSON.parse(data.graph)

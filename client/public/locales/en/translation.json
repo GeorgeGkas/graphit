@@ -1,0 +1,265 @@
+{
+  "common": {
+    "project_name": "graph IT"
+  },
+  "landing": {
+    "description": "Interactive graph editor for Computer Science enthusiasts.",
+    "callToAction": "Open Editor",
+    "footer": "Design and developed by "
+  },
+  "404": {
+    "not_exist": "The destination does not exist.",
+    "return_action": "Click on the island to return"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "create_project_title": "Create new project",
+    "create_project_button": "Create",
+    "projects": {
+      "name": "Name",
+      "algorithm": "Algorithm",
+      "created": "Created",
+      "view": "View",
+      "delete": "Delete",
+      "search": "Search by project name",
+      "empty": "No projects exist",
+      "title": "My Projects"
+    }
+  },
+  "app": {
+    "tutorial": {
+      "step1": {
+        "welcome": "Welcome to",
+        "body": "This tutorial will guide you through the various elements of the application."
+      },
+      "step2": {
+        "body": "is an interactive editor that allow students and educators create custom graphs and run Dijkstra's Shortest Path First algorithm on them."
+      },
+      "step3": {
+        "body": "This highlighted surface is your editor. You can combine nodes and edges to create graphs."
+      },
+      "step4": {
+        "body": "The menu bar will be responsible for most of the interactions with the editor."
+      },
+      "step5": {
+        "first": "The",
+        "second": "and",
+        "third": "functionalities will manage any misconfigurations of your graphs."
+      },
+      "step6": {
+        "first": "In case the graph is too big or too small for your screen, you can change the editor size using the",
+        "second": "and",
+        "third": "functionalities."
+      },
+      "step7": {
+        "first": "Activating the",
+        "second": "allows you to snap graph nodes on top of it for increasing visual appearance."
+      },
+      "step8": {
+        "body": "The various editor modes provide ways to manage node and edges."
+      },
+      "step9": {
+        "first": "Using the",
+        "second": "mode you can reposition any node. When a node or edge is selected you can",
+        "third": "its properties or",
+        "fourth": "it from the editor."
+      },
+      "step10": {
+        "first": "Using the",
+        "second": "mode you can create new nodes."
+      },
+      "step11": {
+        "first": "Using the",
+        "second": "mode you can create new edges."
+      },
+      "step13": {
+        "body": "When you are done creating the graph, those actions will run the Dijkstra's algorithm step by step."
+      },
+      "step14": {
+        "first": "Clicking the",
+        "second": "action button, starts the editor into play mode. You cannot edit your graph while being on this mode. To exit this mode, click the",
+        "third": "button."
+      },
+      "step15": {
+        "first": "The",
+        "second": "action button, sets the algorithm to its initial state."
+      },
+      "step16": {
+        "first": "The",
+        "second": "action button, sets the algorithm to its previous step."
+      },
+      "step17": {
+        "first": "The",
+        "second": "action button, sets the algorithm to its next step."
+      },
+      "step18": {
+        "first": "The",
+        "second": "action button, sets the algorithm to its final state."
+      },
+      "step19": {
+        "first": "Under",
+        "second": "menu you can find options to save and load your graphs locally."
+      },
+      "step20": {
+        "body": "By signing in you can save your projects to online storage."
+      },
+      "step21": {
+        "first": "You can restart this tutorial any time by clicking the",
+        "second": "button from the app bar."
+      },
+      "step22": {
+        "first": "Congratulations, you have completed the tutorial!",
+        "second": "Press the upper right",
+        "third": "button to exit."
+      }
+    },
+    "appbar": {
+      "dashboard_link": "Dashboard",
+      "default_project_name": "Editor",
+      "menu": {
+        "file": "File",
+        "help": "Help"
+      },
+      "file_dropdown": {
+        "new": "New",
+        "download": "Download",
+        "update": "Update",
+        "save": "Save"
+      },
+      "saving_project": "Saving project...",
+      "project_saved": "Project saved successfully",
+      "discard_changes_title": "Create new project?",
+      "discard_changes_body": "All unsaved changes will be deleted if you confirm this action."
+    },
+    "node_editor": {
+      "title": "Edit Node",
+      "name_input_help_text": "Allowed names are all values from a through Z.",
+      "name_input_label": "Name",
+      "initial_switch_text": "Set as initial node",
+      "final_switch_text": "Set as final node",
+      "cancel": "Cancel",
+      "confirm": "Apply Changes"
+    },
+    "edge_weight_editor": {
+      "title": "Edit Edge",
+      "weight_input_help_text": "Use any negative or positive integer.",
+      "weight_input_label": "Weight",
+      "cancel": "Cancel",
+      "confirm": "Apply Changes"
+    },
+    "edge_input_editor": {
+      "title": "Edit Input",
+      "edge_input_input_help_test": "Single character values separated by comma (eg. a,b,c). Use @ for ε transitions.",
+      "edge_input_input_label": "Input",
+      "cancel": "Cancel",
+      "confirm": "Apply Changes"
+    },
+    "editorbar": {
+      "undo": "Undo",
+      "redo": "Redo",
+      "zoom_in": "Zoom in",
+      "zoom_out": "Zoom out",
+      "grid": "Toggle grid",
+      "select_node": "Select node",
+      "create_nodes": "Create nodes",
+      "create_edges": "Create edges",
+      "run_operation": "Play",
+      "first_step": "Go to first step",
+      "previous_step": "Previous step",
+      "next_step": "Next step",
+      "last_step": "Go to last step",
+      "input_string_label": "Input string",
+      "input_string_title": "Automata input string"
+    },
+    "create_modal": {
+      "browse_files": "Browse",
+      "file_upload": "Upload from file",
+      "choose_operation_title": "Operation",
+      "project_name_input_help_text": "Type any non empty value.",
+      "project_name_input_label": "Project Name",
+      "project_created_title": "Hooray!!!",
+      "project_created_body": "Close this window to start working on your project",
+      "choose_project_name": "Choose project name",
+      "close": "Close",
+      "creating_new_project": "Creating new project....",
+      "choose_operation": "Choose operation"
+    }
+  },
+  "algorithm": {
+    "automata": {
+      "title": "Automata",
+      "errors": {
+        "one_initial_state": "Automata should have exactly one starting state",
+        "one_final_state": "Automata should have at least one ending state",
+        "duplicate_states": "Duplicate state names are prohibited",
+        "input_prohibit_symbols": "Input string must contain only symbols from the alphabet"
+      }
+    },
+    "dijkstra": {
+      "title": "Dijkstra"
+    }
+  },
+  "stepper": {
+    "prohibit_optional_step_skip": "You can't skip a step that isn't optional.",
+    "optional": "Optional",
+    "back": "Back",
+    "skip": "Skip",
+    "finish": "Finish",
+    "next": "Next"
+  },
+  "google_connect": {
+    "signin": "Sign In",
+    "signout": "Sign Out"
+  },
+  "input_dialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "confirm_dialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "ducks": {
+    "projects": {
+      "actions": {
+        "fail_to_fetch_project_list": "Could not fetch project list",
+        "fail_to_update_project": "Could not update project",
+        "project_updated": "Project updated successfully",
+        "fail_to_delete_project": "Could not delete project",
+        "project_deleted": "Project deleted successfully",
+        "fail_to_create_project": "Could not create project"
+      },
+      "operations": {
+        "updating_project": "Updating project..."
+      }
+    },
+    "algorithm": {
+      "operations": {
+        "unknown_algorithm": "Could not run requested algorithm"
+      },
+      "functions": {
+        "runAutomata": {
+          "valid": {
+            "first": "Input",
+            "second": "is valid"
+          },
+          "invalid": {
+            "first": "Input",
+            "second": "is invalid"
+          }
+        },
+        "runDijkstra": {
+          "empty_initial_node_error": "Please set an initial node",
+          "multiple_initial_nodes_error": "Please select only one initial node",
+          "duplicate_node_names": "Duplicate node names are prohibited"
+        }
+      }
+    }
+  },
+  "providers": {
+    "auth": {
+      "could_not_set_cookie": "Could not set session cookie.",
+      "could_not_unset_cookie": "Could not unset session cookie."
+    }
+  }
+}

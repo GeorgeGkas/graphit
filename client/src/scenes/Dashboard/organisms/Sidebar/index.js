@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import AddIcon from '@material-ui/icons/AddSharp'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
@@ -25,11 +26,12 @@ const useStyles = makeStyles(theme => ({
 
 const Sidebar = () => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   return (
     <Container className={classes.containerFix}>
       <Box className={classes.createButtonWrapper}>
-        <Tooltip title="Create new project">
+        <Tooltip title={t('dashboard.create_project_title')}>
           <Button
             className={classes.createButton}
             color="secondary"
@@ -40,7 +42,7 @@ const Sidebar = () => {
             variant="contained"
           >
             <AddIcon className={classes.createButtonIcon} />
-            Create
+            {t('dashboard.create_project_button')}
           </Button>
         </Tooltip>
       </Box>

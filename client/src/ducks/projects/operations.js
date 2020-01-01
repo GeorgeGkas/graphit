@@ -1,3 +1,4 @@
+import i18next from 'i18next'
 import React from 'react'
 import { toast } from 'react-toastify'
 
@@ -35,7 +36,11 @@ const setProjectList = projectList => dispatch => {
 
 const updateProjectById = (id, data) => async dispatch => {
   toast.dismiss()
-  toast(<Notification message="Updating project..." />)
+  toast(
+    <Notification
+      message={i18next.t('ducks.projects.operations.updating_project')}
+    />,
+  )
   await dispatch(updateProjectByIdAction(id, data))
 }
 

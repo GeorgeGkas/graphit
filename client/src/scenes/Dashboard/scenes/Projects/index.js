@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/DeleteSharp'
 import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEyeSharp'
 import MUIDataTable from 'mui-datatables'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
@@ -68,6 +69,8 @@ const mapDispatchToProps = dispatch =>
 
 const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [currentProjectIdAction, setCurrentProjectIdAction] = React.useState(
     null,
   )
@@ -97,21 +100,21 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
         className={classes.table}
         columns={[
           {
-            label: 'Name',
+            label: t('dashboard.projects.name'),
             name: 'name',
             options: {
               searchable: true,
             },
           },
           {
-            label: 'Algorithm',
+            label: t('dashboard.projects.algorithm'),
             name: 'algorithm',
             options: {
               searchable: false,
             },
           },
           {
-            label: 'Created',
+            label: t('dashboard.projects.created'),
             name: 'created',
             options: {
               searchable: false,
@@ -131,7 +134,7 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
               customBodyRender: value => {
                 return (
                   <>
-                    <Tooltip title="View">
+                    <Tooltip title={t('dashboard.projects.view')}>
                       <IconButton
                         component={Link}
                         disabled={deleteProjectLoading}
@@ -142,7 +145,7 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Delete">
+                    <Tooltip title={t('dashboard.projects.delete')}>
                       <IconButton
                         disabled={deleteProjectLoading}
                         onClick={() => {
@@ -183,7 +186,7 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
           responsive: 'scrollMaxHeight',
           rowHover: false,
           search: true,
-          searchPlaceholder: 'Search by project name',
+          searchPlaceholder: t('dashboard.projects.search'),
           selectableRows: 'none',
           selectableRowsHeader: false,
           sort: true,
@@ -192,13 +195,13 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
               noMatch: getProjectListLoading ? (
                 <CircularProgress color="secondary" />
               ) : (
-                'No projects exist'
+                t('dashboard.projects.empty')
               ),
             },
           },
           viewColumns: false,
         }}
-        title="My Projects"
+        title={t('dashboard.projects.title')}
       />
     </MuiThemeProvider>
   )

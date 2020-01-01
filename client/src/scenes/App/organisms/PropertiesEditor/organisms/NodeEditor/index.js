@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -53,6 +54,8 @@ const NodeEditor = ({
   updateNodeProperties,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [validNodeName, validateNodeName] = React.useState(true)
   const [nodeIsInitial, setInitialState] = React.useState(
     selectedNode.properties.initial,
@@ -98,7 +101,9 @@ const NodeEditor = ({
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">Edit Node</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+        {t('app.node_editor.title')}
+      </DialogTitle>
       <DialogContent>
         <form
           noValidate
@@ -111,9 +116,9 @@ const NodeEditor = ({
               fullWidth
               defaultValue={selectedNode.properties.name}
               error={!validNodeName}
-              helperText="Allowed names are all values from a through Z."
+              helperText={t('app.node_editor.name_input_help_text')}
               id="node_name_input"
-              label="Name"
+              label={t('app.node_editor.name_input_label')}
               margin="dense"
               type="text"
               onChange={e =>
@@ -129,7 +134,7 @@ const NodeEditor = ({
             control={
               <Switch checked={nodeIsInitial} onChange={toggleInitialState} />
             }
-            label="Set as initial node"
+            label={t('app.node_editor.initial_switch_text')}
             labelPlacement="start"
           />
           {algorithm === 'Automata' && (
@@ -138,7 +143,7 @@ const NodeEditor = ({
               control={
                 <Switch checked={nodeIsFinal} onChange={toggleFinalState} />
               }
-              label="Set as final node"
+              label={t('app.node_editor.final_switch_text')}
               labelPlacement="start"
             />
           )}
@@ -146,10 +151,10 @@ const NodeEditor = ({
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={handleClose}>
-          Cancel
+          {t('app.node_editor.cancel')}
         </Button>
         <Button color="primary" disabled={!validNodeName} onClick={submitForm}>
-          Apply Changes
+          {t('app.node_editor.confirm')}
         </Button>
       </DialogActions>
     </Dialog>

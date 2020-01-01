@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 
+import i18n from './i18n'
 import AuthProvider from './providers/Auth'
 import FirebaseProvider from './providers/Firebase'
 import Router from './Router'
@@ -13,24 +14,26 @@ import GlobalStyle from './styles.global'
 
 const { store } = configureReduxStore()
 
-ReactDOM.render(
-  <ReduxProvider store={store}>
-    <FirebaseProvider>
-      <AuthProvider>
-        <CssBaseline />
-        <GlobalStyle />
-        <ToastContainer
-          closeOnClick
-          hideProgressBar
-          autoClose={false}
-          closeButton={false}
-          pauseOnHover={false}
-        />
-        <Router />
-      </AuthProvider>
-    </FirebaseProvider>
-  </ReduxProvider>,
-  document.getElementById('root'),
+i18n().then(() =>
+  ReactDOM.render(
+    <ReduxProvider store={store}>
+      <FirebaseProvider>
+        <AuthProvider>
+          <CssBaseline />
+          <GlobalStyle />
+          <ToastContainer
+            closeOnClick
+            hideProgressBar
+            autoClose={false}
+            closeButton={false}
+            pauseOnHover={false}
+          />
+          <Router />
+        </AuthProvider>
+      </FirebaseProvider>
+    </ReduxProvider>,
+    document.getElementById('root'),
+  ),
 )
 
 // If you want your app to work offline and load faster, you can change

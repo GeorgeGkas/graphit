@@ -28,6 +28,7 @@ import uniq from 'lodash/fp/uniq'
 import uniqBy from 'lodash/fp/uniqBy'
 import values from 'lodash/fp/values'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
 import { bindActionCreators } from 'redux'
@@ -102,6 +103,7 @@ const EditorBar = ({
   updateStage,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const [
     promptAutomataInputDialogVisible,
@@ -123,7 +125,9 @@ const EditorBar = ({
     if (filter(['properties.initial', true])(nodes).length !== 1) {
       toast.dismiss()
       toast(
-        <Notification message="Automata should have exactly one starting state" />,
+        <Notification
+          message={t('algorithm.automata.errors.one_initial_state')}
+        />,
       )
       return false
     }
@@ -131,14 +135,20 @@ const EditorBar = ({
     if (!find(['properties.final', true])(nodes)) {
       toast.dismiss()
       toast(
-        <Notification message="Automata should have at least one ending state" />,
+        <Notification
+          message={t('algorithm.automata.errors.one_final_state')}
+        />,
       )
       return false
     }
 
     if (uniqBy('properties.name', nodes).length !== nodes.length) {
       toast.dismiss()
-      toast(<Notification message="Duplicate state names are prohibited" />)
+      toast(
+        <Notification
+          message={t('algorithm.automata.errors.duplicate_states')}
+        />,
+      )
       return false
     }
 
@@ -220,7 +230,7 @@ const EditorBar = ({
             className={classes.displayInherit}
             id="editor_bar_undo_redo_section"
           >
-            <Tooltip title="Undo">
+            <Tooltip title={t('app.editorbar.undo')}>
               <div>
                 <IconButton
                   className={classes.button}
@@ -232,7 +242,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Redo">
+            <Tooltip title={t('app.editorbar.redo')}>
               <div>
                 <IconButton
                   className={classes.button}
@@ -246,7 +256,7 @@ const EditorBar = ({
           </div>
 
           <div className={classes.displayInherit} id="editor_bar_zoom_section">
-            <Tooltip title="Zoom in">
+            <Tooltip title={t('app.editorbar.zoom_in')}>
               <div>
                 <IconButton className={classes.button} onClick={zoomIn}>
                   <ZoomInIcon />
@@ -254,7 +264,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Zoom out">
+            <Tooltip title={t('app.editorbar.zoom_out')}>
               <div>
                 <IconButton className={classes.button} onClick={zoomOut}>
                   <ZoomOutIcon />
@@ -264,7 +274,7 @@ const EditorBar = ({
           </div>
 
           <div className={classes.displayInherit} id="editor_bar_grid_section">
-            <Tooltip title="Toggle grid">
+            <Tooltip title={t('app.editorbar.grid')}>
               <div>
                 <IconButton className={classes.button} onClick={toggleGrid}>
                   {gridVisible ? <GridOnIcon /> : <GridOffIcon />}
@@ -277,7 +287,7 @@ const EditorBar = ({
             className={classes.displayInherit}
             id="editor_bar_editor_mode_section"
           >
-            <Tooltip title="Select node">
+            <Tooltip title={t('app.editorbar.select_node')}>
               <div id="editor_bar_editor_select_mode_section">
                 <IconButton
                   className={
@@ -296,7 +306,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Create nodes">
+            <Tooltip title={t('app.editorbar.create_nodes')}>
               <div id="editor_bar_editor_nodes_mode_section">
                 <IconButton
                   className={
@@ -315,7 +325,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Create edges">
+            <Tooltip title={t('app.editorbar.create_edges')}>
               <div id="editor_bar_editor_edges_mode_section">
                 <IconButton
                   className={
@@ -339,7 +349,7 @@ const EditorBar = ({
             className={classes.displayInherit}
             id="editor_bar_algorithm_section"
           >
-            <Tooltip title="Play">
+            <Tooltip title={t('app.editorbar.run_operation')}>
               <div id="editor_bar_algorithm_play_section">
                 <IconButton
                   className={classes.button}
@@ -361,7 +371,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Go to first step">
+            <Tooltip title={t('app.editorbar.first_step')}>
               <div id="editor_bar_algorithm_first_step_section">
                 <IconButton
                   className={classes.button}
@@ -376,7 +386,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Previous step">
+            <Tooltip title={t('app.editorbar.previous_step')}>
               <div id="editor_bar_algorithm_back_step_section">
                 <IconButton
                   className={classes.button}
@@ -391,7 +401,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Next step">
+            <Tooltip title={t('app.editorbar.next_step')}>
               <div
                 id="editor_bar_algorithm_next_step_section"
                 style={{ marginTop: '8px' }}
@@ -408,7 +418,7 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title="Go to last step">
+            <Tooltip title={t('app.editorbar.last_step')}>
               <div id="editor_bar_algorithm_last_step_section">
                 <IconButton
                   className={classes.button}
@@ -431,9 +441,9 @@ const EditorBar = ({
         confirmDialogAction={startPlayingAutomata}
         confirmDialogVisible={promptAutomataInputDialogVisible}
         error={automataInputDialogError}
-        errorText="Input string must contain only symbols from the alphabet"
-        inputLabel="Input string"
-        title="Automata input string"
+        errorText={t('algorithm.automata.errors.input_prohibit_symbols')}
+        inputLabel={t('app.editorbar.input_string_label')}
+        title={t('app.editorbar.input_string_title')}
         validateInput={inputIsInAlphabet}
       />
     </>

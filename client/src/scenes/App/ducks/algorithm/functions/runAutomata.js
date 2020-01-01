@@ -1,3 +1,4 @@
+import i18next from 'i18next'
 import cloneDeep from 'lodash/fp/cloneDeep'
 import filter from 'lodash/fp/filter'
 import find from 'lodash/fp/find'
@@ -72,7 +73,11 @@ export default function automata(graph, input) {
     toast(
       <Notification
         disableClickAwayListener
-        message={`Input "${input}" is valid`}
+        message={`${i18next.t(
+          'ducks.algorithm.functions.runAutomata.valid.first',
+        )} "${input}" ${i18next.t(
+          'ducks.algorithm.functions.runAutomata.valid.second',
+        )}`}
       />,
     )
   } else {
@@ -80,7 +85,11 @@ export default function automata(graph, input) {
     toast(
       <Notification
         disableClickAwayListener
-        message={`Input "${input}" is invalid`}
+        message={`${i18next.t(
+          'ducks.algorithm.functions.runAutomata.invalid.first',
+        )} "${input}" ${i18next.t(
+          'ducks.algorithm.functions.runAutomata.invalid.second',
+        )}`}
       />,
     )
   }
