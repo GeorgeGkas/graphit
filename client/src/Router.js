@@ -35,31 +35,26 @@ const Router = () => {
       <Switch>
         <Route exact component={Landing} path="/" />
 
-        <Route path="/app/:id">
-          <CheckAuthLoadingScreen>
+        <CheckAuthLoadingScreen>
+          <Route path="/app/:id">
             <FetchProjectId>
               <App />
             </FetchProjectId>
-          </CheckAuthLoadingScreen>
-        </Route>
+          </Route>
 
-        <Route exact path="/app">
-          <CheckAuthLoadingScreen>
+          <Route exact path="/app">
             <App />
-          </CheckAuthLoadingScreen>
-        </Route>
+          </Route>
 
-        <PrivateRoute
-          component={() => (
-            <CheckAuthLoadingScreen>
-              <Dashboard />
-            </CheckAuthLoadingScreen>
-          )}
-          fallback="/app"
-          path="/dashboard"
-        />
+          <PrivateRoute
+            component={() => <Dashboard />}
+            fallback="/app"
+            path="/dashboard"
+          />
 
-        <Route component={Page404} />
+          <Route exact path="/404" component={Page404} />
+          <Route component={Page404} />
+        </CheckAuthLoadingScreen>
       </Switch>
     </BrowserRouter>
   )

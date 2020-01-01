@@ -10,6 +10,26 @@ import island from './images/island.svg'
 const Page404 = () => {
   const { t } = useTranslation()
 
+  if (window.location.pathname === '/dashboard/projects') {
+    return <></>
+  } else if (
+    window.location.pathname
+      .slice(1)
+      .split('/')
+      .shift() !== 'app' &&
+    window.location.pathname
+      .slice(1)
+      .split('/')
+      .shift() !== 'dashboard'
+  ) {
+    /**
+     * Use browsers' built-in History API to update
+     * the unreachable root level URL with /404 .
+     */
+    // eslint-disable-next-line no-restricted-globals
+    history.replaceState({}, '', '/404')
+  }
+
   return (
     <div className="not-found parallax">
       <div className="wave-7" />
