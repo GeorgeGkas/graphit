@@ -10,7 +10,6 @@ export default function setup() {
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json',
       },
-      debug: true,
       fallbackLng: 'en',
       lng: 'en',
     })
