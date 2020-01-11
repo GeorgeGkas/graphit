@@ -52,7 +52,7 @@ const Router = () => {
             path="/dashboard"
           />
 
-          <Route exact path="/404" component={Page404} />
+          <Route exact component={Page404} path="/404" />
           <Route component={Page404} />
         </CheckAuthLoadingScreen>
       </Switch>
