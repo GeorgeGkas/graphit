@@ -15,9 +15,10 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 
 import Stepper from '../../../../organisms/Stepper'
+import { withFirebase } from '../../../../providers/Firebase'
 import { operations as graphOperations } from '../../ducks/graph'
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +67,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(graphOperations, dispatch)
 
-const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
+const CreateModal = ({
+  firebase,
+  handleClose,
+  isNewEditor,
+  loadGraph,
+  open,
+}) => {
   const history = useHistory()
   const classes = useStyles()
   const { t } = useTranslation()
@@ -280,38 +287,45 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
               loadGraph(graph)
               history.replace('/app')
             }}
-            onCompleteEndSuccess={() => (
-              <Grid
-                container
-                alignItems="center"
-                direction="column"
-                justify="center"
-              >
-                <Typography gutterBottom variant="body1">
-                  {t('app.create_modal.project_created_title')}
-                </Typography>
-                <Typography gutterBottom variant="caption">
-                  {t('app.create_modal.project_created_body')}
-                </Typography>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    setUploadedGraph(
-                      '{"edges":{}, "metadata": {}, "nodes": {}}',
-                    )
-                    setUploadedGraphFilename(null)
-                    setProjectName(null)
-                    setProjectNameValidity(false)
-                    chooseAlgorithm('')
-                    setAlgorithmValid(false)
-                    handleClose()
-                  }}
+            onCompleteEndSuccess={() => {
+              firebase.analytics.logEvent('app_create_project', {
+                algorithm,
+                from_file: uploadedGraphFilename !== null,
+              })
+
+              return (
+                <Grid
+                  container
+                  alignItems="center"
+                  direction="column"
+                  justify="center"
                 >
-                  {t('app.create_modal.close')}
-                </Button>
-              </Grid>
-            )}
+                  <Typography gutterBottom variant="body1">
+                    {t('app.create_modal.project_created_title')}
+                  </Typography>
+                  <Typography gutterBottom variant="caption">
+                    {t('app.create_modal.project_created_body')}
+                  </Typography>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={() => {
+                      setUploadedGraph(
+                        '{"edges":{}, "metadata": {}, "nodes": {}}',
+                      )
+                      setUploadedGraphFilename(null)
+                      setProjectName(null)
+                      setProjectNameValidity(false)
+                      chooseAlgorithm('')
+                      setAlgorithmValid(false)
+                      handleClose()
+                    }}
+                  >
+                    {t('app.create_modal.close')}
+                  </Button>
+                </Grid>
+              )
+            }}
             onCompleteStart={() => (
               <Grid
                 container
@@ -331,7 +345,10 @@ const CreateModal = ({ handleClose, isNewEditor, loadGraph, open }) => {
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(CreateModal)

@@ -5,9 +5,11 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { compose } from 'redux'
 
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 import { withAuthentication } from '../../../../providers/Auth'
+import { withFirebase } from '../../../../providers/Firebase'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -25,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const AppBar = ({ auth }) => {
+const AppBar = ({ auth, firebase }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -39,11 +41,14 @@ const AppBar = ({ auth }) => {
 
           <div className={classes.grow} />
 
-          <MaterialGoogleAvatar auth={auth} />
+          <MaterialGoogleAvatar auth={auth} firebase={firebase} />
         </Toolbar>
       </MUIAppBar>
     </>
   )
 }
 
-export default withAuthentication(AppBar)
+export default compose(
+  withAuthentication,
+  withFirebase,
+)(AppBar)

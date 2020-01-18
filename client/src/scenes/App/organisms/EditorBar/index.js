@@ -31,10 +31,11 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 
 import InputDialog from '../../../../organisms/InputDialog'
 import Notification from '../../../../organisms/Notification'
+import { withFirebase } from '../../../../providers/Firebase'
 import { operations as algorithmOperations } from '../../ducks/algorithm'
 import { operations as editorOperations } from '../../ducks/editor'
 import { operations as graphOperations } from '../../ducks/graph'
@@ -82,6 +83,7 @@ const mapDispatchToProps = dispatch =>
 const EditorBar = ({
   currentEditorAction,
   cursor,
+  firebase,
   firstIteration,
   futureExist,
   graph,
@@ -178,6 +180,7 @@ const EditorBar = ({
   const startPlayingAutomata = input => {
     togglePromptAutomataInputDialog()
     startPlaying(input)
+    firebase.analytics.logEvent('editor_start_play')
   }
 
   const zoomOut = () => {
@@ -235,7 +238,10 @@ const EditorBar = ({
                 <IconButton
                   className={classes.button}
                   disabled={!pastExist || currentEditorAction === 'isPlaying'}
-                  onClick={undoGraphHistory}
+                  onClick={() => {
+                    undoGraphHistory()
+                    firebase.analytics.logEvent('editor_undo_history')
+                  }}
                 >
                   <UndoIcon />
                 </IconButton>
@@ -247,7 +253,10 @@ const EditorBar = ({
                 <IconButton
                   className={classes.button}
                   disabled={!futureExist || currentEditorAction === 'isPlaying'}
-                  onClick={redoGraphHistory}
+                  onClick={() => {
+                    redoGraphHistory()
+                    firebase.analytics.logEvent('editor_redo_history')
+                  }}
                 >
                   <RedoIcon />
                 </IconButton>
@@ -258,7 +267,13 @@ const EditorBar = ({
           <div className={classes.displayInherit} id="editor_bar_zoom_section">
             <Tooltip title={t('app.editorbar.zoom_in')}>
               <div>
-                <IconButton className={classes.button} onClick={zoomIn}>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => {
+                    zoomIn()
+                    firebase.analytics.logEvent('editor_zoom_in')
+                  }}
+                >
                   <ZoomInIcon />
                 </IconButton>
               </div>
@@ -266,7 +281,13 @@ const EditorBar = ({
 
             <Tooltip title={t('app.editorbar.zoom_out')}>
               <div>
-                <IconButton className={classes.button} onClick={zoomOut}>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => {
+                    zoomOut()
+                    firebase.analytics.logEvent('editor_zoom_out')
+                  }}
+                >
                   <ZoomOutIcon />
                 </IconButton>
               </div>
@@ -276,7 +297,13 @@ const EditorBar = ({
           <div className={classes.displayInherit} id="editor_bar_grid_section">
             <Tooltip title={t('app.editorbar.grid')}>
               <div>
-                <IconButton className={classes.button} onClick={toggleGrid}>
+                <IconButton
+                  className={classes.button}
+                  onClick={() => {
+                    toggleGrid()
+                    firebase.analytics.logEvent('editor_toggle_grid')
+                  }}
+                >
                   {gridVisible ? <GridOnIcon /> : <GridOffIcon />}
                 </IconButton>
               </div>
@@ -299,6 +326,7 @@ const EditorBar = ({
                   onClick={() => {
                     unselectAll()
                     updateCurrentEditorAction('select')
+                    firebase.analytics.logEvent('editor_action_select_node')
                   }}
                 >
                   <BrushIcon />
@@ -318,6 +346,7 @@ const EditorBar = ({
                   onClick={() => {
                     unselectAll()
                     updateCurrentEditorAction('node')
+                    firebase.analytics.logEvent('editor_action_create_node')
                   }}
                 >
                   <CategoryIcon />
@@ -337,6 +366,7 @@ const EditorBar = ({
                   onClick={() => {
                     unselectAll()
                     updateCurrentEditorAction('edge')
+                    firebase.analytics.logEvent('editor_action_create_edge')
                   }}
                 >
                   <DeviceHubIcon />
@@ -355,11 +385,16 @@ const EditorBar = ({
                   className={classes.button}
                   onClick={() => {
                     unselectAll()
-                    currentEditorAction === 'isPlaying'
-                      ? stopPlaying()
-                      : graph.metadata.algorithm === 'Automata'
-                      ? validateAutomata()
-                      : startPlaying()
+
+                    if (currentEditorAction === 'isPlaying') {
+                      stopPlaying()
+                      firebase.analytics.logEvent('editor_stop_play')
+                    } else if (graph.metadata.algorithm === 'Automata') {
+                      validateAutomata()
+                    } else {
+                      startPlaying()
+                      firebase.analytics.logEvent('editor_start_play')
+                    }
                   }}
                 >
                   {currentEditorAction === 'isPlaying' ? (
@@ -379,7 +414,10 @@ const EditorBar = ({
                     currentEditorAction !== 'isPlaying' ||
                     !previousAlgorithmEntryExist
                   }
-                  onClick={() => firstIteration()}
+                  onClick={() => {
+                    firstIteration()
+                    firebase.analytics.logEvent('editor_play_first_step')
+                  }}
                 >
                   <SkipPreviousIcon />
                 </IconButton>
@@ -394,7 +432,10 @@ const EditorBar = ({
                     currentEditorAction !== 'isPlaying' ||
                     !previousAlgorithmEntryExist
                   }
-                  onClick={() => previousIteration()}
+                  onClick={() => {
+                    previousIteration()
+                    firebase.analytics.logEvent('editor_play_previous_step')
+                  }}
                 >
                   <ChevronLeftIcon />
                 </IconButton>
@@ -411,7 +452,10 @@ const EditorBar = ({
                     currentEditorAction !== 'isPlaying' ||
                     !nextAlgorithmEntryExist
                   }
-                  onClick={() => nextIteration()}
+                  onClick={() => {
+                    nextIteration()
+                    firebase.analytics.logEvent('editor_play_next_step')
+                  }}
                 >
                   <ChevronRightIcon />
                 </IconButton>
@@ -426,7 +470,10 @@ const EditorBar = ({
                     currentEditorAction !== 'isPlaying' ||
                     !nextAlgorithmEntryExist
                   }
-                  onClick={() => lastIteration()}
+                  onClick={() => {
+                    lastIteration()
+                    firebase.analytics.logEvent('editor_play_last_step')
+                  }}
                 >
                   <SkipNextIcon />
                 </IconButton>
@@ -450,7 +497,10 @@ const EditorBar = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(EditorBar)

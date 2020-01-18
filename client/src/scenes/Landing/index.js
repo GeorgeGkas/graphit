@@ -9,6 +9,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import { withFirebase } from '../../providers/Firebase'
 import downloadImage from './images/download.svg'
 import editorImage from './images/editor.svg'
 import graphImage from './images/graph.svg'
@@ -101,7 +102,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Landing = () => {
+const Landing = ({ firebase }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -149,6 +150,9 @@ const Landing = () => {
               <Button
                 className={classes.callToActionButton}
                 component={Link}
+                onClick={() =>
+                  firebase.analytics.logEvent('call_to_action_button')
+                }
                 to="/app"
               >
                 <Typography className={classes.callToActionButtonText}>
@@ -285,4 +289,4 @@ const Landing = () => {
   )
 }
 
-export default Landing
+export default withFirebase(Landing)

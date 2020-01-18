@@ -26,6 +26,7 @@ const AuthProvider = withFirebase(props => {
       )
 
       setAuthUser(res.status === 200 ? { ...res.data.data } : null)
+      props.firebase.analytics.setUserId(res.data.data.email)
     } catch (e) {
       setAuthUser(null)
     }
@@ -85,6 +86,7 @@ const AuthProvider = withFirebase(props => {
       uid: props.firebase.auth.currentUser.uid,
     })
 
+    props.firebase.analytics.setUserId(props.firebase.auth.currentUser.email)
     await props.firebase.signOut()
   }
 
@@ -95,6 +97,8 @@ const AuthProvider = withFirebase(props => {
     if (!cookieIsUnset) {
       throw new Error(t('providers.auth.could_not_unset_cookie'))
     }
+
+    props.firebase.analytics.setUserId(null)
   }
 
   return (

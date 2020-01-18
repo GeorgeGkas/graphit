@@ -21,6 +21,7 @@ import { bindActionCreators, compose } from 'redux'
 
 import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 import { withAuthentication } from '../../../../providers/Auth'
+import { withFirebase } from '../../../../providers/Firebase'
 import { operations as tutorialOperations } from '../../ducks/tutorial'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 
@@ -66,6 +67,7 @@ const mapDispatchToProps = dispatch =>
 
 const AppBar = ({
   auth,
+  firebase,
   graphMetadata,
   handleCreateModalOpen,
   setTutorialVisibility,
@@ -92,6 +94,9 @@ const AppBar = ({
                 component={Link}
                 edge="start"
                 to="/dashboard/projects"
+                onClick={() =>
+                  firebase.analytics.logEvent('navigate_to_dashboard_button')
+                }
               >
                 <DashboardIcon />
               </IconButton>
@@ -135,14 +140,17 @@ const AppBar = ({
             className={classes.buttonApp}
             color="inherit"
             id="help_button"
-            onClick={openTutorial}
+            onClick={() => {
+              openTutorial()
+              firebase.analytics.logEvent('show_tutorial')
+            }}
           >
             {t('app.appbar.menu.help')}
           </Button>
 
           <div className={classes.grow} />
 
-          <MaterialGoogleAvatar auth={auth} />
+          <MaterialGoogleAvatar auth={auth} firebase={firebase} />
         </Toolbar>
       </MUIAppBar>
     </>
@@ -151,6 +159,7 @@ const AppBar = ({
 
 export default compose(
   withAuthentication,
+  withFirebase,
   connect(
     mapStateToProps,
     mapDispatchToProps,

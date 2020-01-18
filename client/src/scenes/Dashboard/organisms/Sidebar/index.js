@@ -8,6 +8,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import { withFirebase } from '../../../../providers/Firebase'
+
 const useStyles = makeStyles(theme => ({
   containerFix: {
     marginLeft: -theme.spacing(1),
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Sidebar = () => {
+const Sidebar = ({ firebase }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -40,6 +42,7 @@ const Sidebar = () => {
             target="_blank"
             to="/app"
             variant="contained"
+            onClick={() => firebase.analytics.logEvent('create_new_project')}
           >
             <AddIcon className={classes.createButtonIcon} />
             {t('dashboard.create_project_button')}
@@ -50,4 +53,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default withFirebase(Sidebar)

@@ -15,6 +15,7 @@ import { operations as projectsOperations } from '../../../../../../ducks/projec
 import ConfirmDialog from '../../../../../../organisms/ConfirmDialog'
 import Notification from '../../../../../../organisms/Notification'
 import { withAuthentication } from '../../../../../../providers/Auth'
+import { withFirebase } from '../../../../../../providers/Firebase'
 import { operations as algorithmOperations } from '../../../../ducks/algorithm'
 import { operations as editorOperations } from '../../../../ducks/editor'
 import { operations as graphOperations } from '../../../../ducks/graph'
@@ -45,6 +46,7 @@ const FileDropdownMenu = ({
   createProject,
   currentEditorAction,
   fileDropdownMenu,
+  firebase,
   futureExist,
   graph,
   handleCreateModalOpen,
@@ -96,6 +98,7 @@ const FileDropdownMenu = ({
                     fileDropdownMenu.close()
                     if (graph.metadata.id) {
                       await updateProjectById(graph.metadata.id, data)
+                      firebase.analytics.logEvent('app_update_project')
                     } else {
                       toast.dismiss()
                       toast(
@@ -105,6 +108,7 @@ const FileDropdownMenu = ({
                       )
 
                       await createProject(data)
+                      firebase.analytics.logEvent('app_save_project')
 
                       toast.dismiss()
                       toast(
@@ -130,7 +134,10 @@ const FileDropdownMenu = ({
               <MenuItem
                 button
                 disabled={currentEditorAction === 'isPlaying'}
-                onClick={() => localDownload(graph)}
+                onClick={() => {
+                  localDownload(graph)
+                  firebase.analytics.logEvent('app_download_project')
+                }}
               >
                 <ListItem component="div">
                   <ListItemText
@@ -159,6 +166,7 @@ const FileDropdownMenu = ({
 
 export default compose(
   withAuthentication,
+  withFirebase,
   connect(
     mapStateToProps,
     mapDispatchToProps,

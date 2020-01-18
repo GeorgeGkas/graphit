@@ -13,9 +13,10 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 
 import { operations as projectsOperations } from '../../../../ducks/projects'
+import { withFirebase } from '../../../../providers/Firebase'
 
 const datatableTheme = () =>
   createMuiTheme({
@@ -67,7 +68,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(projectsOperations, dispatch)
 
-const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
+const Dashboard = ({
+  deleteProjectById,
+  firebase,
+  projects,
+  requestProjectList,
+}) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -140,6 +146,9 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
                         disabled={deleteProjectLoading}
                         target="_blank"
                         to={`/app/${value}`}
+                        onClick={() =>
+                          firebase.analytics.logEvent('view_project_button')
+                        }
                       >
                         <RemoveRedEyeIcon />
                       </IconButton>
@@ -151,6 +160,7 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
                         onClick={() => {
                           setCurrentProjectIdAction(value)
                           deleteSelectedProject(value)
+                          firebase.analytics.logEvent('delete_project_button')
                         }}
                       >
                         <DeleteIcon />
@@ -207,7 +217,10 @@ const Dashboard = ({ deleteProjectById, projects, requestProjectList }) => {
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Dashboard)

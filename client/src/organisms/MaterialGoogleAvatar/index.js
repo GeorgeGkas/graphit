@@ -14,7 +14,9 @@ import {
 } from 'material-ui-popup-state/hooks'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
+import Notification from '../../organisms/Notification'
 import GoogleSignIn from './organisms/GoogleSignIn'
 import SignOutComponent from './organisms/SignOut'
 
@@ -33,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const MaterialGoogleAvatar = ({ auth }) => {
+const MaterialGoogleAvatar = ({ auth, firebase }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -76,8 +78,29 @@ const MaterialGoogleAvatar = ({ auth }) => {
                           {t('google_connect.signout')}
                         </MenuItem>
                       )}
-                      onFailure={console.error}
-                      onSuccess={profileDropdownMenu.close}
+                      onFailure={err => {
+                        console.error(err)
+                        toast.dismiss()
+                        toast(
+                          <Notification
+                            message={t('google_connect.signout_fail')}
+                          />,
+                        )
+
+                        firebase.analytics.logEvent('social_sign_out', {
+                          provider: 'google',
+                          state: 'fail',
+                          errtype: err,
+                        })
+                      }}
+                      onSuccess={() => {
+                        firebase.analytics.logEvent('social_sign_out', {
+                          provider: 'google',
+                          state: 'success',
+                          errtype: null,
+                        })
+                        profileDropdownMenu.close()
+                      }}
                     />
                   </MenuList>
                 </ClickAwayListener>
@@ -92,8 +115,24 @@ const MaterialGoogleAvatar = ({ auth }) => {
       <div id="google_signin_button">
         <GoogleSignIn
           buttonText={t('google_connect.signin')}
-          onFailure={console.error}
-          onSuccess={_ => _}
+          onFailure={err => {
+            console.error(err)
+            toast.dismiss()
+            toast(<Notification message={t('google_connect.signin_fail')} />)
+
+            firebase.analytics.logEvent('social_sign_in', {
+              provider: 'google',
+              state: 'fail',
+              errtype: err,
+            })
+          }}
+          onSuccess={() => {
+            firebase.analytics.logEvent('social_sign_in', {
+              provider: 'google',
+              state: 'success',
+              errtype: null,
+            })
+          }}
         />
       </div>
     )

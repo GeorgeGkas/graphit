@@ -218,7 +218,9 @@
   },
   "google_connect": {
     "signin": "Sign In",
-    "signout": "Sign Out"
+    "signout": "Sign Out",
+    "signin_fail": "Could not sign in with Google",
+    "signout_fail": "Could not sign out user"
   },
   "input_dialog": {
     "cancel": "Cancel",

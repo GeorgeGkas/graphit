@@ -6,8 +6,9 @@ import EditIcon from '@material-ui/icons/EditSharp'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, compose } from 'redux'
 
+import { withFirebase } from '../../../../providers/Firebase'
 import {
   operations as graphOperations,
   selectors as graphSelectors,
@@ -48,6 +49,7 @@ const PropertiesEditor = ({
   deleteEdge,
   deleteNode,
   edges,
+  firebase,
   nodes,
   selectedEdge,
   selectedNode,
@@ -63,8 +65,10 @@ const PropertiesEditor = ({
   const deleteShape = () => {
     if (selectedEdge) {
       deleteEdge(selectedEdge.id)
+      firebase.analytics.logEvent('app_delete_edge')
     } else if (selectedNode) {
       deleteNode(selectedNode.id)
+      firebase.analytics.logEvent('app_delete_node')
     } else {
       /**
        * Should not be reached!
@@ -85,7 +89,12 @@ const PropertiesEditor = ({
         color="secondary"
         size="small"
         variant="contained"
-        onClick={toggleEditorDialog}
+        onClick={() => {
+          toggleEditorDialog()
+          firebase.analytics.logEvent(
+            selectedNode ? 'app_edit_node' : 'app_edit_edge',
+          )
+        }}
       >
         <EditIcon className={classes.buttonIcon} />
         {t('app.properties_editor.edit')}
@@ -123,7 +132,10 @@ const PropertiesEditor = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(PropertiesEditor)
