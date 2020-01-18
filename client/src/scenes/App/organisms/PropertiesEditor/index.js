@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/DeleteSharp'
 import EditIcon from '@material-ui/icons/EditSharp'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -53,6 +54,8 @@ const PropertiesEditor = ({
   stageScale,
 }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
+
   const [editorDialogVisible, makeEditorDialogVisible] = React.useState(false)
 
   const toggleEditorDialog = () => makeEditorDialogVisible(!editorDialogVisible)
@@ -85,7 +88,7 @@ const PropertiesEditor = ({
         onClick={toggleEditorDialog}
       >
         <EditIcon className={classes.buttonIcon} />
-        Edit
+        {t('app.properties_editor.edit')}
       </Button>
 
       <IconButton
