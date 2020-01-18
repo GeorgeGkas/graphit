@@ -71,6 +71,12 @@ const AuthProvider = withFirebase(props => {
     await props.firebase.signIn()
     const token = await props.firebase.auth.currentUser.getIdToken()
 
+    const cookieIsSet = await requestSessionCookieFromIdToken(token)
+
+    if (!cookieIsSet) {
+      throw new Error(t('providers.auth.could_not_set_cookie'))
+    }
+
     setAuthUser({
       email: props.firebase.auth.currentUser.email,
       imageUrl: props.firebase.auth.currentUser.photoURL,
@@ -78,12 +84,6 @@ const AuthProvider = withFirebase(props => {
       token,
       uid: props.firebase.auth.currentUser.uid,
     })
-
-    const cookieIsSet = await requestSessionCookieFromIdToken(token)
-
-    if (!cookieIsSet) {
-      throw new Error(t('providers.auth.could_not_set_cookie'))
-    }
 
     await props.firebase.signOut()
   }
