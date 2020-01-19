@@ -11,7 +11,8 @@
     "featured_editor": "Feature rich interactive editor for all supported projects.",
     "featured_storage": "Unlimited online storage for sign in members to save their projects.",
     "featured_download": "Ability to download project files.",
-    "featured_organized": "Keep your projects organized for free"
+    "featured_organized": "Keep your projects organized for free",
+    "privacy_policy": " Privacy Policy"
   },
   "404": {
     "not_exist": "The destination does not exist.",

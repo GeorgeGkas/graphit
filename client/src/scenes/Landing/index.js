@@ -17,7 +17,7 @@ import groupImage from './images/group.svg'
 import networkImage from './images/network.svg'
 import serverImage from './images/server.svg'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   callToActionButton: {
     background:
       'linear-gradient(90deg, rgba(38,198,218,1) 0%, rgba(0,172,193,1) 50%, rgba(38,198,218,1) 100%)',
@@ -58,16 +58,33 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   footerContainer: {
-    borderTop: '1px solid ' + grey['300'],
-    paddingTop: '3%',
+    width: '90%',
+    margin: '0 auto',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
   },
   footerProfileLink: {
     color: 'inherit',
     fontWeight: '700',
     textDecoration: 'none',
   },
+  footerLink: {
+    color: 'inherit',
+    fontWeight: '700',
+    textDecoration: 'none',
+    float: 'right',
+    [theme.breakpoints.down('sm')]: {
+      float: 'none',
+    },
+  },
   fullHeight: {
     minHeight: '100vh',
+  },
+  footerWrapper: {
+    borderTop: '1px solid ' + grey['300'],
+    paddingTop: '3%',
+    width: '100%',
   },
   hiddenImage: {
     display: 'block',
@@ -265,26 +282,32 @@ const Landing = ({ firebase }) => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid
-        container
-        alignItems="center"
-        className={classes.footerContainer}
-        direction="row"
-        justify="center"
-        spacing={0}
-      >
-        <Typography align="center" className={classes.footer} variant="body2">
-          {t('landing.footer')}
-          <a
-            className={classes.footerProfileLink}
-            href="https://github.com/georgegkas"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            @georgegkas
-          </a>
-        </Typography>
-      </Grid>
+      <div className={classes.footerWrapper}>
+        <Grid container className={classes.footerContainer} direction="row">
+          <Grid item md={3} sm={6} xs={12}>
+            <Typography
+              align="center"
+              className={classes.footer}
+              variant="body2"
+            >
+              {t('landing.footer')}
+              <a
+                className={classes.footerProfileLink}
+                href="https://github.com/georgegkas"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                @georgegkas
+              </a>
+            </Typography>
+          </Grid>
+          <Grid item md={9} sm={6} xs={12}>
+            <Link className={classes.footerLink} to="/privacy">
+              {t('landing.privacy_policy')}
+            </Link>
+          </Grid>
+        </Grid>
+      </div>
     </Grid>
   )
 }

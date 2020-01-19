@@ -29,11 +29,16 @@ const Page404 = loadable(() =>
   import(/* webpackChunkName: "Page404" */ './scenes/Page404'),
 )
 
+const PrivacyPolicy = loadable(() =>
+  import(/* webpackChunkName: "PrivacyPolicy" */ './scenes/PrivacyPolicy'),
+)
+
 const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact component={Landing} path="/" />
+        <Route exact component={PrivacyPolicy} path="/privacy" />
 
         <CheckAuthLoadingScreen>
           <Route path="/app/:id">
