@@ -314,7 +314,7 @@ const EditorBar = ({
             className={classes.displayInherit}
             id="editor_bar_editor_mode_section"
           >
-            <Tooltip title={t('app.editorbar.select_node')}>
+            <Tooltip title={t('app.editorbar.select_mode')}>
               <div id="editor_bar_editor_select_mode_section">
                 <IconButton
                   className={
@@ -334,7 +334,13 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title={t('app.editorbar.create_nodes')}>
+            <Tooltip
+              title={
+                graph.metadata.algorithm === 'Automata'
+                  ? t('app.editorbar.create_states')
+                  : t('app.editorbar.create_nodes')
+              }
+            >
               <div id="editor_bar_editor_nodes_mode_section">
                 <IconButton
                   className={
@@ -354,7 +360,13 @@ const EditorBar = ({
               </div>
             </Tooltip>
 
-            <Tooltip title={t('app.editorbar.create_edges')}>
+            <Tooltip
+              title={
+                graph.metadata.algorithm === 'Automata'
+                  ? t('app.editorbar.create_transitions')
+                  : t('app.editorbar.create_edges')
+              }
+            >
               <div id="editor_bar_editor_edges_mode_section">
                 <IconButton
                   className={

@@ -102,7 +102,9 @@ const NodeEditor = ({
       onClose={handleClose}
     >
       <DialogTitle id="form-dialog-title">
-        {t('app.node_editor.title')}
+        {algorithm === 'Automata'
+          ? t('app.node_editor.title_automata')
+          : t('app.node_editor.title')}
       </DialogTitle>
       <DialogContent>
         <form
@@ -134,7 +136,11 @@ const NodeEditor = ({
             control={
               <Switch checked={nodeIsInitial} onChange={toggleInitialState} />
             }
-            label={t('app.node_editor.initial_switch_text')}
+            label={
+              algorithm === 'Automata'
+                ? t('app.node_editor.initial_switch_text_automata')
+                : t('app.node_editor.initial_switch_text')
+            }
             labelPlacement="start"
           />
           {algorithm === 'Automata' && (
@@ -143,7 +149,11 @@ const NodeEditor = ({
               control={
                 <Switch checked={nodeIsFinal} onChange={toggleFinalState} />
               }
-              label={t('app.node_editor.final_switch_text')}
+              label={
+                algorithm === 'Automata'
+                  ? t('app.node_editor.final_switch_text_automata')
+                  : t('app.node_editor.final_switch_text')
+              }
               labelPlacement="start"
             />
           )}
