@@ -111,6 +111,7 @@ const EdgeLoop = ({
         algorithmType === 'Automata'
           ? String(thisEdge.properties.input)
               .split(',')
+              .map(symbol => (symbol === '@' ? 'ε' : symbol))
               .join(', ')
           : String(thisEdge.properties.weight)
       }
@@ -125,6 +126,7 @@ const EdgeLoop = ({
         algorithmType === 'Automata'
           ? String(thisEdge.properties.input)
               .split(',')
+              .map(symbol => (symbol === '@' ? 'ε' : symbol))
               .join(', ')
           : String(thisEdge.properties.weight)
       }

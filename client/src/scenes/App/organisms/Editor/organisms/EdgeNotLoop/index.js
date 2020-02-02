@@ -105,6 +105,7 @@ const EdgeNotLoop = ({
           algorithmType === 'Automata'
             ? String(thisResolvedEdge.properties.input)
                 .split(',')
+                .map(symbol => (symbol === '@' ? 'ε' : symbol))
                 .join(', ')
             : String(thisResolvedEdge.properties.weight)
         }
@@ -122,6 +123,7 @@ const EdgeNotLoop = ({
           algorithmType === 'Automata'
             ? String(thisResolvedEdge.properties.input)
                 .split(',')
+                .map(symbol => (symbol === '@' ? 'ε' : symbol))
                 .join(', ')
             : String(thisResolvedEdge.properties.weight)
         }
