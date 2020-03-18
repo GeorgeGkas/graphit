@@ -1,8 +1,12 @@
-# Dijkstra Visualizer
+# graph IT
 
-A Dijkstra Visualizer built with React.
+Interactive graph editor for Computer Science enthusiasts.
 
-**Note:** This project is in early development stage (we still evaluate the idea). You should expect hard fails, security vulnerabilities and untested code.
+- Choose between various visualizers such as Dijkstra SPF and Automata (NFA, DFA).
+- Specifically designed for educators and students.
+- Feature rich interactive editor for all supported projects.
+- Unlimited online storage for sign in members to save their projects.
+- Ability to download project files.
 
 ## Clone the repository
 
@@ -18,11 +22,11 @@ We provide separate development and production configuration options using `.env
 
 ## Front End (React)
 
-The front-end was built with React. Navigate to `frontend` directory for more info.
+The front-end was built with React. Navigate to `client` directory for more info.
 
 ## Back End (Firebase)
 
-The back-end was built with firebase SDK. Navigate to `backend` directory for more info.
+The back-end was built with firebase SDK. Navigate to `functions` directory for more info.
 
 ## License
 
