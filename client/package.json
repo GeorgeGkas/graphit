@@ -10,7 +10,7 @@
     "i18next": "^19.0.3",
     "i18next-xhr-backend": "^3.2.2",
     "konva": "^4.1.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "material-ui-popup-state": "^1.5.1",
     "mui-datatables": "^2.13.3",
     "react": "^16.12.0",
