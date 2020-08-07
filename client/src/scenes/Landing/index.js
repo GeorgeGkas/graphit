@@ -1,8 +1,5 @@
 import Button from '@material-ui/core/Button'
-import grey from '@material-ui/core/colors/grey'
-import purple from '@material-ui/core/colors/purple'
 import Grid from '@material-ui/core/Grid'
-import Hidden from '@material-ui/core/Hidden'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
@@ -10,112 +7,314 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { withFirebase } from '../../providers/Firebase'
-import downloadImage from './images/download.svg'
-import editorImage from './images/editor.svg'
-import graphImage from './images/graph.svg'
-import groupImage from './images/group.svg'
-import networkImage from './images/network.svg'
-import serverImage from './images/server.svg'
+import Books from './images/Books.svg'
+import CloudDownload from './images/Cloud-Download.svg'
+import CloudStorage from './images/Cloud-Storage.svg'
+import Eye from './images/Eye.svg'
+import Funnel from './images/Funnel.svg'
+import Grid1 from './images/Grid-1.svg'
+import Grid2 from './images/Grid-2.svg'
+import logo from './images/logo.svg'
+import Stars from './images/Stars.svg'
+import Tools from './images/Tools.svg'
 
 const useStyles = makeStyles(theme => ({
-  callToActionButton: {
-    background:
-      'linear-gradient(90deg, rgba(38,198,218,1) 0%, rgba(0,172,193,1) 50%, rgba(38,198,218,1) 100%)',
-    borderBottom: '4px solid rgb(0,131,143)',
-    borderRadius: '40px',
-    display: 'block',
-    margin: '0 auto',
-    padding: '5%',
-    textAlign: 'center',
+  logoWrapper: {},
+  header: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '36px',
+    fontWeight: 700,
     width: '80%',
+    padding: '50px 0 100px 0',
+  },
+  actionButtonsWrapper: {
+    textAlign: 'right',
+  },
+  callToActionButton: {
+    background: '#3386F2',
+    borderRadius: 0,
+    padding: '15px 30px',
+    width: '250px',
+    height: '60px',
+    '&:hover': {
+      opacity: 0.8,
+      background: '#3386F2',
+    },
   },
   callToActionButtonText: {
     color: '#fff',
-    fontFamily: 'Roboto',
-    fontWeight: '600',
-    letterSpacing: '1px',
-    textTransform: 'capitalize',
+    fontFamily: 'Amaranth, sans-serif',
+    textTransform: 'none',
   },
-  centralize: {
-    display: 'block',
-    margin: '0 auto',
+  watchTutorialButtonsWrapper: {
+    textAlign: 'left',
   },
-  description: {
-    display: 'block',
-    margin: '0 auto',
-    width: '70%',
-  },
-  firstHalf: {
-    margin: '0 auto',
-    width: '60%',
-  },
-  firstSection: {
+  watchTutorialButton: {
     background: '#fff',
-    padding: '100px 0',
+    borderRadius: 0,
+    border: '2px solid #000',
+    padding: '15px 30px',
+    width: '250px',
+    height: '60px',
+    '&:hover': {
+      opacity: 0.8,
+      background: '#eee',
+    },
   },
-  footer: {
-    bottom: '24px',
-    width: '100%',
+  watchTutorialButtonText: {
+    color: '#000',
+    fontFamily: 'Amaranth, sans-serif',
+    textTransform: 'none',
   },
-  footerContainer: {
-    width: '90%',
+  grid2Image: {
+    marginTop: '70%',
+  },
+  secondSectionHeaderWrapper: {
+    width: '80%',
     margin: '0 auto',
+  },
+  secondSectionHeader: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '31px',
+    width: '30%',
+    fontWeight: 700,
+    paddingBottom: '30px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      textAlign: 'center',
+    },
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '50px',
+    },
+  },
+  thirdSectionWrapper: {
+    width: '100%',
+    paddingLeft: '6%',
+    margin: '0 auto',
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 0,
+      width: '80%',
+      textAlign: 'center',
+    },
+  },
+  thirdSectionContent: {},
+  thirdSectionImage: {
+    marginLeft: '-20px',
+  },
+  thirdSectionTitle: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '18px',
+    fontWeight: 700,
+    marginTop: '-20px',
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center',
+      margin: '-20px auto 0 auto',
+    },
+  },
+  thirdSectionDescription: {
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '14px',
+    width: '75%',
+    letterSpacing: '1px',
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center',
+      margin: '0 auto',
+    },
+  },
+  fourthSectionWrapper: {
+    width: '80%',
+    margin: '3% auto',
+    border: '1px solid rgba(0, 0, 0, .1)',
+    padding: '2%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '100px',
+    },
+  },
+  fourthSectionHeaderWrapper: {
+    width: '80%',
+    margin: '0 auto',
+  },
+  fourthSectionHeader: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '31px',
+    width: '45%',
+    margin: '0 auto',
+    fontWeight: 700,
+    paddingBottom: '30px',
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '50px',
+    },
+  },
+  fourthSectionItemHeader: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontWeight: 700,
+    fontSize: '18px',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
   },
-  footerProfileLink: {
-    color: 'inherit',
-    fontWeight: '700',
-    textDecoration: 'none',
-  },
-  footerLink: {
-    color: 'inherit',
-    fontWeight: '700',
-    textDecoration: 'none',
-    float: 'right',
+  fourthSectionItemDescription: {
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '14px',
+    letterSpacing: '1px',
     [theme.breakpoints.down('sm')]: {
-      float: 'none',
+      textAlign: 'center',
     },
   },
-  fullHeight: {
-    minHeight: '100vh',
+  columnReverseSm: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column-reverse',
+    },
   },
-  footerWrapper: {
-    borderTop: '1px solid ' + grey['300'],
-    paddingTop: '3%',
-    width: '100%',
-  },
-  hiddenImage: {
-    display: 'block',
+  fifthSectionHeaderWrapper: {
+    width: '80%',
     margin: '0 auto',
-    paddingBottom: '20px',
   },
-  item: {
-    padding: '3%',
-    textAlign: 'center',
-  },
-  itemDescription: {
-    fontWeight: '500',
-  },
-  itemImageContainer: {
-    paddingBottom: '10%',
-  },
-  secondSection: {
-    background: purple['700'],
-    color: '#fff',
-    padding: '50px 0',
-  },
-  thirdSection: {
-    color: grey['900'],
-    padding: '50px 0',
-  },
-  thirdSectionTitle: {
-    fontWeight: '500',
+  fifthSectionHeader: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '31px',
+    width: '45%',
+    fontWeight: 700,
     paddingTop: '50px',
+    width: '80%',
+    margin: '0 auto',
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: '80px',
+      width: '100%',
+      margin: '0 auto',
+    },
   },
-  wrapper: {
-    paddingBottom: '3%',
+  funnelWrapper: {
+    width: '80%',
+    margin: '0 auto',
+  },
+  funnelStepsContainer: {
+    padding: '20% 0 20% 22%',
+    [theme.breakpoints.down('sm')]: {
+      padding: '30px 0',
+    },
+  },
+  funnelImage: {
+    [theme.breakpoints.down('sm')]: {
+      width: '70%',
+      height: '70%',
+      margin: '0 auto',
+      display: 'block',
+    },
+  },
+  funnelStepsFirst: {
+    marginBottom: '7%',
+  },
+  funnelStepsSecond: {
+    marginBottom: '7%',
+  },
+  funnelStepsThird: {
+    marginBottom: '7%',
+  },
+  funnelStepsFirstTitle: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '18px',
+    fontWeight: 700,
+    marginLeft: '-25px',
+  },
+  funnelStepsSecondTitle: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '18px',
+    fontWeight: 700,
+    marginLeft: '-25px',
+  },
+  funnelStepsThirdTitle: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '18px',
+    fontWeight: 700,
+    marginLeft: '-25px',
+  },
+  funnelStepsFirstDescription: {
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '14px',
+    width: '60%',
+    letterSpacing: '1px',
+  },
+  funnelStepsSecondDescription: {
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '14px',
+    width: '60%',
+    letterSpacing: '1px',
+  },
+  funnelStepsThirdDescription: {
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '14px',
+    width: '60%',
+    letterSpacing: '1px',
+  },
+  sixthSectionWrapper: {
+    background: '#3386F2',
+    color: '#fff',
+    marginTop: '100px',
+  },
+  sixthSectionContainer: {
+    margin: '0 auto',
+    padding: '80px 0',
+    [theme.breakpoints.down('sm')]: {
+      width: '90%',
+    },
+  },
+  starsImage: {
+    marginTop: '-25%',
+    width: '90%',
+    float: 'right',
+  },
+  sixthSectionTitle: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontSize: '31px',
+    fontWeight: 700,
+  },
+  sixthSectionDescription: {
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '16px',
+    letterSpacing: '1px',
+  },
+  sixthSectionFirstItem: {
+    paddingLeft: '10%',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 0,
+    },
+  },
+  footer: {
+    padding: '20px 0',
+    width: '80%',
+    margin: '0 auto',
+    fontFamily: 'Heebo, sans-serif',
+    fontSize: '14px',
+    letterSpacing: '1px',
+  },
+  copyrightYear: {
+    textAlign: 'left',
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+      paddingBottom: '10px',
+    },
+  },
+  creator: {
+    textAlign: 'center',
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+      paddingBottom: '10px',
+    },
+  },
+  privacy: {
+    textAlign: 'right',
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+      paddingBottom: '10px',
+    },
   },
 }))
 
@@ -124,191 +323,366 @@ const Landing = ({ firebase }) => {
   const { t } = useTranslation()
 
   return (
-    <Grid
-      container
-      alignItems="center"
-      className={classes.wrapper}
-      direction="column"
-      justify="center"
-    >
+    <>
+      <Grid container style={{ overflow: 'hidden' }}>
+        <Grid container justify="center" direction="row">
+          <Grid item md={3}>
+            <img alt="" src={Grid2} />
+          </Grid>
+          <Grid item md={6}>
+            <Grid
+              container
+              alignItems="center"
+              justify="center"
+              className={classes.logoWrapper}
+            >
+              <img alt="logo" src={logo} width="75" height="75" />
+            </Grid>
+            <Grid container alignItems="center" justify="center">
+              <Typography
+                gutterBottom
+                align="center"
+                component="h1"
+                className={classes.header}
+              >
+                {t('landing.slogan')}
+              </Typography>
+            </Grid>
+            <Grid
+              container
+              alignItems="center"
+              justify="center"
+              direction="row"
+              spacing={3}
+            >
+              <Grid item md={6} className={classes.actionButtonsWrapper}>
+                <Button
+                  className={classes.callToActionButton}
+                  component={Link}
+                  onClick={() =>
+                    firebase.analytics.logEvent('call_to_action_button')
+                  }
+                  to="/app"
+                >
+                  <Typography className={classes.callToActionButtonText}>
+                    {t('landing.button_open_editor')}
+                  </Typography>
+                </Button>
+              </Grid>
+              <Grid item md={6} className={classes.watchTutorialButtonsWrapper}>
+                <Button
+                  className={classes.watchTutorialButton}
+                  component={Link}
+                  onClick={() =>
+                    firebase.analytics.logEvent('call_to_action_button')
+                  }
+                  to="/app"
+                >
+                  <Typography className={classes.watchTutorialButtonText}>
+                    {t('landing.button_watch_tutorial')}
+                  </Typography>
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item md={3}>
+            <img alt="" src={Grid1} className={classes.grid2Image} />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid container className={classes.secondSectionHeaderWrapper}>
+        <Typography className={classes.secondSectionHeader} align="left">
+          {t('landing.section1_title')}
+        </Typography>
+      </Grid>
       <Grid
         container
-        alignItems="center"
-        className={classes.firstSection}
-        direction="row"
+        direction="column"
         justify="center"
-        spacing={0}
+        direction="row"
+        className={classes.thirdSectionWrapper}
       >
-        <Hidden mdUp>
-          <Grid item md={6}>
+        <Grid item md={4} className={classes.thirdSectionContent}>
+          <div>
             <img
-              alt="graph"
-              className={classes.hiddenImage}
-              height="50%"
-              src={graphImage}
-              width="50%"
+              alt=""
+              src={Eye}
+              width="150"
+              height="150"
+              className={classes.thirdSectionImage}
             />
-          </Grid>
-        </Hidden>
-        <Grid item md={6} sm={7} xs={10}>
-          <div className={classes.firstHalf}>
-            <Typography gutterBottom align="center" component="h1" variant="h3">
-              {t('common.project_name')}
-            </Typography>
+          </div>
+          <div>
             <Typography
-              paragraph
-              align="center"
-              className={classes.description}
-              variant="body1"
+              align="left"
+              className={classes.thirdSectionTitle}
+              gutterBottom
             >
-              {t('landing.description')}
+              {t('landing.section1_item1_title')}
             </Typography>
-            <div style={{ paddingTop: '24px' }}>
-              <Button
-                className={classes.callToActionButton}
-                component={Link}
-                onClick={() =>
-                  firebase.analytics.logEvent('call_to_action_button')
-                }
-                to="/app"
+          </div>
+          <div>
+            <Typography paragraph className={classes.thirdSectionDescription}>
+              {t('landing.section1_item1_description')}
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item md={4} className={classes.thirdSectionContent}>
+          <div>
+            <img
+              alt=""
+              src={Books}
+              width="150"
+              height="150"
+              className={classes.thirdSectionImage}
+            />
+          </div>
+          <div>
+            <Typography
+              align="left"
+              className={classes.thirdSectionTitle}
+              gutterBottom
+            >
+              {t('landing.section1_item2_title')}
+            </Typography>
+          </div>
+          <div>
+            <Typography paragraph className={classes.thirdSectionDescription}>
+              {t('landing.section1_item2_description')}
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item md={3} className={classes.thirdSectionContent}>
+          <div>
+            <img
+              alt=""
+              src={Tools}
+              width="150"
+              height="150"
+              className={classes.thirdSectionImage}
+            />
+          </div>
+          <div>
+            <Typography
+              align="left"
+              className={classes.thirdSectionTitle}
+              gutterBottom
+            >
+              {t('landing.section1_item3_title')}
+            </Typography>
+          </div>
+          <div>
+            <Typography paragraph className={classes.thirdSectionDescription}>
+              {t('landing.section1_item3_description')}
+            </Typography>
+          </div>
+        </Grid>
+      </Grid>
+      <div className={classes.fourthSectionWrapper}>
+        <Grid container className={classes.fourthSectionHeaderWrapper}>
+          <Typography className={classes.fourthSectionHeader} align="left">
+            {t('landing.section2_title')}
+          </Typography>
+        </Grid>
+        <Grid
+          container
+          alignItems="center"
+          justify="center"
+          direction="row"
+          spacing={3}
+        >
+          <Grid item md={6} sm={12}>
+            <Grid
+              container
+              alignItems="center"
+              justify="center"
+              direction="row"
+            >
+              <Grid
+                item
+                md={5}
+                sm={12}
+                style={{
+                  textAlign: 'center',
+                }}
               >
-                <Typography className={classes.callToActionButtonText}>
-                  {t('landing.callToAction')}
+                <img alt="" src={CloudStorage} width="200" height="200" />
+              </Grid>
+              <Grid item md={7} sm={12}>
+                <Typography
+                  align="left"
+                  className={classes.fourthSectionItemHeader}
+                  gutterBottom
+                >
+                  {t('landing.section2_item1_title')}
                 </Typography>
-              </Button>
-            </div>
-          </div>
-        </Grid>
-        <Hidden smDown>
-          <Grid item md={6}>
-            <img
-              alt="graph"
-              className={classes.centralize}
-              height="50%"
-              src={graphImage}
-              width="50%"
-            />
+                <Typography
+                  align="left"
+                  className={classes.fourthSectionItemDescription}
+                >
+                  {t('landing.section2_item1_description')}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
-        </Hidden>
-      </Grid>
-      <Grid
-        container
-        alignItems="center"
-        className={classes.secondSection}
-        direction="row"
-        justify="center"
-        spacing={0}
-      >
-        <Grid item className={classes.item} md={4} sm={7} xs={10}>
-          <div className={classes.itemImageContainer}>
-            <img alt="" height="25%" src={networkImage} width="25%" />
-          </div>
-          <Typography
-            paragraph
-            align="center"
-            className={classes.itemDescription}
-            variant="body1"
-          >
-            {t('landing.featured_visualizers')}
-          </Typography>
-        </Grid>
-        <Grid item className={classes.item} md={4} sm={7} xs={10}>
-          <div className={classes.itemImageContainer}>
-            <img alt="" height="25%" src={groupImage} width="25%" />
-          </div>
-          <Typography
-            paragraph
-            align="center"
-            className={classes.itemDescription}
-            variant="body1"
-          >
-            {t('landing.featured_forall')}
-          </Typography>
-        </Grid>
-        <Grid item className={classes.item} md={4} sm={7} xs={10}>
-          <div className={classes.itemImageContainer}>
-            <img alt="" height="25%" src={editorImage} width="25%" />
-          </div>
-          <Typography
-            paragraph
-            align="center"
-            className={classes.itemDescription}
-            variant="body1"
-          >
-            {t('landing.featured_editor')}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Typography
-        paragraph
-        align="center"
-        className={classes.thirdSectionTitle}
-        variant="h5"
-      >
-        {t('landing.featured_organized')}
-      </Typography>
-      <Grid
-        container
-        alignItems="center"
-        className={classes.thirdSection}
-        direction="row"
-        justify="center"
-        spacing={0}
-      >
-        <Grid item className={classes.item} md={6} sm={7} xs={10}>
-          <div className={classes.itemImageContainer}>
-            <img alt="" height="20%" src={serverImage} width="20%" />
-          </div>
-          <Typography
-            paragraph
-            align="center"
-            className={classes.itemDescription}
-            variant="body1"
-          >
-            {t('landing.featured_storage')}
-          </Typography>
-        </Grid>
-        <Grid item className={classes.item} md={6} sm={7} xs={10}>
-          <div className={classes.itemImageContainer}>
-            <img alt="" height="20%" src={downloadImage} width="20%" />
-          </div>
-          <Typography
-            paragraph
-            align="center"
-            className={classes.itemDescription}
-            variant="body1"
-          >
-            {t('landing.featured_download')}
-          </Typography>
-        </Grid>
-      </Grid>
-      <div className={classes.footerWrapper}>
-        <Grid container className={classes.footerContainer} direction="row">
-          <Grid item md={3} sm={6} xs={12}>
-            <Typography
-              align="center"
-              className={classes.footer}
-              variant="body2"
+          <Grid item md={6} sm={12}>
+            <Grid
+              container
+              alignItems="center"
+              justify="center"
+              direction="row"
+              className={classes.columnReverseSm}
             >
-              {t('landing.footer')}
-              <a
-                className={classes.footerProfileLink}
-                href="https://github.com/georgegkas"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                @georgegkas
-              </a>
-            </Typography>
-          </Grid>
-          <Grid item md={9} sm={6} xs={12}>
-            <Link className={classes.footerLink} to="/privacy">
-              {t('landing.privacy_policy')}
-            </Link>
+              <Grid item md={7} sm={12}>
+                <Typography
+                  align="left"
+                  className={classes.fourthSectionItemHeader}
+                  gutterBottom
+                >
+                  {t('landing.section2_item2_title')}
+                </Typography>
+                <Typography
+                  align="left"
+                  className={classes.fourthSectionItemDescription}
+                >
+                  {t('landing.section2_item2_description')}
+                </Typography>
+              </Grid>
+              <Grid item md={5} sm={12}>
+                <img alt="" src={CloudDownload} width="200" height="200" />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>
-    </Grid>
+      <Grid container className={classes.fifthSectionHeaderWrapper}>
+        <Typography className={classes.fifthSectionHeader} align="left">
+          {t('landing.section3_title')}
+        </Typography>
+      </Grid>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        className={classes.funnelWrapper}
+      >
+        <Grid item md={5} xs={12} style={{ alignSelf: 'center' }}>
+          <img alt="" src={Funnel} className={classes.funnelImage} />
+        </Grid>
+        <Grid item md={7} xs={12}>
+          <Grid
+            container
+            direction="column"
+            justify="space-evenly"
+            alignItems="stretch"
+            className={classes.funnelStepsContainer}
+          >
+            <Grid item xs={12} className={classes.funnelStepsFirst}>
+              <Typography
+                gutterBottom
+                align="left"
+                className={classes.funnelStepsFirstTitle}
+              >
+                {t('landing.section3_step1_title')}
+              </Typography>
+              <Typography
+                gutterBottom
+                className={classes.funnelStepsFirstDescription}
+              >
+                {t('landing.section3_step1_description')}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} className={classes.funnelStepsSecond}>
+              <Typography
+                gutterBottom
+                className={classes.funnelStepsSecondTitle}
+              >
+                {t('landing.section3_step2_title')}
+              </Typography>
+              <Typography
+                gutterBottom
+                className={classes.funnelStepsSecondDescription}
+              >
+                {t('landing.section3_step2_description')}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} className={classes.funnelStepsThird}>
+              <Typography
+                gutterBottom
+                className={classes.funnelStepsThirdTitle}
+              >
+                {t('landing.section3_step3_title')}
+              </Typography>
+              <Typography
+                gutterBottom
+                className={classes.funnelStepsThirdDescription}
+              >
+                {t('landing.section3_step3_description')}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <div className={classes.sixthSectionWrapper}>
+        <Grid
+          container
+          justify="flex-start"
+          direction="row"
+          className={classes.sixthSectionContainer}
+        >
+          <Grid item md={5} className={classes.sixthSectionFirstItem}>
+            <Typography gutterBottom className={classes.sixthSectionTitle}>
+              {t('landing.section4_title')}
+            </Typography>
+            <Typography paragraph className={classes.sixthSectionDescription}>
+              {t('landing.section4_description')}{' '}
+              <a
+                style={{
+                  color: '#fff',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                }}
+                href="mailto:georgegkas@gmail.com"
+              >
+                georgegkas@gmail.com
+              </a>
+              .
+            </Typography>
+          </Grid>
+          <Grid item md={7}>
+            <img alt="" src={Stars} className={classes.starsImage} />
+          </Grid>
+        </Grid>
+      </div>
+      <Grid container className={classes.footer} direction="row">
+        <Grid item xs={12} sm={2}>
+          <Typography className={classes.copyrightYear}>
+            © {new Date().getFullYear()}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <Typography className={classes.creator}>
+            graphIT by{' '}
+            <a
+              style={{ color: '#000', textDecoration: 'none', fontWeight: 700 }}
+              href="https://github.com/georgegkas"
+            >
+              georgegkas
+            </a>
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <Typography className={classes.privacy}>
+            <Link
+              to="/privacy"
+              style={{ color: '#000', textDecoration: 'none', fontWeight: 700 }}
+            >
+              {t('landing.privacy_policy')}
+            </Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </>
   )
 }
 
