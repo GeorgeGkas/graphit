@@ -5,9 +5,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Popper from '@material-ui/core/Popper'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
-import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import DashboardIcon from '@material-ui/icons/DashboardSharp'
+import FolderIcon from '@material-ui/icons/FolderOutlined'
 import {
   bindPopover,
   bindToggle,
@@ -23,6 +22,7 @@ import MaterialGoogleAvatar from '../../../../organisms/MaterialGoogleAvatar'
 import { withAuthentication } from '../../../../providers/Auth'
 import { withFirebase } from '../../../../providers/Firebase'
 import { operations as tutorialOperations } from '../../ducks/tutorial'
+import Logo from './images/logo.svg'
 import FileDropdownMenu from './organisms/FileDropdownMenu'
 
 const useStyles = makeStyles(theme => ({
@@ -30,8 +30,10 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
   },
   buttonApp: {
+    fontFamily: 'Amaranth, sans-serif',
     borderRadius: 0,
     marginRight: theme.spacing(1),
+    textTransform: 'capitalize',
   },
   fileInput: {
     display: 'none',
@@ -53,8 +55,32 @@ const useStyles = makeStyles(theme => ({
     background: blue['500'],
     display: 'flex',
   },
-  title: {
+  titleWrapper: {
     marginRight: theme.spacing(3),
+  },
+  title: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontWeight: 700,
+  },
+  appbar: {
+    background: '#3386F2',
+    display: 'flex',
+  },
+  operationName: {
+    fontFamily: 'Heebo, sans-serif',
+  },
+  dashboardLinkWrapper: {
+    fontFamily: 'Amaranth, sans-serif',
+    padding: '0 50px',
+  },
+  dashboardLinkIcon: {
+    position: 'absolute',
+    marginTop: '-3px',
+    paddingLeft: '8px',
+  },
+  dashboardLink: {
+    color: '#fff',
+    textDecoration: 'none',
   },
 }))
 
@@ -84,36 +110,32 @@ const AppBar = ({
 
   return (
     <>
-      <MUIAppBar className={classes.root} position="static">
+      <MUIAppBar className={classes.appbar} position="static">
         <Toolbar>
-          {auth.authUser && (
-            <Tooltip title={t('app.appbar.dashboard_link')}>
-              <IconButton
-                className={classes.menuButton}
-                color="inherit"
-                component={Link}
-                edge="start"
-                to="/dashboard/projects"
-                onClick={() =>
-                  firebase.analytics.logEvent('navigate_to_dashboard_button')
-                }
-              >
-                <DashboardIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-
-          <div className={classes.title}>
-            <Typography variant="h6">
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            component={Link}
+            edge="start"
+            to="/"
+          >
+            <img alt="logo" src={Logo} width="24" height="24" />
+          </IconButton>
+          <div className={classes.titleWrapper}>
+            <Typography variant="h6" className={classes.title}>
               {graphMetadata.name
                 ? graphMetadata.name
                 : t('app.appbar.default_project_name')}
             </Typography>
-            <Typography gutterBottom display="block" variant="caption">
+            <Typography
+              gutterBottom
+              display="block"
+              variant="caption"
+              className={classes.operationName}
+            >
               {graphMetadata.algorithm ? graphMetadata.algorithm : null}
             </Typography>
           </div>
-
           <Button
             className={classes.buttonApp}
             color="inherit"
@@ -150,6 +172,22 @@ const AppBar = ({
 
           <div className={classes.grow} />
 
+          {auth.authUser && (
+            <div className={classes.dashboardLinkWrapper}>
+              <Link
+                to="/dashboard/projects"
+                className={classes.dashboardLink}
+                onClick={() =>
+                  firebase.analytics.logEvent('navigate_to_dashboard_button')
+                }
+              >
+                {t('app.appbar.dashboard_link')}{' '}
+                <span className={classes.dashboardLinkIcon}>
+                  <FolderIcon />
+                </span>
+              </Link>
+            </div>
+          )}
           <MaterialGoogleAvatar auth={auth} firebase={firebase} />
         </Toolbar>
       </MUIAppBar>

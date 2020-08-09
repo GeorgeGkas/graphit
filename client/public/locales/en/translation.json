@@ -136,7 +136,7 @@
       }
     },
     "appbar": {
-      "dashboard_link": "Dashboard",
+      "dashboard_link": "My projects",
       "default_project_name": "Editor",
       "menu": {
         "file": "File",

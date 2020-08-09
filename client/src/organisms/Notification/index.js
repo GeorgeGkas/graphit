@@ -41,7 +41,9 @@ const Notification = ({ disableClickAwayListener = false, message }) => {
         vertical: 'bottom',
       }}
       autoHideDuration={10000}
-      message={<span>{message}</span>}
+      message={
+        <span style={{ fontFamily: '"Heebo", sans-serif' }}>{message}</span>
+      }
       open={notificationVisible}
       style={{
         zIndex: 99999,
