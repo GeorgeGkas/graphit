@@ -6,7 +6,7 @@ export default () => (
       background: '#fff',
       borderRadius: 2,
       marginRight: 10,
-      marginTop: 4,
+      marginTop: 7,
     }}
   >
     <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg">

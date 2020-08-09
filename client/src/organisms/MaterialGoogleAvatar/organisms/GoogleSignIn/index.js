@@ -20,9 +20,8 @@ const useStyles = makeStyles(() => ({
     color: 'rgba(0, 0, 0, .54)',
     cursor: 'pointer',
     display: 'inline-flex',
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Amaranth, sans-serif',
     fontSize: 14,
-    fontWeight: '500',
     padding: '6px 10px',
     textTransform: 'capitalize',
     transition:

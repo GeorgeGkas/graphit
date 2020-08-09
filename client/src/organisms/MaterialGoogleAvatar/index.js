@@ -114,6 +114,7 @@ const MaterialGoogleAvatar = ({ auth, firebase }) => {
     return (
       <div id="google_signin_button">
         <GoogleSignIn
+          styles={{ fontFamily: 'Amaranth, sans-serif' }}
           buttonText={t('google_connect.signin')}
           onFailure={err => {
             console.error(err)
