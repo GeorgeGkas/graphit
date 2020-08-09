@@ -1,21 +1,84 @@
 import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Stepper from '@material-ui/core/Stepper'
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
-  button: {
-    marginRight: theme.spacing(1),
-  },
   content: {
     padding: '24px',
   },
   footer: {
-    padding: '24px',
+    padding: '10px 10px 10px 27px',
+  },
+  stepLabel: {
+    '& .MuiStepIcon-root': {
+      color: '#3386F2',
+    },
+    '& .MuiStepIcon-text': {
+      fontWeight: 700,
+    },
+    '& .MuiStepLabel-active': {
+      fontWeight: 700,
+    },
+    '& .MuiStepLabel-alternativeLabel': {
+      fontFamily: 'Amaranth, sans-serif',
+      fontSize: '14px',
+    },
+  },
+  buttonBack: {
+    fontFamily: 'Amaranth, sans-serif',
+    padding: '10px 30px',
+    border: '2px solid #000',
+    '&:disabled': {
+      border: 0,
+      color: 'rgba(0, 0, 0, 0.26)',
+      boxShadow: 'none',
+      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    },
+    borderRadius: 0,
+    marginRight: theme.spacing(1),
+    '& .MuiButton-label': {
+      textTransform: 'none',
+    },
+  },
+  buttonSkip: {
+    '& .MuiButton-label': {
+      textTransform: 'none',
+      '&:hover': {
+        boxShadow: 'none',
+      },
+    },
+    fontFamily: 'Amaranth, sans-serif',
+    marginRight: theme.spacing(1),
+    float: 'right',
+    background: '#3386F2',
+    border: 0,
+    borderRadius: 0,
+    boxShadow: 'none',
+    padding: '10px 30px',
+    '&:hover': {
+      background: '#1976D2',
+      boxShadow: 'none',
+    },
+  },
+  buttonNext: {
+    fontFamily: 'Amaranth, sans-serif',
+    marginRight: theme.spacing(1),
+    background: '#3386F2',
+    border: 0,
+    borderRadius: 0,
+    boxShadow: 'none',
+    padding: '10px 30px',
+    '& .MuiButton-label': {
+      textTransform: 'none',
+    },
+    '&:hover': {
+      boxShadow: 'none',
+    },
   },
 }))
 
@@ -112,15 +175,10 @@ const CustomStepper = ({
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep}>
+      <Stepper alternativeLabel activeStep={activeStep} connector={<></>}>
         {steps.map((step, index) => {
           const stepProps = {}
           const labelProps = {}
-          if (isStepOptional(step)) {
-            labelProps.optional = (
-              <Typography variant="caption">{t('stepper.optional')}</Typography>
-            )
-          }
           if (
             isStepSkippable(index) &&
             !(typeof step.onNextFinish === 'function' && step.onNextFinish())
@@ -129,7 +187,9 @@ const CustomStepper = ({
           }
           return (
             <Step key={step.title} {...stepProps}>
-              <StepLabel {...labelProps}>{step.title}</StepLabel>
+              <StepLabel className={classes.stepLabel} {...labelProps}>
+                {step.title}
+              </StepLabel>
             </Step>
           )
         })}
@@ -142,37 +202,44 @@ const CustomStepper = ({
           <>
             <div className={classes.content}>{getActiveStepContent()}</div>
             <div className={classes.footer}>
-              <Button
-                className={classes.button}
-                disabled={activeStep === 0}
-                onClick={handlePreviousStep}
-              >
-                {t('stepper.back')}
-              </Button>
-              {isStepOptional(steps[activeStep]) && (
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  onClick={handleSkippableStep}
-                >
-                  {t('stepper.skip')}
-                </Button>
-              )}
-
-              <Button
-                className={classes.button}
-                color="primary"
-                disabled={steps[activeStep].nextStepDisabledIf}
-                variant="contained"
-                onClick={handleNextStep}
-              >
-                {activeStep === steps.length - 1 ||
-                (typeof steps[activeStep].onNextFinish === 'function' &&
-                  steps[activeStep].onNextFinish())
-                  ? t('stepper.finish')
-                  : t('stepper.next')}
-              </Button>
+              <Grid container direction="row">
+                <Grid item md={1}>
+                  <Button
+                    className={classes.buttonBack}
+                    disabled={activeStep === 0}
+                    onClick={handlePreviousStep}
+                  >
+                    {t('stepper.back')}
+                  </Button>
+                </Grid>
+                <Grid item md={9}>
+                  {isStepOptional(steps[activeStep]) && (
+                    <Button
+                      className={classes.buttonSkip}
+                      color="primary"
+                      variant="contained"
+                      onClick={handleSkippableStep}
+                    >
+                      {t('stepper.skip')}
+                    </Button>
+                  )}
+                </Grid>
+                <Grid item md={2}>
+                  <Button
+                    className={classes.buttonNext}
+                    color="primary"
+                    disabled={steps[activeStep].nextStepDisabledIf}
+                    variant="contained"
+                    onClick={handleNextStep}
+                  >
+                    {activeStep === steps.length - 1 ||
+                    (typeof steps[activeStep].onNextFinish === 'function' &&
+                      steps[activeStep].onNextFinish())
+                      ? t('stepper.finish')
+                      : t('stepper.next')}
+                  </Button>
+                </Grid>
+              </Grid>
             </div>
           </>
         )}

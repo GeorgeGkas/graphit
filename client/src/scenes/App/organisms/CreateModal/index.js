@@ -10,7 +10,6 @@ import Select from '@material-ui/core/Select'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import CloudUploadIcon from '@material-ui/icons/CloudUploadSharp'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
@@ -20,6 +19,7 @@ import { bindActionCreators, compose } from 'redux'
 import Stepper from '../../../../organisms/Stepper'
 import { withFirebase } from '../../../../providers/Firebase'
 import { operations as graphOperations } from '../../ducks/graph'
+import CloudUploadIcon from './images/uploadCloud.svg'
 
 const useStyles = makeStyles(theme => ({
   fileInput: {
@@ -42,7 +42,6 @@ const useStyles = makeStyles(theme => ({
       outline: 0,
     },
     backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
     minWidth: '768px',
     padding: theme.spacing(2, 4, 3),
   },
@@ -50,13 +49,38 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: 'inherit',
     },
-    border: '2px dashed #ddd',
+    border: '1px solid rgba(0, 0, 0, .1)',
+    borderRadius: 0,
     width: '100%',
   },
   uploadContainer: {
     padding: '30px',
     textAlign: 'center',
     width: '100%',
+  },
+  uploadButtonText: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontWeight: 700,
+  },
+  closeButton: {
+    marginTop: '15px',
+    fontFamily: 'Amaranth, sans-serif',
+    background: '#3386F2',
+    border: 0,
+    borderRadius: 0,
+    boxShadow: 'none',
+    padding: '10px 30px',
+    '& .MuiButton-label': {
+      textTransform: 'none',
+    },
+    '&:hover': {
+      boxShadow: 'none',
+    },
+  },
+  hooray: {
+    fontFamily: 'Amaranth, sans-serif',
+    fontWeight: 700,
+    fontSize: '21px',
   },
 }))
 
@@ -131,8 +155,17 @@ const CreateModal = ({
                       }
                     >
                       <Grid item className={classes.uploadContainer}>
-                        <CloudUploadIcon color="primary" fontSize="large" />
-                        <Typography gutterBottom variant="body1">
+                        <img
+                          alt=""
+                          src={CloudUploadIcon}
+                          width="48"
+                          height="48"
+                        />
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          className={classes.uploadButtonText}
+                        >
                           {t('app.create_modal.browse_files')}
                         </Typography>
                         <Typography
@@ -141,7 +174,7 @@ const CreateModal = ({
                           display="block"
                           variant="caption"
                         >
-                          {uploadedGraphFilename}
+                          {uploadedGraphFilename || 'This step is optional'}
                         </Typography>
                         <input
                           accept=".json"
@@ -204,6 +237,7 @@ const CreateModal = ({
                       </InputLabel>
                       <Select
                         id="algorithm_select"
+                        color="#3386F2"
                         value={algorithm}
                         onChange={e => {
                           if (
@@ -239,6 +273,7 @@ const CreateModal = ({
                   >
                     <FormControl className={classes.formControl}>
                       <TextField
+                        color="#3386F2"
                         autoFocus
                         fullWidth
                         defaultValue={projectName}
@@ -300,13 +335,18 @@ const CreateModal = ({
                   direction="column"
                   justify="center"
                 >
-                  <Typography gutterBottom variant="body1">
+                  <Typography
+                    gutterBottom
+                    variant="body1"
+                    className={classes.hooray}
+                  >
                     {t('app.create_modal.project_created_title')}
                   </Typography>
                   <Typography gutterBottom variant="caption">
                     {t('app.create_modal.project_created_body')}
                   </Typography>
                   <Button
+                    className={classes.closeButton}
                     color="primary"
                     variant="contained"
                     onClick={() => {
