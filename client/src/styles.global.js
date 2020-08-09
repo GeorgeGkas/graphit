@@ -8,7 +8,11 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: 'Heebo', sans-serif;
+    font-family: 'Heebo', sans-serif !important;
+  }
+
+  .MuiTypography-h6 {
+    font-family: 'Amaranth', sans-serif !important;
   }
 
   button,
