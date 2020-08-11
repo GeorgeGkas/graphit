@@ -1,24 +1,10 @@
 import AppBar from '@material-ui/core/AppBar'
 import blue from '@material-ui/core/colors/blue'
+import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
-import BrushIcon from '@material-ui/icons/BrushSharp'
-import CategoryIcon from '@material-ui/icons/CategorySharp'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeftSharp'
-import ChevronRightIcon from '@material-ui/icons/ChevronRightSharp'
-import DeviceHubIcon from '@material-ui/icons/DeviceHubSharp'
-import GridOffIcon from '@material-ui/icons/GridOffSharp'
-import GridOnIcon from '@material-ui/icons/GridOnSharp'
-import PlayArrowIcon from '@material-ui/icons/PlayArrowSharp'
-import RedoIcon from '@material-ui/icons/RedoSharp'
-import SkipNextIcon from '@material-ui/icons/SkipNextSharp'
-import SkipPreviousIcon from '@material-ui/icons/SkipPreviousSharp'
-import StopIcon from '@material-ui/icons/StopSharp'
-import UndoIcon from '@material-ui/icons/UndoSharp'
-import ZoomInIcon from '@material-ui/icons/ZoomInSharp'
-import ZoomOutIcon from '@material-ui/icons/ZoomOutSharp'
 import filter from 'lodash/fp/filter'
 import find from 'lodash/fp/find'
 import intersection from 'lodash/fp/intersection'
@@ -39,6 +25,25 @@ import { withFirebase } from '../../../../providers/Firebase'
 import { operations as algorithmOperations } from '../../ducks/algorithm'
 import { operations as editorOperations } from '../../ducks/editor'
 import { operations as graphOperations } from '../../ducks/graph'
+import { Divider } from './atoms/Divider'
+import EdgeActiveIcon from './images/edgesActive.svg'
+import EdgeInactiveIcon from './images/edgesInactive.svg'
+import FirstStepIcon from './images/firstStep.svg'
+import GridOnIcon from './images/gridActive.svg'
+import GridOffIcon from './images/gridInactive.svg'
+import LastStepIcon from './images/lastStep.svg'
+import NextStepIcon from './images/nextStep.svg'
+import NodeActiveIcon from './images/nodesActive.svg'
+import NodeInactiveIcon from './images/nodesInactive.svg'
+import PlayArrowIcon from './images/play.svg'
+import PointerActiveIcon from './images/pointerActive.svg'
+import PointerInactiveIcon from './images/pointerInactive.svg'
+import PreviousStepIcon from './images/previousStep.svg'
+import RedoIcon from './images/redo.svg'
+import StopIcon from './images/stop.svg'
+import UndoIcon from './images/undo.svg'
+import ZoomInIcon from './images/zoomIn.svg'
+import ZoomOutIcon from './images/zoomOut.svg'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -54,6 +59,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     background: '#fff',
     display: 'flex',
+  },
+  iconDisabled: {
+    opacity: 0.5,
   },
 }))
 
@@ -229,269 +237,429 @@ const EditorBar = ({
     <>
       <AppBar className={classes.root} id="editor_bar" position="static">
         <Toolbar>
-          <div
-            className={classes.displayInherit}
-            id="editor_bar_undo_redo_section"
-          >
-            <Tooltip title={t('app.editorbar.undo')}>
-              <div>
-                <IconButton
-                  className={classes.button}
-                  disabled={!pastExist || currentEditorAction === 'isPlaying'}
-                  onClick={() => {
-                    undoGraphHistory()
-                    firebase.analytics.logEvent('editor_undo_history')
-                  }}
-                >
-                  <UndoIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-
-            <Tooltip title={t('app.editorbar.redo')}>
-              <div>
-                <IconButton
-                  className={classes.button}
-                  disabled={!futureExist || currentEditorAction === 'isPlaying'}
-                  onClick={() => {
-                    redoGraphHistory()
-                    firebase.analytics.logEvent('editor_redo_history')
-                  }}
-                >
-                  <RedoIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-          </div>
-
-          <div className={classes.displayInherit} id="editor_bar_zoom_section">
-            <Tooltip title={t('app.editorbar.zoom_in')}>
-              <div>
-                <IconButton
-                  className={classes.button}
-                  onClick={() => {
-                    zoomIn()
-                    firebase.analytics.logEvent('editor_zoom_in')
-                  }}
-                >
-                  <ZoomInIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-
-            <Tooltip title={t('app.editorbar.zoom_out')}>
-              <div>
-                <IconButton
-                  className={classes.button}
-                  onClick={() => {
-                    zoomOut()
-                    firebase.analytics.logEvent('editor_zoom_out')
-                  }}
-                >
-                  <ZoomOutIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-          </div>
-
-          <div className={classes.displayInherit} id="editor_bar_grid_section">
-            <Tooltip title={t('app.editorbar.grid')}>
-              <div>
-                <IconButton
-                  className={classes.button}
-                  onClick={() => {
-                    toggleGrid()
-                    firebase.analytics.logEvent('editor_toggle_grid')
-                  }}
-                >
-                  {gridVisible ? <GridOnIcon /> : <GridOffIcon />}
-                </IconButton>
-              </div>
-            </Tooltip>
-          </div>
-
-          <div
-            className={classes.displayInherit}
-            id="editor_bar_editor_mode_section"
-          >
-            <Tooltip title={t('app.editorbar.select_mode')}>
-              <div id="editor_bar_editor_select_mode_section">
-                <IconButton
-                  className={
-                    currentEditorAction === 'select'
-                      ? classes.buttonActive
-                      : classes.button
-                  }
-                  disabled={currentEditorAction === 'isPlaying'}
-                  onClick={() => {
-                    unselectAll()
-                    updateCurrentEditorAction('select')
-                    firebase.analytics.logEvent('editor_action_select_node')
-                  }}
-                >
-                  <BrushIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-
-            <Tooltip
-              title={
-                graph.metadata.algorithm === 'Automata'
-                  ? t('app.editorbar.create_states')
-                  : t('app.editorbar.create_nodes')
-              }
+          <Grid container justify="center" direction="row">
+            <div
+              className={classes.displayInherit}
+              id="editor_bar_undo_redo_section"
             >
-              <div id="editor_bar_editor_nodes_mode_section">
-                <IconButton
-                  className={
-                    currentEditorAction === 'node'
-                      ? classes.buttonActive
-                      : classes.button
-                  }
-                  disabled={currentEditorAction === 'isPlaying'}
-                  onClick={() => {
-                    unselectAll()
-                    updateCurrentEditorAction('node')
-                    firebase.analytics.logEvent('editor_action_create_node')
-                  }}
-                >
-                  <CategoryIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
+              <Tooltip title={t('app.editorbar.undo')}>
+                <div>
+                  <IconButton
+                    className={classes.button}
+                    disabled={!pastExist || currentEditorAction === 'isPlaying'}
+                    onClick={() => {
+                      undoGraphHistory()
+                      firebase.analytics.logEvent('editor_undo_history')
+                    }}
+                  >
+                    <img
+                      alt="undo icon"
+                      src={UndoIcon}
+                      width="18"
+                      height="18"
+                      className={
+                        (!pastExist || currentEditorAction === 'isPlaying') &&
+                        classes.iconDisabled
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
 
-            <Tooltip
-              title={
-                graph.metadata.algorithm === 'Automata'
-                  ? t('app.editorbar.create_transitions')
-                  : t('app.editorbar.create_edges')
-              }
-            >
-              <div id="editor_bar_editor_edges_mode_section">
-                <IconButton
-                  className={
-                    currentEditorAction === 'edge'
-                      ? classes.buttonActive
-                      : classes.button
-                  }
-                  disabled={currentEditorAction === 'isPlaying'}
-                  onClick={() => {
-                    unselectAll()
-                    updateCurrentEditorAction('edge')
-                    firebase.analytics.logEvent('editor_action_create_edge')
-                  }}
-                >
-                  <DeviceHubIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-          </div>
-
-          <div
-            className={classes.displayInherit}
-            id="editor_bar_algorithm_section"
-          >
-            <Tooltip title={t('app.editorbar.run_operation')}>
-              <div id="editor_bar_algorithm_play_section">
-                <IconButton
-                  className={classes.button}
-                  onClick={() => {
-                    unselectAll()
-
-                    if (currentEditorAction === 'isPlaying') {
-                      stopPlaying()
-                      firebase.analytics.logEvent('editor_stop_play')
-                    } else if (graph.metadata.algorithm === 'Automata') {
-                      validateAutomata()
-                    } else {
-                      startPlaying()
-                      firebase.analytics.logEvent('editor_start_play')
+              <Tooltip title={t('app.editorbar.redo')}>
+                <div>
+                  <IconButton
+                    className={classes.button}
+                    disabled={
+                      !futureExist || currentEditorAction === 'isPlaying'
                     }
-                  }}
-                >
-                  {currentEditorAction === 'isPlaying' ? (
-                    <StopIcon />
-                  ) : (
-                    <PlayArrowIcon />
-                  )}
-                </IconButton>
-              </div>
-            </Tooltip>
+                    onClick={() => {
+                      redoGraphHistory()
+                      firebase.analytics.logEvent('editor_redo_history')
+                    }}
+                  >
+                    <img
+                      alt="undo icon"
+                      src={RedoIcon}
+                      width="18"
+                      height="18"
+                      className={
+                        (!futureExist || currentEditorAction === 'isPlaying') &&
+                        classes.iconDisabled
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            </div>
 
-            <Tooltip title={t('app.editorbar.first_step')}>
-              <div id="editor_bar_algorithm_first_step_section">
-                <IconButton
-                  className={classes.button}
-                  disabled={
-                    currentEditorAction !== 'isPlaying' ||
-                    !previousAlgorithmEntryExist
-                  }
-                  onClick={() => {
-                    firstIteration()
-                    firebase.analytics.logEvent('editor_play_first_step')
-                  }}
-                >
-                  <SkipPreviousIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
+            <div
+              className={classes.displayInherit}
+              id="editor_bar_zoom_section"
+            >
+              <Tooltip title={t('app.editorbar.zoom_in')}>
+                <div>
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => {
+                      zoomIn()
+                      firebase.analytics.logEvent('editor_zoom_in')
+                    }}
+                  >
+                    <img
+                      alt="zoom in icon"
+                      src={ZoomInIcon}
+                      width="18"
+                      height="18"
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
 
-            <Tooltip title={t('app.editorbar.previous_step')}>
-              <div id="editor_bar_algorithm_back_step_section">
-                <IconButton
-                  className={classes.button}
-                  disabled={
-                    currentEditorAction !== 'isPlaying' ||
-                    !previousAlgorithmEntryExist
-                  }
-                  onClick={() => {
-                    previousIteration()
-                    firebase.analytics.logEvent('editor_play_previous_step')
-                  }}
-                >
-                  <ChevronLeftIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
+              <Tooltip title={t('app.editorbar.zoom_out')}>
+                <div>
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => {
+                      zoomOut()
+                      firebase.analytics.logEvent('editor_zoom_out')
+                    }}
+                  >
+                    <img
+                      alt="zoom out icon"
+                      src={ZoomOutIcon}
+                      width="18"
+                      height="18"
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            </div>
 
-            <Tooltip title={t('app.editorbar.next_step')}>
-              <div
-                id="editor_bar_algorithm_next_step_section"
-                style={{ marginTop: '8px' }}
+            <div
+              className={classes.displayInherit}
+              id="editor_bar_grid_section"
+            >
+              <Tooltip title={t('app.editorbar.grid')}>
+                <div>
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => {
+                      toggleGrid()
+                      firebase.analytics.logEvent('editor_toggle_grid')
+                    }}
+                  >
+                    {gridVisible ? (
+                      <img
+                        alt="grid on icon"
+                        src={GridOnIcon}
+                        width="18"
+                        height="18"
+                      />
+                    ) : (
+                      <img
+                        alt="grid off icon"
+                        src={GridOffIcon}
+                        width="18"
+                        height="18"
+                      />
+                    )}
+                  </IconButton>
+                </div>
+              </Tooltip>
+            </div>
+
+            <Divider />
+
+            <div
+              className={classes.displayInherit}
+              id="editor_bar_editor_mode_section"
+            >
+              <Tooltip title={t('app.editorbar.select_mode')}>
+                <div id="editor_bar_editor_select_mode_section">
+                  <IconButton
+                    className={
+                      currentEditorAction === 'select'
+                        ? classes.buttonActive
+                        : classes.button
+                    }
+                    disabled={currentEditorAction === 'isPlaying'}
+                    onClick={() => {
+                      unselectAll()
+                      updateCurrentEditorAction('select')
+                      firebase.analytics.logEvent('editor_action_select_node')
+                    }}
+                  >
+                    {currentEditorAction !== 'select' ? (
+                      <img
+                        alt="pointer inactive icon"
+                        src={PointerInactiveIcon}
+                        width="18"
+                        height="18"
+                        className={
+                          currentEditorAction === 'isPlaying' &&
+                          classes.iconDisabled
+                        }
+                      />
+                    ) : (
+                      <img
+                        alt="pointer active icon"
+                        src={PointerActiveIcon}
+                        width="18"
+                        height="18"
+                      />
+                    )}
+                  </IconButton>
+                </div>
+              </Tooltip>
+
+              <Tooltip
+                title={
+                  graph.metadata.algorithm === 'Automata'
+                    ? t('app.editorbar.create_states')
+                    : t('app.editorbar.create_nodes')
+                }
               >
-                <IconButton
-                  disabled={
-                    currentEditorAction !== 'isPlaying' ||
-                    !nextAlgorithmEntryExist
-                  }
-                  onClick={() => {
-                    nextIteration()
-                    firebase.analytics.logEvent('editor_play_next_step')
-                  }}
-                >
-                  <ChevronRightIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
+                <div id="editor_bar_editor_nodes_mode_section">
+                  <IconButton
+                    className={
+                      currentEditorAction === 'node'
+                        ? classes.buttonActive
+                        : classes.button
+                    }
+                    disabled={currentEditorAction === 'isPlaying'}
+                    onClick={() => {
+                      unselectAll()
+                      updateCurrentEditorAction('node')
+                      firebase.analytics.logEvent('editor_action_create_node')
+                    }}
+                  >
+                    {currentEditorAction !== 'node' ? (
+                      <img
+                        alt="node inactive icon"
+                        src={NodeInactiveIcon}
+                        width="18"
+                        height="18"
+                        className={
+                          currentEditorAction === 'isPlaying' &&
+                          classes.iconDisabled
+                        }
+                      />
+                    ) : (
+                      <img
+                        alt="node active icon"
+                        src={NodeActiveIcon}
+                        width="18"
+                        height="18"
+                      />
+                    )}
+                  </IconButton>
+                </div>
+              </Tooltip>
 
-            <Tooltip title={t('app.editorbar.last_step')}>
-              <div id="editor_bar_algorithm_last_step_section">
-                <IconButton
-                  className={classes.button}
-                  disabled={
-                    currentEditorAction !== 'isPlaying' ||
-                    !nextAlgorithmEntryExist
-                  }
-                  onClick={() => {
-                    lastIteration()
-                    firebase.analytics.logEvent('editor_play_last_step')
-                  }}
+              <Tooltip
+                title={
+                  graph.metadata.algorithm === 'Automata'
+                    ? t('app.editorbar.create_transitions')
+                    : t('app.editorbar.create_edges')
+                }
+              >
+                <div id="editor_bar_editor_edges_mode_section">
+                  <IconButton
+                    className={
+                      currentEditorAction === 'edge'
+                        ? classes.buttonActive
+                        : classes.button
+                    }
+                    disabled={currentEditorAction === 'isPlaying'}
+                    onClick={() => {
+                      unselectAll()
+                      updateCurrentEditorAction('edge')
+                      firebase.analytics.logEvent('editor_action_create_edge')
+                    }}
+                  >
+                    {currentEditorAction !== 'edge' ? (
+                      <img
+                        alt="edge inactive icon"
+                        src={EdgeInactiveIcon}
+                        width="18"
+                        height="18"
+                        className={
+                          currentEditorAction === 'isPlaying' &&
+                          classes.iconDisabled
+                        }
+                      />
+                    ) : (
+                      <img
+                        alt="edge active icon"
+                        src={EdgeActiveIcon}
+                        width="18"
+                        height="18"
+                      />
+                    )}
+                  </IconButton>
+                </div>
+              </Tooltip>
+            </div>
+
+            <Divider />
+
+            <div
+              className={classes.displayInherit}
+              id="editor_bar_algorithm_section"
+            >
+              <Tooltip title={t('app.editorbar.run_operation')}>
+                <div id="editor_bar_algorithm_play_section">
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => {
+                      unselectAll()
+
+                      if (currentEditorAction === 'isPlaying') {
+                        stopPlaying()
+                        firebase.analytics.logEvent('editor_stop_play')
+                      } else if (graph.metadata.algorithm === 'Automata') {
+                        validateAutomata()
+                      } else {
+                        startPlaying()
+                        firebase.analytics.logEvent('editor_start_play')
+                      }
+                    }}
+                  >
+                    {currentEditorAction === 'isPlaying' ? (
+                      <img
+                        alt="stop icon"
+                        src={StopIcon}
+                        width="17"
+                        height="17"
+                      />
+                    ) : (
+                      <img
+                        alt="play icon"
+                        src={PlayArrowIcon}
+                        width="17"
+                        height="17"
+                      />
+                    )}
+                  </IconButton>
+                </div>
+              </Tooltip>
+
+              <Tooltip title={t('app.editorbar.first_step')}>
+                <div id="editor_bar_algorithm_first_step_section">
+                  <IconButton
+                    className={classes.button}
+                    disabled={
+                      currentEditorAction !== 'isPlaying' ||
+                      !previousAlgorithmEntryExist
+                    }
+                    onClick={() => {
+                      firstIteration()
+                      firebase.analytics.logEvent('editor_play_first_step')
+                    }}
+                  >
+                    <img
+                      alt="go to first step icon"
+                      src={FirstStepIcon}
+                      width="17"
+                      height="17"
+                      className={
+                        (currentEditorAction !== 'isPlaying' ||
+                          !previousAlgorithmEntryExist) &&
+                        classes.iconDisabled
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
+
+              <Tooltip title={t('app.editorbar.previous_step')}>
+                <div id="editor_bar_algorithm_back_step_section">
+                  <IconButton
+                    className={classes.button}
+                    disabled={
+                      currentEditorAction !== 'isPlaying' ||
+                      !previousAlgorithmEntryExist
+                    }
+                    onClick={() => {
+                      previousIteration()
+                      firebase.analytics.logEvent('editor_play_previous_step')
+                    }}
+                  >
+                    <img
+                      alt="go to previous step icon"
+                      src={PreviousStepIcon}
+                      width="17"
+                      height="17"
+                      className={
+                        (currentEditorAction !== 'isPlaying' ||
+                          !previousAlgorithmEntryExist) &&
+                        classes.iconDisabled
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
+
+              <Tooltip title={t('app.editorbar.next_step')}>
+                <div
+                  id="editor_bar_algorithm_next_step_section"
+                  style={{ marginTop: '8px' }}
                 >
-                  <SkipNextIcon />
-                </IconButton>
-              </div>
-            </Tooltip>
-          </div>
+                  <IconButton
+                    disabled={
+                      currentEditorAction !== 'isPlaying' ||
+                      !nextAlgorithmEntryExist
+                    }
+                    onClick={() => {
+                      nextIteration()
+                      firebase.analytics.logEvent('editor_play_next_step')
+                    }}
+                  >
+                    <img
+                      alt="go to next step icon"
+                      src={NextStepIcon}
+                      width="17"
+                      height="17"
+                      className={
+                        (currentEditorAction !== 'isPlaying' ||
+                          !nextAlgorithmEntryExist) &&
+                        classes.iconDisabled
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
+
+              <Tooltip title={t('app.editorbar.last_step')}>
+                <div id="editor_bar_algorithm_last_step_section">
+                  <IconButton
+                    className={classes.button}
+                    disabled={
+                      currentEditorAction !== 'isPlaying' ||
+                      !nextAlgorithmEntryExist
+                    }
+                    onClick={() => {
+                      lastIteration()
+                      firebase.analytics.logEvent('editor_play_last_step')
+                    }}
+                  >
+                    <img
+                      alt="go to last step icon"
+                      src={LastStepIcon}
+                      width="17"
+                      height="17"
+                      className={
+                        (currentEditorAction !== 'isPlaying' ||
+                          !nextAlgorithmEntryExist) &&
+                        classes.iconDisabled
+                      }
+                    />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            </div>
+          </Grid>
         </Toolbar>
       </AppBar>
 
