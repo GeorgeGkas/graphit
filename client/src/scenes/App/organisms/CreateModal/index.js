@@ -237,7 +237,7 @@ const CreateModal = ({
                       </InputLabel>
                       <Select
                         id="algorithm_select"
-                        color="#3386F2"
+                        color="primary"
                         value={algorithm}
                         onChange={e => {
                           if (
@@ -273,7 +273,7 @@ const CreateModal = ({
                   >
                     <FormControl className={classes.formControl}>
                       <TextField
-                        color="#3386F2"
+                        color="primary"
                         autoFocus
                         fullWidth
                         defaultValue={projectName}

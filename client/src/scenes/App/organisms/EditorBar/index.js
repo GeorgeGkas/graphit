@@ -258,8 +258,9 @@ const EditorBar = ({
                       width="18"
                       height="18"
                       className={
-                        (!pastExist || currentEditorAction === 'isPlaying') &&
-                        classes.iconDisabled
+                        !pastExist || currentEditorAction === 'isPlaying'
+                          ? classes.iconDisabled
+                          : undefined
                       }
                     />
                   </IconButton>
@@ -284,8 +285,9 @@ const EditorBar = ({
                       width="18"
                       height="18"
                       className={
-                        (!futureExist || currentEditorAction === 'isPlaying') &&
-                        classes.iconDisabled
+                        !futureExist || currentEditorAction === 'isPlaying'
+                          ? classes.iconDisabled
+                          : undefined
                       }
                     />
                   </IconButton>
@@ -397,8 +399,9 @@ const EditorBar = ({
                         width="18"
                         height="18"
                         className={
-                          currentEditorAction === 'isPlaying' &&
-                          classes.iconDisabled
+                          currentEditorAction === 'isPlaying'
+                            ? classes.iconDisabled
+                            : undefined
                         }
                       />
                     ) : (
@@ -441,8 +444,9 @@ const EditorBar = ({
                         width="18"
                         height="18"
                         className={
-                          currentEditorAction === 'isPlaying' &&
-                          classes.iconDisabled
+                          currentEditorAction === 'isPlaying'
+                            ? classes.iconDisabled
+                            : undefined
                         }
                       />
                     ) : (
@@ -485,8 +489,9 @@ const EditorBar = ({
                         width="18"
                         height="18"
                         className={
-                          currentEditorAction === 'isPlaying' &&
-                          classes.iconDisabled
+                          currentEditorAction === 'isPlaying'
+                            ? classes.iconDisabled
+                            : undefined
                         }
                       />
                     ) : (
@@ -564,9 +569,10 @@ const EditorBar = ({
                       width="17"
                       height="17"
                       className={
-                        (currentEditorAction !== 'isPlaying' ||
-                          !previousAlgorithmEntryExist) &&
-                        classes.iconDisabled
+                        currentEditorAction !== 'isPlaying' ||
+                        !previousAlgorithmEntryExist
+                          ? classes.iconDisabled
+                          : undefined
                       }
                     />
                   </IconButton>
@@ -592,9 +598,10 @@ const EditorBar = ({
                       width="17"
                       height="17"
                       className={
-                        (currentEditorAction !== 'isPlaying' ||
-                          !previousAlgorithmEntryExist) &&
-                        classes.iconDisabled
+                        currentEditorAction !== 'isPlaying' ||
+                        !previousAlgorithmEntryExist
+                          ? classes.iconDisabled
+                          : undefined
                       }
                     />
                   </IconButton>
@@ -622,9 +629,10 @@ const EditorBar = ({
                       width="17"
                       height="17"
                       className={
-                        (currentEditorAction !== 'isPlaying' ||
-                          !nextAlgorithmEntryExist) &&
-                        classes.iconDisabled
+                        currentEditorAction !== 'isPlaying' ||
+                        !nextAlgorithmEntryExist
+                          ? classes.iconDisabled
+                          : undefined
                       }
                     />
                   </IconButton>
@@ -650,9 +658,10 @@ const EditorBar = ({
                       width="17"
                       height="17"
                       className={
-                        (currentEditorAction !== 'isPlaying' ||
-                          !nextAlgorithmEntryExist) &&
-                        classes.iconDisabled
+                        currentEditorAction !== 'isPlaying' ||
+                        !nextAlgorithmEntryExist
+                          ? classes.iconDisabled
+                          : undefined
                       }
                     />
                   </IconButton>
