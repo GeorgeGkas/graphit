@@ -1,10 +1,9 @@
-import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
-import DeleteIcon from '@material-ui/icons/DeleteSharp'
-import EditIcon from '@material-ui/icons/EditSharp'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { bindActionCreators, compose } from 'redux'
 
@@ -13,22 +12,24 @@ import {
   operations as graphOperations,
   selectors as graphSelectors,
 } from '../../ducks/graph'
+import PencilIcon from './images/pencil.svg'
+import TrashIcon from './images/trash.svg'
 import EdgeInputEditor from './organisms/EdgeInputEditor'
 import EdgeWeightEditor from './organisms/EdgeWeightEditor'
 import NodeEditor from './organisms/NodeEditor'
 import { Wrapper } from './styles'
 
 const useStyles = makeStyles(theme => ({
-  buttonIcon: {
-    fontSize: 20,
-    marginRight: theme.spacing(1),
+  button: {
+    background: '#ec407a',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+    transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)',
+    '&:hover': {
+      background: '#ad1457',
+    },
   },
-  deleteButton: {
-    borderRadius: 0,
-  },
-  editButton: {
-    borderRadius: 0,
-    margin: theme.spacing(1),
+  toolbar: {
+    padding: 0,
   },
 }))
 
@@ -56,7 +57,6 @@ const PropertiesEditor = ({
   stageScale,
 }) => {
   const classes = useStyles()
-  const { t } = useTranslation()
 
   const [editorDialogVisible, makeEditorDialogVisible] = React.useState(false)
 
@@ -84,31 +84,32 @@ const PropertiesEditor = ({
       selectedNode={selectedNode}
       selectedResolvedEdge={graphSelectors.resolveEdgePath(selectedEdge, nodes)}
     >
-      <Button
-        className={classes.editButton}
-        color="secondary"
-        size="small"
-        variant="contained"
-        onClick={() => {
-          toggleEditorDialog()
-          firebase.analytics.logEvent(
-            selectedNode ? 'app_edit_node' : 'app_edit_edge',
-          )
-        }}
-      >
-        <EditIcon className={classes.buttonIcon} />
-        {t('app.properties_editor.edit')}
-      </Button>
-
-      <IconButton
-        className={classes.deleteButton}
-        color="secondary"
-        size="small"
-        variant="contained"
-        onClick={deleteShape}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <Toolbar className={classes.toolbar}>
+        <Grid container direction="row" justify="center">
+          <Grid item xs={12} style={{ paddingBottom: '15px' }}>
+            <Tooltip title="edit">
+              <IconButton
+                className={classes.button}
+                onClick={() => {
+                  toggleEditorDialog()
+                  firebase.analytics.logEvent(
+                    selectedNode ? 'app_edit_node' : 'app_edit_edge',
+                  )
+                }}
+              >
+                <img alt="edit icon" src={PencilIcon} width="16" height="16" />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12}>
+            <Tooltip title="delete">
+              <IconButton className={classes.button} onClick={deleteShape}>
+                <img alt="delete icon" src={TrashIcon} width="16" height="16" />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        </Grid>
+      </Toolbar>
 
       {selectedNode ? (
         <NodeEditor

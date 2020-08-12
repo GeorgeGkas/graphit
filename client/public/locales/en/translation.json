@@ -179,9 +179,6 @@
       "cancel": "Cancel",
       "confirm": "Apply Changes"
     },
-    "properties_editor": {
-      "edit": "Edit"
-    },
     "editorbar": {
       "undo": "Undo",
       "redo": "Redo",

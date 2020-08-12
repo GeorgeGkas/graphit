@@ -30,6 +30,43 @@ const useStyles = makeStyles(theme => ({
   formControlLabel: {
     marginTop: theme.spacing(1),
   },
+  buttonSubmit: {
+    fontFamily: 'Amaranth, sans-serif',
+    marginRight: theme.spacing(1),
+    background: '#3386F2',
+    border: 0,
+    borderRadius: 0,
+    boxShadow: 'none',
+    padding: '10px 30px',
+    '& .MuiButton-label': {
+      textTransform: 'none',
+    },
+    '&:hover': {
+      boxShadow: 'none',
+    },
+    '&:disabled': {
+      border: 0,
+      color: 'rgba(0, 0, 0, 0.26)',
+      boxShadow: 'none',
+      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    },
+  },
+  buttonClose: {
+    fontFamily: 'Amaranth, sans-serif',
+    padding: '10px 30px',
+    border: '2px solid #000',
+    '&:disabled': {
+      border: 0,
+      color: 'rgba(0, 0, 0, 0.26)',
+      boxShadow: 'none',
+      backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    },
+    borderRadius: 0,
+    marginRight: theme.spacing(1),
+    '& .MuiButton-label': {
+      textTransform: 'none',
+    },
+  },
 }))
 
 const mapStateToProps = state => ({
@@ -109,14 +146,16 @@ const EdgeWeightEditor = ({
           </FormControl>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button color="primary" onClick={handleClose}>
+      <DialogActions style={{ padding: '20px 15px' }}>
+        <Button onClick={handleClose} className={classes.buttonClose}>
           {t('app.edge_weight_editor.cancel')}
         </Button>
         <Button
           color="primary"
+          variant="contained"
           disabled={!validEdgeWeight}
           onClick={submitForm}
+          className={classes.buttonSubmit}
         >
           {t('app.edge_weight_editor.confirm')}
         </Button>
