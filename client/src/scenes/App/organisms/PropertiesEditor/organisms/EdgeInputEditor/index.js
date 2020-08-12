@@ -67,6 +67,14 @@ const useStyles = makeStyles(theme => ({
       textTransform: 'none',
     },
   },
+  formTitle: {
+    '& > h2': {
+      fontFamily: 'Amaranth, sans-serif',
+      fontSize: '24px',
+      fontWeight: 700,
+      letterSpacing: '.5px',
+    },
+  },
 }))
 
 const mapStateToProps = state => ({
@@ -110,13 +118,14 @@ const EdgeInputEditor = ({
       PaperProps={{
         style: {
           borderRadius: 0,
+          padding: '20px',
         },
       }}
       TransitionComponent={Transition}
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">
+      <DialogTitle id="form-dialog-title" className={classes.formTitle}>
         {t('app.edge_input_editor.title')}
       </DialogTitle>
       <DialogContent>

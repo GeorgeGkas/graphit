@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
   },
   formControlLabel: {
     marginTop: theme.spacing(1),
+    '& > .MuiFormControlLabel-label': {
+      fontFamily: 'Amaranth, sans-serif',
+    },
   },
   buttonSubmit: {
     fontFamily: 'Amaranth, sans-serif',
@@ -67,6 +70,14 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     '& .MuiButton-label': {
       textTransform: 'none',
+    },
+  },
+  formTitle: {
+    '& > h2': {
+      fontFamily: 'Amaranth, sans-serif',
+      fontSize: '24px',
+      fontWeight: 700,
+      letterSpacing: '.5px',
     },
   },
 }))
@@ -132,13 +143,14 @@ const NodeEditor = ({
       PaperProps={{
         style: {
           borderRadius: 0,
+          padding: '20px',
         },
       }}
       TransitionComponent={Transition}
       open={editorDialogVisible}
       onClose={handleClose}
     >
-      <DialogTitle id="form-dialog-title">
+      <DialogTitle id="form-dialog-title" className={classes.formTitle}>
         {algorithm === 'Automata'
           ? t('app.node_editor.title_automata')
           : t('app.node_editor.title')}
