@@ -1,10 +1,21 @@
 import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
+import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/CloseSharp'
 import React from 'react'
 
+const useStyles = makeStyles(theme => ({
+  snackbar: {
+    zIndex: 99999,
+    '& > .MuiSnackbarContent-root': {
+      borderRadius: 0,
+    },
+  },
+}))
+
 const Notification = ({ disableClickAwayListener = false, message }) => {
+  const classes = useStyles()
   const [notificationVisible, makeNotificationVisible] = React.useState(false)
   const toggleNotification = () => makeNotificationVisible(!notificationVisible)
 
@@ -23,7 +34,7 @@ const Notification = ({ disableClickAwayListener = false, message }) => {
         touchEvent: !disableClickAwayListener ? 'onTouchEnd' : false,
       }}
       ContentProps={{
-        square: true,
+        elevation: 1,
       }}
       TransitionComponent={Fade}
       action={[
@@ -45,9 +56,7 @@ const Notification = ({ disableClickAwayListener = false, message }) => {
         <span style={{ fontFamily: '"Heebo", sans-serif' }}>{message}</span>
       }
       open={notificationVisible}
-      style={{
-        zIndex: 99999,
-      }}
+      className={classes.snackbar}
       onClose={toggleNotification}
     />
   )
